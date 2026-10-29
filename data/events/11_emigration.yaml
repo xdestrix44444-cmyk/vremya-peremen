@@ -99,10 +99,10 @@ events:
   choices:
   - text: Ехать
     outcomes:
-    - w: 50
+    - w: 70
       text: Вернулся с дипломом и языком.
       effects: {know: 10, ties: 3}
-    - {w: 50, text: Остался там., end: abroad}
+    - {w: 30, text: Остался там., end: abroad}
   - text: Нет
     effects: {}
 - id: EMI-08
@@ -111,7 +111,7 @@ events:
   who:
     age: [18, 35]
     not_flags: [married]
-  text: Знакомые предлагают брак с иностранцем через агентство.
+  text: 'Брачное агентство: переписка с иностранцами, фотографии, потом свадьба и переезд.'
   choices:
   - text: Согласиться
     outcomes:

@@ -46,7 +46,7 @@ events:
       text: Родители в восторге.
       effects: {rel: 6}
     fail:
-      text: Будущая тёща или свёкор поджали губы.
+      text: 'Родители поджали губы: «Посмотрим».'
       effects: {rel: -3}
     effects: {happy: -1}
   - text: Быть собой
@@ -156,21 +156,21 @@ events:
   repeat: true
   who:
     flags: [married]
-  text: Свекровь опять всё переставила на кухне.
+  text: Родня партнёра опять всё переставила на кухне.
   choices:
   - text: На стороне партнёра
     effects: {rel: 5, close: -3}
   - text: На стороне своей родни
     effects: {rel: -6, close: 1}
   chance: 0.2
-  variants: [Свекровь опять всё переставила на кухне., Тёща звонит каждый вечер и даёт советы.]
+  variants: [Родня партнёра опять всё переставила на кухне., Родители партнёра звонят каждый вечер и дают советы.]
 - id: REL-11
   type: choice
   repeat: true
   who:
     flags: [married]
     age: [18, 45]
-  text: Заводить ли ребёнка? Карточка показывает, чего хочет партнёр.
+  text: Заводить ли ребёнка? Партнёр давно намекает.
   choices:
   - text: Да
     check:
@@ -230,7 +230,7 @@ events:
     outcomes:
     - w: 60
       text: Никто не узнал. Пока.
-      effects: {close: 1}
+      effects: {close: 1, happy: 3}
       sets: [affair]
     - w: 40
       text: Партнёр узнал.
@@ -339,6 +339,7 @@ events:
   type: choice
   who:
     flags: [divorced, has_kids]
+    sex: m
   text: С кем останутся дети? В те годы суд почти всегда оставлял их с матерью.
   choices:
   - text: Оставить с бывшим партнёром
@@ -421,7 +422,7 @@ events:
   type: choice
   who:
     flags: [widowed]
-  text: На поминках подруги к тебе подсел человек, с которым легко молчать.
+  text: Прошёл год. Соседка познакомила с человеком, с которым легко молчать.
   choices:
   - text: Дать себе шанс
     effects: {close: 1, rel: 25}

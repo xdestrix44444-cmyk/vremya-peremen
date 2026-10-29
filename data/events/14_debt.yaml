@@ -26,8 +26,8 @@ events:
     role: [young, adult]
   text: В сберкассе можно взять мебель или телевизор в кредит под 1–3% годовых.
   choices:
-  - text: Взять
-    effects: {close: 1}
+  - text: Взять гарнитур в кредит
+    effects: {close: 1, happy: 3}
     sets: [debt_bank]
   - text: Нет
     effects: {}
@@ -50,12 +50,9 @@ events:
   when: {from: 1992, to: 1999}
   who:
     flags: [business]
-  text: Банк даёт кредит под залог. В рублях или в у.е.
+  text: 'Банк даёт кредит под залог товара: десять зарплат сразу, проценты каждый месяц.'
   choices:
-  - text: В рублях
-    effects: {money_m: 10}
-    sets: [debt_bank]
-  - text: В у.е.
+  - text: Взять кредит
     effects: {money_m: 10}
     sets: [debt_bank]
   - text: Нет
@@ -65,17 +62,18 @@ events:
   repeat: true
   who:
     age: [18, 99]
+    money: <2
   text: 'Ломбард на углу: под залог золота и техники дают деньги сразу.'
   choices:
   - text: Заложить
     effects: {money_m: 1}
     outcomes:
     - w: 70
-      text: Выкупил через месяц.
-      effects: {money_m: 1, happy: -1}
+      text: Выкупил через месяц, с процентами.
+      effects: {money_m: -1.2}
     - w: 30
       text: Выкупить не смог, вещь ушла.
-      effects: {money_m: 1, happy: -4}
+      effects: {happy: -4}
   - text: Нет
     effects: {}
 - id: DEBT-06
@@ -107,6 +105,7 @@ events:
   repeat: true
   who:
     age: [18, 99]
+    money: <0
   text: 'Тётка звонит уже третий раз: «Когда отдашь?»'
   choices:
   - text: Отдать частями
@@ -114,7 +113,7 @@ events:
   - text: Обещать
     effects: {close: -2}
   - text: Избегать
-    effects: {close: -4, money_m: 1}
+    effects: {close: -4}
 - id: DEBT-09
   type: choice
   repeat: true
@@ -228,9 +227,8 @@ events:
   type: scene
   who:
     flags: [debt_bandits, defaulter]
-  text: Ночью увезли машину. Утром передали ключи от ларька «в счёт долга».
+  text: Пришли «серьёзные люди» и вынесли из квартиры всё ценное — «в счёт долга».
   effects: {money_m: -4}
-  item: {remove_group: car}
 - id: DEBT-14
   type: choice
   who:
@@ -259,7 +257,7 @@ events:
   who:
     flags: [debt_bank]
   text: 'Инфляция съела рублёвый долг: отдаёшь одной зарплатой то, что занимал на машину.'
-  effects: {money_m: 3}
+  effects: {happy: 2}
   clears: [debt_bank]
 - id: DEBT-16
   type: choice
@@ -345,7 +343,7 @@ events:
   text: 'Ростовщик позвонил сам: «Проценты капают, ты помнишь?»'
   choices:
   - text: Платить
-    effects: {money_m: -2}
+    effects: {money_m: -5}
     clears: [debt_private]
   - text: Тянуть
     outcomes:

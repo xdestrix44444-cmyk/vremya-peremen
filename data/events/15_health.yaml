@@ -71,7 +71,7 @@ events:
   text: Профсоюз даёт путёвку в санаторий в Кисловодске. Двадцать четыре дня, нарзан и процедуры.
   choices:
   - text: Поехать
-    effects: {health: 5, close: 1}
+    effects: {health: 5, happy: 3, close: -1}
   - text: Отдать коллеге
     effects: {ties: 1}
   variants: ['Профсоюз даёт путёвку в санаторий в Кисловодске. Двадцать четыре дня, нарзан и процедуры.']
@@ -177,7 +177,7 @@ events:
   text: 'Гололёд: поскользнулся у подъезда.'
   weight: 0.5
   choices:
-  - text: Дальше
+  - text: Подняться
     outcomes:
     - w: 80
       text: Синяки и испуг.
@@ -186,14 +186,14 @@ events:
       text: Перелом, гипс на два месяца.
       effects: {health: -6, fit: -4}
       sets: [injury]
-    - {w: 2, text: Погиб в аварии., end: death}
+    - {w: 2, text: Удар оказался смертельным., end: death}
   variants: ['Гололёд: поскользнулся у подъезда.', Таксист проехал на красный.]
 - id: HLT-13
   type: choice
   when: {from: 1990, to: 1999}
   who:
     age: [16, 70]
-  text: Начал(а) бегать по утрам или ходить в качалку.
+  text: 'Решаешь заняться собой: бегать по утрам или ходить в качалку.'
   choices:
   - text: Втянуться
     check: {base: 50, will: 15}
@@ -222,7 +222,7 @@ events:
   text: 'Беременность протекает тяжело: врач советует лечь на сохранение.'
   choices:
   - text: Лечь на сохранение
-    effects: {money_m: -1, health: 2}
+    effects: {health: 2, happy: -1}
   - text: Работать до последнего
     outcomes:
     - w: 80
@@ -231,3 +231,4 @@ events:
     - w: 20
       text: Осложнения.
       effects: {health: -10}
+    effects: {money_m: 0.5}

@@ -20,10 +20,10 @@ events:
     age: [8, 16]
     traits: {strength: strong}
     not_flags: [talent_found]
-  text: 'Учитель физкультуры: «Приводи его в секцию, будет толк».'
+  text: 'Учитель физкультуры: «Тебе бы в секцию борьбы — будет толк».'
   choices:
   - text: Записаться
-    effects: {fit: 8}
+    effects: {fit: 8, know: -2}
     sets: [talent_found, fighter]
   - text: Нет
     effects: {}
@@ -36,10 +36,10 @@ events:
   text: Ты разобрал и собрал магнитофон, и он заработал лучше прежнего.
   choices:
   - text: Чинить технику всем соседям
-    effects: {ties: 2, money_m: 0.5, know: 3}
+    effects: {ties: 2, money_m: 0.5, know: 3, close: -1}
     sets: [talent_found]
-  - text: Забросить
-    effects: {}
+  - text: Паять для себя
+    effects: {know: 1, happy: 1}
 - id: TAL-04
   type: choice
   who:
@@ -48,7 +48,7 @@ events:
   text: Учитель математики зовёт в физматшколу или кружок при университете.
   choices:
   - text: Перейти
-    effects: {know: 8, close: -1}
+    effects: {know: 8, close: -1, happy: -2}
   - text: Остаться в своей школе
     effects: {ties: 1}
 - id: TAL-05
@@ -63,8 +63,8 @@ events:
   who:
     age: [16, 40]
     traits: {grit: strong}
-  text: Ты видишь выгоду там, где другие видят беспорядок.
-  effects: {money_m: 1}
+  text: Берёшься за то, что другие бросили, и доводишь до конца. Это начинают ценить.
+  effects: {ties: 1, money_m: 0.5}
 - id: TAL-07
   type: choice
   who:
@@ -74,7 +74,7 @@ events:
   text: За полгода заговорил по-английски по кассетам и старому учебнику.
   choices:
   - text: Учить дальше
-    effects: {know: 6}
+    effects: {know: 6, money_m: -0.2, happy: -1}
     sets: [talent_found]
   - text: Хватит
     effects: {}
@@ -91,8 +91,8 @@ events:
   who:
     age: [20, 99]
     traits: {will: weak}
-  text: Опять не смог отказать — и опять жалеешь.
-  effects: {close: 1}
+  text: Опять не смог отказать — выпил «за компанию», дал в долг, взял чужую смену. И опять жалеешь.
+  effects: {happy: -2, ties: 1}
 - id: TAL-10
   type: choice
   who:

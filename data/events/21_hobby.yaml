@@ -35,11 +35,11 @@ events:
   who:
     flags: [hobby_sport]
     age: [12, 70]
-  text: Каждую субботу — футбол во дворе. Ворота из двух портфелей.
+  text: 'Каждые выходные — стадион у школы: мяч, турник, зимой лыжня.'
   focus: hobby
   chance: 0.7
   effects: {fit: 3, ties: 2, happy: 3}
-  variants: [Каждую субботу — футбол во дворе. Ворота из двух портфелей., Мужики со двора позвали в команду на первенство района.]
+  variants: ['Каждые выходные — стадион у школы: мяч, турник, зимой лыжня.', Позвали в дворовую команду на первенство района. Играли до темноты.]
 - id: HOB-02
   type: choice
   who:
@@ -55,8 +55,9 @@ events:
     fail:
       text: Проиграл в первом круге, но съездил весело.
       effects: {happy: 1}
+    effects: {money_m: -0.2}
   - text: Не ехать
-    effects: {money_m: 0.2}
+    effects: {}
 - id: HOB-03
   type: scene
   repeat: true
@@ -100,7 +101,7 @@ events:
   text: Зовут подыграть на свадьбе за наличные.
   choices:
   - text: Играть
-    effects: {money_m: 1, happy: 2, health: -1}
+    effects: {money_m: 1, happy: 2, health: -1, close: -1}
   - text: Отказаться
     effects: {}
 - id: HOB-07
@@ -183,7 +184,7 @@ events:
   focus: hobby
   chance: 0.7
   effects: {happy: 5, ties: 2, close: -1}
-  variants: ['Рыбалка с ночёвкой: костёр, уха, туман над рекой.', 'Привёз с рыбалки ведро карасей. Жена ворчит, но жарит.']
+  variants: ['Рыбалка с ночёвкой: костёр, уха, туман над рекой.', 'Привёз с рыбалки ведро карасей. Дома ворчат, но жарят.']
 - id: HOB-14
   type: choice
   who:

@@ -173,17 +173,17 @@ events:
     fail:
       text: Срок.
       effects: {money_m: -6, close: -10}
-      sets: [record]
+      sets: [record, jailed]
       job: unemployed
   - text: Сесть
     effects: {close: -10, health: -8, law: -30}
-    sets: [record]
+    sets: [record, jailed]
     job: unemployed
 - id: CRM-09
   type: choice
   when: {from: 1990, to: 1999}
   who:
-    flags: [record]
+    flags: [jailed]
   text: Зона. По вечерам перечитываешь письма матери.
   choices:
   - text: Держаться

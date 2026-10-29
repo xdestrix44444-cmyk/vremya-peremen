@@ -12,7 +12,7 @@ events:
     effects: {fit: 6, happy: 1, close: -1}
     sets: [hobby_sport]
   - text: Нет
-    effects: {happy: 1}
+    effects: {}
 - id: FIT-02
   type: scene
   repeat: true

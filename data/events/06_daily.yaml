@@ -19,8 +19,8 @@ events:
   text: Записались на ковёр. Каждую ночь в одиннадцать перекличка у мебельного — пропустил, вычеркнут.
   choices:
   - text: Отмечаться
-    effects: {health: -2, close: 1, money_m: -1}
-    memo: Каждую ночь отмечался в очереди на ковёр.
+    effects: {health: -2, close: 1, money_m: -1, happy: 3}
+    memo: Месяц отмечался ночами в очереди — и достал ковёр.
   - text: Плюнуть
     effects: {}
   variants: ['Записались на ковёр. Каждую ночь в одиннадцать перекличка у мебельного — пропустил, вычеркнут.']
@@ -143,7 +143,7 @@ events:
   repeat: true
   when: {from: 1992, to: 1998}
   where: [UA, GE, TJ, KG, MD, AZ]
-  weight: 2
+  weight: 0.6
   text: Свет и отопление отключают по графику. Готовят на буржуйке, спят в куртках.
   effects: {health: -2}
 - id: DAY-15
@@ -178,7 +178,7 @@ events:
   text: 'Сосед сделал евроремонт: белый потолок, пластиковое окно. Ходили смотреть всем подъездом.'
   choices:
   - text: Сделать
-    effects: {money_m: -15, close: 1}
+    effects: {money_m: -15, close: 1, happy: 5}
     memo: Сделали евроремонт.
   - text: Нет
     effects: {}
@@ -195,7 +195,7 @@ events:
   text: У соседа под окнами стоит синий «Опель» из Германии. Он моет его каждое воскресенье.
   choices:
   - text: Купить себе
-    effects: {money_m: -40, ties: 2, close: 1}
+    effects: {money_m: -25, ties: 2, close: 1, happy: 4}
     item: {add: car}
   - text: Нет
     effects: {}

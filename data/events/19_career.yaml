@@ -127,7 +127,7 @@ events:
   text: Сокращение отдела. Тебя, опытного, оставляют, но на полставки.
   choices:
   - text: Согласиться
-    effects: {money_m: -2}
+    effects: {money_m: -2, happy: -2}
   - text: Уйти с выходным пособием
     effects: {money_m: 2}
     job: unemployed

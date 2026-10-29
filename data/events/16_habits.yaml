@@ -24,7 +24,7 @@ events:
       text: Это становится привычкой.
       effects: {ties: 1, health: -2}
       sets: [drinker]
-    effects: {happy: 3, ties: 1}
+    effects: {happy: 3, ties: 1, health: -1}
   - text: Не пить
     effects: {ties: -1, happy: -1}
     memo: Отказался пить в гараже — мужики обиделись.
@@ -58,7 +58,7 @@ events:
     fail:
       text: Код не помог.
       effects: {money_m: -1}
-  - text: Да ладно
+  - text: Пить дальше
     outcomes:
     - w: 80
       text: Всё как было.

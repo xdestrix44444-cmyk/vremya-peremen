@@ -62,6 +62,7 @@ business:        {kind: state, name: Своё дело}
 # --- криминал ---
 brigade:         {kind: state, name: В бригаде}
 record:          {kind: flag, name: Судимость, effect: работа хуже, бригада ближе}
+jailed:          {kind: flag, name: Отбывал срок, effect: сцены зоны}
 informer:        {kind: flag, name: Сдал своих, effect: в бригаде смертельный риск}
 addicted:        {kind: state, name: Зависимость, effect: −Здоровье, риск смерти}
 
