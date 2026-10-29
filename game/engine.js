@@ -35,7 +35,7 @@ function createEngine(D, rand) {
   const TRAINING = new Set(['army', 'cadet', 'worker', 'miner', 'shift', 'guard', 'brigade', 'kolkhoz', 'farmer', 'police', 'officer']);
   const KNOW_JOBS = new Set(['school', 'student', 'cadet', 'scientist', 'engineer', 'teacher', 'doctor', 'programmer', 'journalist', 'translator', 'banker']);
   const ACTIVE = ['brigade', 'business', 'deputy_local', 'deputy_rep', 'deputy_duma', 'official', 'debt_bandits', 'debt_private'];
-  const BUDGET = [[6, 2, 3, 0, 0], [13, 4, 6, 1, 2], [17, 6, 8, 2, 3], [30, 7, 10, 3, 4], [55, 6, 9, 2, 4], [200, 4, 6, 1, 2]];
+  const BUDGET = [[6, 2, 3, 0, 0], [13, 3, 5, 1, 2], [17, 4, 6, 1, 2], [30, 5, 7, 2, 3], [55, 5, 7, 2, 3], [200, 3, 5, 1, 2]];
   const JOB_NAMES = {kid: 'детство', school: 'школа', student: 'учёба', cadet: 'военное училище', army: 'армия', worker: 'рабочий',
     miner: 'шахтёр', engineer: 'инженер', scientist: 'научный сотрудник', teacher: 'учитель', doctor: 'врач', kolkhoz: 'колхоз',
     farmer: 'фермер', shop: 'продавец', coop: 'кооператор', shuttle: 'челнок', kiosk: 'свой ларёк', firm: 'коммерческая фирма',
@@ -499,16 +499,28 @@ function createEngine(D, rand) {
     const chron = FIXED.filter(e => e.choices && eligible(L, e, L.year, e.when.month)).length;
     nChoice = Math.max(0, nChoice - chron); nLines = Math.max(nChoice, nLines - chron);
     L.plan = {};
+    // события разносятся по месяцам: сначала в пустые, решения — не в один месяц с хроникой и друг с другом
+    const load = {}; for (let m = 1; m <= 12; m++) load[m] = 0;
+    for (const e of FIXED) if (e.choices && eligible(L, e, L.year, e.when.month)) load[e.when.month] += 2;
+    const put = (e, w) => {
+      let m = e.when && e.when.month;
+      if (!m) { const min = Math.min(...Object.values(load)); const free = Object.keys(load).filter(k => load[k] === min); m = +free[ri(0, free.length - 1)]; }
+      load[m] += w; (L.plan[m] = L.plan[m] || []).push(e);
+    };
     const pc = RANDOM.filter(e => (e.type === 'choice' || e.type === 'offer') && eligible(L, e, L.year, 0));
     const ps = RANDOM.filter(e => e.type === 'scene' && eligible(L, e, L.year, 0));
-    for (const [pool, n] of [[pc, nChoice], [ps, nLines - nChoice]]) {
+    for (const [pool, n, w] of [[pc, nChoice, 2], [ps, nLines - nChoice, 1]]) {
       for (let i = 0; i < n && pool.length; i++) {
         const e = wpick(pool.map(x => [x, (x.weight ?? 1) * focusWeight(L, x, risky)]));
         pool.splice(pool.indexOf(e), 1);
-        const m = ri(1, 12); (L.plan[m] = L.plan[m] || []).push(e);
+        put(e, w);
       }
     }
-    for (const e of CHANCE) if (rand() < e.chance) { const m = (e.when && e.when.month) || ri(1, 12); (L.plan[m] = L.plan[m] || []).push(e); }
+    // «шансы»: редкие опасности и бытовые сцены идут как выпали; сцен фокуса — не больше двух за год
+    const fired = CHANCE.filter(e => rand() < e.chance && (!e.focus || eligible(L, e, L.year, 0)));
+    const fs = fired.filter(e => e.focus);
+    for (const e of fired.filter(e => !e.focus)) put(e, e.choices ? 2 : 1);
+    for (let i = 0; i < 2 && fs.length; i++) put(fs.splice(ri(0, fs.length - 1), 1)[0], 1);
   }
   function yearEnd(L) {
     const fx = {work: {close: -2, rel: -3, health: -1, know: KNOW_JOBS.has(L.job) ? 1 : 0}, study: {know: 6, happy: -3}, health: {health: 3, fit: 4},

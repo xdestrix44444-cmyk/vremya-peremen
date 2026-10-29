@@ -118,10 +118,10 @@ function renderStart() {
   stop();
   layer.innerHTML = '';
   app.innerHTML = `<div class="title">
-    <div class="dim mono" style="font-size:11px;letter-spacing:.2em">КИНОХРОНИКА ОДНОЙ ЖИЗНИ</div>
+    <div class="dim mono" style="font-size:13px;letter-spacing:.2em">КИНОХРОНИКА ОДНОЙ ЖИЗНИ</div>
     <div class="big">Время<br>перемен</div><div class="dim mono">1986 — 1999</div>
     <div style="font-size:14px;max-width:19em">Тебе выпадет случайный человек из 280 миллионов. Республику, возраст и семью не выбирают.</div>
-    <div class="mono dim" style="font-size:12px">Пока ты здесь, в СССР родилось<br><span id="born" style="color:var(--amber);font-size:22px">0</span> человек</div>
+    <div class="mono dim" style="font-size:14px">Пока ты здесь, в СССР родилось<br><span id="born" style="color:var(--amber);font-size:22px">0</span> человек</div>
     <button class="cta" id="go">Оказаться в 1986-м</button>
     <div style="display:flex;gap:14px;font-size:13px" class="dim"><button id="arch">Архив жизней</button>
       <button id="soft" aria-pressed="${prefs.soft}">Без тяжёлых сцен: ${prefs.soft ? 'вкл.' : 'выкл.'}</button></div></div>`;
@@ -186,7 +186,7 @@ function openTab(k) {
 }
 function renderPanel() {
   const panel = $('#panel'); if (!panel || panel.hidden) return;
-  panel.innerHTML = `<div class="panelhd"><span class="dim" style="font-size:12px">Время стоит, пока открыт раздел</span><button class="btn" id="backfeed">✕ к ленте</button></div>` + ({act: actPanel, money: moneyPanel, life: lifePanel, work: workPanel, stats: statsPanel}[tab])();
+  panel.innerHTML = `<div class="panelhd"><span class="dim" style="font-size:14px">Время стоит, пока открыт раздел</span><button class="btn" id="backfeed">✕ к ленте</button></div>` + ({act: actPanel, money: moneyPanel, life: lifePanel, work: workPanel, stats: statsPanel}[tab])();
   $('#backfeed').onclick = () => openTab('feed');
   bindPanel();
 }
@@ -225,7 +225,7 @@ function autoPause() {
 function autoResume(ms) {
   waiting = false;
   if (autoFrom !== null) { speed = autoFrom; autoFrom = null; markSpeed(); }
-  schedule(ms ?? 300);
+  schedule(ms ?? gap());
 }
 function markSpeed() { document.querySelectorAll('[data-sp]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sp === String(speed)))); }
 function setSpeed(s) {
@@ -260,8 +260,10 @@ function afterStep(r, before) {
   if (r.choice) { showChoice(r.choice); return; }
   if (r.yearEnd) { autoPause(); showChronicle(r.yearEnd); return; }
   maybeWarn();
-  schedule(L.month === before ? 250 : undefined);
+  schedule(L.month === before ? gap() : undefined);
 }
+// пауза между событиями одного месяца и после решения — чтобы успеть прочитать
+function gap() { return speed === 'skip' ? 150 : Math.max(500, 2000 / (speed || 1)); }
 function showChoice(c) {
   autoPause();
   update();
@@ -278,7 +280,7 @@ function showChoice(c) {
     addLines(E.choose(L, +b.dataset.o));
     update();
     if (L.end) { waiting = true; setTimeout(finalScreen, 1400); return; }
-    autoResume(300);
+    autoResume();
   });
 }
 function maybeWarn() {
@@ -310,7 +312,7 @@ function actPanel() {
   const av = list.filter(a => a.available);
   return `<h2 class="ph2">Решения</h2><div class="dim" style="font-size:13px">Сделать шаг самому, не дожидаясь случая. Каждое — раз в год.</div>
     ${av.map(a => `<button class="row" data-act="${a.id}"><span>${esc(a.label)}<span class="eff">${esc(a.desc)}</span></span><span>›</span></button>`).join('')}
-    ${av.length < list.length ? '<div class="dim" style="font-size:12px;margin-top:8px">Другие решения появятся, когда станут возможны.</div>' : ''}`;
+    ${av.length < list.length ? '<div class="dim" style="font-size:14px;margin-top:8px">Другие решения появятся, когда станут возможны.</div>' : ''}`;
 }
 function seg(key, val) { return `<span class="seg">${[[.7, 'экономно'], [1, 'обычно'], [1.4, 'щедро']].map(([v, t]) => `<button data-k="${key}" data-v="${v}" aria-pressed="${val === v}">${t}</button>`).join('')}</span>`; }
 function moneyPanel() {
@@ -444,7 +446,7 @@ function showChronicle(c) {
   (L.curve = L.curve || []).push([L.year, L.survivors]);
   const y = c.year, last = y >= 1999;
   layer.innerHTML = `<div class="shade"></div><div class="sheet" role="dialog" aria-label="Хроника года"><button class="btn" id="xchron" style="float:right" aria-label="Закрыть">✕</button>
-    <div class="news"><div class="mono dim" style="font-size:10px;letter-spacing:.2em">КИНОХРОНИКА · ВЫПУСК ${y}</div><div class="k">Итоги года</div></div>
+    <div class="news"><div class="mono dim" style="font-size:13px;letter-spacing:.2em">КИНОХРОНИКА · ВЫПУСК ${y}</div><div class="k">Итоги года</div></div>
     ${c.news.filter(n => n.text).map(n => `<div class="hl">${n.from ? `<small>${esc(n.from.toUpperCase())}</small>` : ''}${esc(n.text)}</div>`).join('')}
     <div class="sec">Цены и деньги</div>${c.prices.map(([a, b]) => `<div class="row"><span>${a}</span><span class="mono">${esc(b)}</span></div>`).join('')}
     <div class="sec">Твой год</div>${c.log.length ? c.log.map(t => `<p class="yl">${esc(t)}</p>`).join('') : '<p class="yl">Обычный год, без больших перемен.</p>'}
@@ -466,7 +468,7 @@ function showChronicle(c) {
 function showPause(p, cont) {
   stop();
   layer.innerHTML = `<div class="shade" style="background:rgba(0,0,0,.92)"></div><div class="sheet" style="top:0;bottom:0;max-height:none;border:0;border-radius:0;background:transparent;display:flex">
-    <div class="title" style="min-height:0;flex:1"><div class="mono dim" style="font-size:11px;letter-spacing:.2em">ПАУЗА</div>
+    <div class="title" style="min-height:0;flex:1"><div class="mono dim" style="font-size:13px;letter-spacing:.2em">ПАУЗА</div>
     <div class="q">${esc(p.text)}</div><input class="inp" id="pl" maxlength="140" placeholder="Одна строка — она войдёт в письмо в 1986-й">
     <button class="cta" id="pc">Дальше</button><button class="btn" id="px">✕ пропустить</button></div></div>`;
   $('#px').onclick = () => { layer.innerHTML = ''; waiting = false; cont(); };
@@ -484,7 +486,7 @@ function finalScreen() {
   const arch = store.get('vp-archive', []); arch.unshift(rec); store.set('vp-archive', arch.slice(0, 10));
   const share = [head + '.', sub, `Сбережения: было ${w0.toFixed(1)} зарплаты → стало ${w1.toFixed(1)}.`, `Из ровесников живы ${Math.round(L.survivors * 100)}%.`, letter[0] ? '«' + letter[0] + '»' : '', '«Время перемен», 1986–1999'].filter(Boolean).join('\n');
   app.innerHTML = `<div class="bgmap" aria-hidden="true">${bgmap()}</div>
-    <div class="title" style="min-height:0;padding:20px 0 10px"><div class="mono dim" style="font-size:11px;letter-spacing:.2em">${alive ? '31 ДЕКАБРЯ 1999' : 'КОНЕЦ ПЛЁНКИ'}</div><div class="big" style="font-size:34px">${esc(head)}</div><div class="dim">${esc(sub)}</div></div>
+    <div class="title" style="min-height:0;padding:20px 0 10px"><div class="mono dim" style="font-size:13px;letter-spacing:.2em">${alive ? '31 ДЕКАБРЯ 1999' : 'КОНЕЦ ПЛЁНКИ'}</div><div class="big" style="font-size:34px">${esc(head)}</div><div class="dim">${esc(sub)}</div></div>
     <div class="frame">${room.svg}<div class="capt">${room.capt}</div></div>
     ${[['Родил' + (L.sex === 'f' ? 'ась' : 'ся'), (L.year - L.age) + ', ' + E.D.regions[L.origRegion].old], ['Последний адрес', S.place], ['Последнее занятие', S.job],
       ['Сбережения', `было ${w0.toFixed(1)} → стало ${w1.toFixed(1)} средних зарплат`], ['Сменил' + (L.sex === 'f' ? 'а' : '') + ' сферу', L.switches + ' раз'], ['Из ровесников живы', Math.round(L.survivors * 100) + '%']]
@@ -509,6 +511,6 @@ function finalScreen() {
 }
 function archiveSheet() {
   const arch = store.get('vp-archive', []);
-  sheet(`<h2>Архив жизней</h2>${arch.length ? arch.map(r => `<div class="row"><span>${esc(r.name)}<span class="eff">${esc(r.region)} · ${esc(r.head)}</span></span><span class="dim mono" style="font-size:11px">${esc(r.w0)} → ${esc(r.w1)}</span></div>`).join('') : '<div class="dim">Пока пусто. Здесь будут последние 10 прожитых жизней.</div>'}`);
+  sheet(`<h2>Архив жизней</h2>${arch.length ? arch.map(r => `<div class="row"><span>${esc(r.name)}<span class="eff">${esc(r.region)} · ${esc(r.head)}</span></span><span class="dim mono" style="font-size:13px">${esc(r.w0)} → ${esc(r.w1)}</span></div>`).join('') : '<div class="dim">Пока пусто. Здесь будут последние 10 прожитых жизней.</div>'}`);
 }
 })();
