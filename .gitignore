@@ -1,0 +1,10 @@
+# окружение и кэши
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+# сырые выгрузки ООН/ВБ/Natural Earth (175 МБ) — скачиваются заново, см. data/tables/SOURCES.md
+data/raw/
+# секреты: токен бота никогда не коммитить
+.env
+*.env

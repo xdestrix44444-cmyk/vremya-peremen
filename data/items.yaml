@@ -1,0 +1,18 @@
+# Имущество (CONCEPT §3.10b), первая версия — 10 вещей. Цены и содержание — в средних месячных зарплатах республики и года.
+# soviet: как достать до 1991 (queue — очередь, blat — блат, free — свободно); market_from — год, с которого покупается за деньги.
+# own: эффект в год, пока вещь есть; buy: разовый эффект при покупке; upkeep: содержание в месяц; resale: доля цены при продаже;
+# risk: годовой шанс потерять (кража, авария, пожар); luxury: покупают, только если сбережения больше цены в столько раз (по умолчанию 1,5);
+# window: слой или предмет окна жизни (data/window.yaml).
+items:
+  # --- жильё (одно на человека) ---
+  dorm: {name: Общежитие, group: housing, price: 0, upkeep: .03, own: {close: -2, rel: -4, ties: 1}, window: dorm}
+  kommunalka: {name: Комната в коммуналке, group: housing, price: 0, upkeep: .05, own: {close: -2, rel: -3, health: -1}, window: kommunalka}
+  rent_flat: {name: Съёмная квартира, group: housing, price: 0, upkeep: .35, market_from: 1990, own: {rel: 1}, window: rent_flat, buy: {happy: 2, rel: 2}}
+  own_flat: {name: Своя квартира, group: housing, price: 45, soviet: queue, market_from: 1992, upkeep: .12, resale: .9, own: {close: 1, rel: 2}, note: "хрущёвка, панелька, сталинка, кооператив — вид выбирает окно жизни", window: own_flat, buy: {happy: 8, rel: 4, close: 3}}
+  cottage: {name: Коттедж, group: housing, price: 250, market_from: 1994, luxury: 3, upkeep: .5, resale: .8, risk: .02, own: {close: 2, rel: 3, ties: 3, fame: 1, law: 1}, window: cottage, buy: {happy: 6, fame: 2, ties: 2}}
+  # --- остальное ---
+  dacha: {name: Дача с участком, group: country, price: 10, soviet: queue, market_from: 1991, upkeep: .05, resale: .8, own: {health: 1, fit: 2, close: 2}, saves_food: .15, note: "картошка и соленья: −15% к тратам на питание", window: jars, buy: {happy: 3, close: 2}}
+  car: {name: Машина, group: car, price: 35, soviet: queue, market_from: 1990, upkeep: .15, resale: .7, risk: .02, own: {ties: 3, close: 1}, note: "«Жигули», с 1992-го и подержанная иномарка", window: car_keys, buy: {happy: 5, close: 3, ties: 1}}
+  tv_vcr: {name: Цветной телевизор и видик, group: appliance, price: 8, soviet: blat, market_from: 1990, resale: .4, risk: .03, own: {close: 2, ties: 1}, window: tv_vcr, buy: {happy: 4, close: 2}}
+  phone_line: {name: Домашний телефон, group: appliance, price: 2, soviet: queue, market_from: 1992, upkeep: .02, own: {ties: 3, close: 1}, note: "в СССР очередь на установку — годы", window: phone, buy: {happy: 2, ties: 2}}
+  computer: {name: Компьютер, group: appliance, price: 12, market_from: 1993, luxury: 2, resale: .3, own: {know: 2}, note: "детям +10% к поступлению; открывает программирование", window: computer, buy: {happy: 3, know: 2}}

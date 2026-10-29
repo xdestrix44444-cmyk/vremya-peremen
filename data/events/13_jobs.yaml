@@ -1,0 +1,322 @@
+title: 13. Предложения о работе (JOB)
+note: 'Карточка: должность, место, зарплата в месяц, условия, требования. Принять / Отказаться / Торговаться. Зарплаты — ориентиры, сверить с данными.'
+events:
+- id: JOB-01
+  type: offer
+  repeat: true
+  when: {from: 1986, to: 1991}
+  who:
+    role: [young, adult]
+    stats: {fit: '>40'}
+    job: [unemployed, student, worker]
+  text: 'Заводу нужны рабочие: общежитие сразу, разряд через полгода.'
+  choices:
+  - {text: Принять, job: worker}
+  - text: Торговаться
+    check: {base: 35, ties: 0.3, charm: 10}
+    success:
+      text: Дали разряд повыше.
+      job: worker
+      effects: {money_m: 1}
+    fail:
+      text: «Не нравится — не держим».
+      effects: {}
+  - text: Отказаться
+    effects: {}
+- id: JOB-02
+  type: offer
+  when: {from: 1986, to: 1991}
+  who:
+    sex: m
+    role: [young, adult]
+    stats: {fit: '>60'}
+  text: 'Вербовщик зовёт на шахту за полярным кругом: «длинный рубль» и северные надбавки.'
+  choices:
+  - text: Принять
+    job: miner
+    effects: {close: -3}
+  - text: Отказаться
+    effects: {}
+- id: JOB-03
+  type: offer
+  when: {from: 1986, to: 1991}
+  who:
+    edu: [university]
+    job: [unemployed, student, worker]
+  text: 'В НИИ нужен инженер: стол у окна и командировки.'
+  choices:
+  - {text: Принять, job: engineer}
+  - text: Отказаться
+    effects: {}
+- id: JOB-04
+  type: offer
+  when: {from: 1986, to: 1991}
+  who:
+    role: [young, adult]
+    stats: {ties: '>50'}
+  text: 'Знакомая зовёт товароведом в гастроном: зарплата маленькая, зато «дефицит» через тебя.'
+  choices:
+  - text: Принять
+    effects: {ties: 4}
+    job: shop
+  - text: Отказаться
+    effects: {}
+- id: JOB-05
+  type: offer
+  when: {from: 1988, to: 1991}
+  who:
+    stats: {know: '>60'}
+    role: [young, adult]
+  text: 'Совместному предприятию нужен переводчик: иностранцы, валютные премии.'
+  choices:
+  - {text: Принять, job: translator}
+  - text: Торговаться
+    check: {base: 35, charm: 10, ties: 0.3}
+    success:
+      text: Плюс валютные премии.
+      job: translator
+      effects: {money_m: 1}
+    fail:
+      text: Взяли другого.
+      effects: {}
+  - text: Отказаться
+    effects: {}
+- id: JOB-06
+  type: offer
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who:
+    role: [young, adult]
+    stats: {fit: '>50'}
+  text: 'Частное охранное агентство набирает крепких ребят: форма, рация, сутки через двое.'
+  choices:
+  - {text: Принять, job: guard}
+  - text: Торговаться
+    check: {base: 35, served: 15, afghan: 15, chechen: 15, fighter: 10, injury: -15}
+    success:
+      text: Старшим смены.
+      job: guard
+      effects: {money_m: 1}
+    fail:
+      text: Взяли другого.
+      effects: {}
+  - text: Отказаться
+    effects: {}
+- id: JOB-07
+  type: offer
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who:
+    role: [young, adult, pension]
+  weight: 2
+  text: 'На рынке ищут продавца в палатку: обед за счёт хозяина.'
+  choices:
+  - {text: Принять, job: shop}
+  - text: Отказаться
+    effects: {}
+- id: JOB-08
+  type: offer
+  when: {from: 1992, to: 1999}
+  who:
+    stats: {know: '>60'}
+    edu: [university, technikum]
+  text: Коммерческой фирме нужен менеджер или бухгалтер. Зарплата «в конверте».
+  choices:
+  - {text: Принять, job: firm}
+  - text: Торговаться
+    check: {base: 35, charm: 10, ties: 0.3, grit: 10}
+    success:
+      text: Договорились на верхнюю планку.
+      job: firm
+      effects: {money_m: 1}
+    fail:
+      text: Место ушло.
+      effects: {}
+  - text: Отказаться
+    effects: {}
+- id: JOB-09
+  type: offer
+  when: {from: 1993, to: 1999}
+  who:
+    sex: m
+    stats: {fit: '>50'}
+    role: [young, adult]
+    not_flags: [injury]
+  text: 'Вербуют на вахту на Север: месяц работаешь, месяц дома.'
+  choices:
+  - text: Принять
+    job: shift
+    effects: {close: -3}
+  - text: Отказаться
+    effects: {}
+- id: JOB-10
+  type: offer
+  when: {from: 1992, to: 1999}
+  who:
+    edu: [university, technikum]
+    not_flags: [noncitizen]
+  text: На госпредприятие нужен специалист. Зарплату, говорят, иногда задерживают.
+  choices:
+  - {text: Принять, job: teacher}
+  - text: Отказаться
+    effects: {}
+- id: JOB-11
+  type: offer
+  when: {from: 1994, to: 1999}
+  who:
+    stats: {know: '>70'}
+  text: Иностранная нефтяная компания ищет сотрудников со знанием английского. Платят в долларах — как министру.
+  choices:
+  - text: Пройти собеседование
+    check: {base: 25, know: 0.6, charm: 10, ties: 0.3}
+    success:
+      text: Взяли. Пропуск, офис, зарплата в долларах.
+      job: firm
+      effects: {money_m: 3, ties: 3}
+    fail:
+      text: Не прошёл.
+      effects: {}
+  - text: Отказаться
+    effects: {}
+- id: JOB-12
+  type: offer
+  when: {from: 1995, to: 1999}
+  who:
+    stats: {know: '>55'}
+    edu: [university, technikum]
+  weight: 0.5
+  text: 'Фирме нужен программист: сети, бухгалтерские программы, поддержка.'
+  choices:
+  - {text: Принять, job: programmer}
+  - text: Отказаться
+    effects: {}
+- id: JOB-13
+  type: offer
+  when: {from: 1992, to: 1999}
+  who:
+    age: [18, 35]
+  text: 'В газете объявление: «Работа за границей. Официанты, строители. 1000 $ и выше». Телефон без адреса.'
+  choices:
+  - text: Поехать
+    outcomes:
+    - w: 50
+      text: Работа настоящая, хоть и тяжёлая.
+      effects: {money_m: 5, close: -5}
+    - w: 50
+      text: 'Обман: забрали паспорт и деньги.'
+      effects: {money_m: -3, health: -5, close: -5}
+  - text: Не верить
+    effects: {}
+- id: JOB-14
+  type: scene
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who:
+    job: [unemployed]
+  text: 'Шабашка: перекрыли крышу на даче у начальника, заплатили наличными.'
+  variants: ['Шабашка: перекрыли крышу на даче у начальника, заплатили наличными.', Подрабатываешь извозом на своих «Жигулях» по вечерам.]
+  focus: work
+  chance: 0.6
+  effects: {money_m: 1, fit: 1, health: -1}
+- id: JOB-15
+  type: offer
+  repeat: true
+  when: {from: 1986, to: 1999}
+  who:
+    job: [unemployed]
+  weight: 3
+  text: 'Ищешь работу. Звонок от знакомого: есть место.'
+  choices:
+  - {text: Принять что дают, job: worker}
+  - text: Ждать лучшего
+    effects: {close: -1}
+- id: JOB-16
+  type: offer
+  repeat: true
+  who:
+    role: [young, adult]
+    not_flags: [brigade]
+    exp: '>2'
+  text: 'Начальник вызвал к себе: «Есть место повыше. Пойдёшь?»'
+  choices:
+  - text: Принять
+    effects: {ties: 1, close: -1}
+    promote: true
+  - text: Торговаться
+    check: {base: 40, charm: 10, ties: 0.3}
+    success:
+      text: Ещё и кабинет отдельный.
+      effects: {money_m: 1, ties: 1}
+      promote: true
+    fail:
+      text: Повышение отдали другому.
+      effects: {}
+  - text: Отказаться
+    effects: {}
+- id: JOB-17
+  type: offer
+  when: {from: 1986, to: 1999}
+  who:
+    role: [young, adult]
+    stats: {know: '>50'}
+    edu: [university, technikum]
+  weight: 0.5
+  text: Районная газета ищет корреспондента.
+  choices:
+  - {text: Принять, job: journalist}
+  - text: Отказаться
+    effects: {}
+- id: JOB-18
+  type: offer
+  when: {from: 1986, to: 1999}
+  who:
+    role: [young, adult]
+    flags: [talent_found]
+  text: Ресторанный ансамбль ищет музыканта на вечера.
+  choices:
+  - text: Принять
+    job: artist
+    effects: {fame: 2}
+  - text: Отказаться
+    effects: {}
+- id: JOB-19
+  type: offer
+  when: {from: 1986, to: 1999}
+  who:
+    role: [young, adult]
+    flags: [served]
+    stats: {fit: '>40'}
+    not_flags: [record]
+  weight: 0.5
+  text: 'В милицию набирают отслуживших: форма, общежитие, выслуга.'
+  choices:
+  - text: Принять
+    job: police
+    sets: [official]
+  - text: Отказаться
+    effects: {}
+- id: JOB-20
+  type: offer
+  when: {from: 1986, to: 1999}
+  who:
+    role: [young, adult]
+    edu: [university]
+    not_flags: [record]
+  weight: 0.5
+  text: Исполком ищет специалиста. Скромная зарплата, зато госслужба.
+  choices:
+  - text: Принять
+    job: official
+    sets: [official]
+  - text: Торговаться
+    check: {base: 35, ties: 0.4, charm: 10}
+    success:
+      text: Взяли на должность повыше.
+      job: official
+      sets: [official]
+      effects: {ties: 1}
+    fail:
+      text: Место отдали другому.
+      effects: {}
+  - text: Отказаться
+    effects: {}

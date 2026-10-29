@@ -1,0 +1,98 @@
+# Окно жизни (CONCEPT §3.10b, макеты): комната собирается из слоёв снизу вверх.
+# Каждый слой — набор предметов (id спрайтов). Порядок: жильё → эпоха → имущество → работа → состояние → люди.
+# Условия используют те же ключи, что события (who), плюс years и money (в средних зарплатах).
+
+housing:            # основа: стены, пол, окно, мебель
+  dorm:       {name: Общежитие, sprites: [bunk_bed, shared_table, window_small], caption: "Общага: койка, тумбочка, чайник на всех."}
+  kommunalka: {name: Коммуналка, sprites: [high_ceiling, old_wardrobe, shared_corridor], caption: "Комната в коммуналке. Очередь в ванную с утра."}
+  rent_flat:  {name: Съёмная квартира, sprites: [bare_walls, folding_sofa, boxes], caption: "Съёмная однушка: хозяйские обои, свои коробки."}
+  own_flat:
+    variants:       # выбирается при рождении и при переезде; на селе — изба
+      khrushchevka: {w: 45, name: Хрущёвка, sprites: [low_ceiling, small_kitchen_door, sofa_book]}
+      panel:        {w: 35, name: Панелька, sprites: [panel_window, loggia, sofa_book]}
+      stalinka:     {w: 10, name: Сталинка, sprites: [high_ceiling, parquet, old_buffet]}
+      coop:         {w: 10, name: Кооперативная квартира, sprites: [new_panel_window, wall_unit]}
+    caption: "{city}. {variant}."
+  izba:       {when_flags: [village], name: Изба, sprites: [stove, log_walls, icon_corner, window_frame_carved], caption: "Изба, печь, в углу иконка."}
+  cottage:    {name: Коттедж, sprites: [big_window, fireplace, leather_sofa, plasma_none], caption: "Свой дом за городом. Забор, собака, охрана."}
+  parents:    {when: {age: [0, 17]}, name: У родителей, sprites: [kid_corner, desk, poster], caption: "Твой угол в родительской квартире."}
+
+era:                # поверх жилья, по годам
+  - {years: [1986, 1989], sprites: [rug_on_wall, wall_unit_crystal, tv_rubin, calendar_soviet]}
+  - {years: [1990, 1991], sprites: [rug_on_wall, ration_cards_on_fridge, empty_shelf, tv_rubin]}
+  - {years: [1992, 1995], sprites: [turkish_jacket, snickers_box, rug_on_wall, cassette_player]}
+  - {years: [1996, 1999], sprites: [vinyl_wallpaper, calendar_girl, pager_on_table]}
+
+items:              # имущество -> предмет (data/items.yaml, поле window)
+  jars: [jars_on_balcony]
+  car_keys: [car_keys_on_nail]
+  tv_vcr: [vcr_under_tv, tapes_stack]
+  phone: [phone_on_stand]
+  computer: [pc_beige]
+
+job:                # одежда на вешалке и рабочие вещи
+  worker: [overalls_on_hook]
+  miner: [helmet_lamp]
+  shift: [duffel_bag_north]
+  engineer: [drafting_board]
+  scientist: [books_pile, journals]
+  teacher: [notebooks_red_pen]
+  doctor: [white_coat]
+  kolkhoz: [rubber_boots]
+  farmer: [rubber_boots, seed_bags]
+  shop: [price_tags]
+  coop: [sewing_machine, jeans_pile]
+  shuttle: [checked_bags]
+  kiosk: [boxes_goods, cash_box]
+  firm: [briefcase, pager_on_table]
+  banker: [leather_chair, mobile_brick]
+  broker: [phone_two_lines]
+  guard: [uniform_chop]
+  brigade: [leather_jacket_hook, mobile_brick]
+  police: [cap_police]
+  officer: [officer_cap, kitel]
+  army: [letter_from_army]
+  cadet: [cadet_uniform]
+  journalist: [typewriter]
+  artist: [guitar]
+  programmer: [pc_beige, floppy_disks]
+  translator: [dictionaries]
+  official: [portfolio_folder]
+  politician: [campaign_posters]
+  student: [textbooks, dorm_pass]
+  school: [school_bag]
+  pension: [jars_on_balcony, radio_old]
+  unemployed: [newspaper_job_ads]
+  migrant: [sports_bag]
+
+state:              # состояние жизни, первым совпавшим правилом в каждой группе
+  family:
+    - {who: {flags: [has_kids]}, sprites: [toys_floor, kids_drawings]}
+    - {who: {flags: [married]}, sprites: [wedding_photo]}
+    - {who: {flags: [divorced]}, sprites: [one_cup]}
+    - {who: {flags: [widowed]}, sprites: [black_ribbon_photo]}
+  habits:
+    - {who: {flags: [addicted]}, sprites: [drawn_curtains]}
+    - {who: {flags: [drinker]}, sprites: [bottles_under_table]}
+    - {who: {flags: [smoker]}, sprites: [ashtray]}
+  money:
+    - {who: {money: "<-3"}, sprites: [empty_fridge_open, bills_pile]}
+    - {who: {money: ">30"}, sprites: [new_furniture]}
+  health:
+    - {who: {stats: {health: "<25"}}, sprites: [pill_bottles, bed_unmade]}
+  past:
+    - {who: {flags: [afghan]}, sprites: [photo_uniform_afghan]}
+    - {who: {flags: [chechen]}, sprites: [photo_uniform]}
+    - {who: {flags: [liquidator]}, sprites: [certificate_liquidator]}
+    - {who: {flags: [refugee]}, sprites: [suitcase_unpacked]}
+
+captions:           # подпись под кадром: шаблон + что делает персонаж (по фокусу и времени года)
+  template: "{time}. {activity}"
+  time: {winter: "Зима", spring: "Весна", summer: "Лето", autumn: "Осень"}   # без слова «вечер»: оно есть в занятиях
+  activity:
+    work: "Ты допоздна на работе"
+    study: "Над учебниками до ночи"
+    health: "Утренняя пробежка и ранний отбой"
+    hobby: "Весь вечер за любимым делом"
+    family: "Все дома, ужинаете вместе"
+    balance: "Вечер у телевизора"

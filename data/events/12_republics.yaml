@@ -1,0 +1,622 @@
+title: 12. Республики (REP)
+note: Личные события, которых нет в других разделах. События хроники здесь не повторяются.
+events:
+- id: REP-RU-01
+  type: choice
+  when: {from: 1993, to: 1998}
+  where: [RU]
+  who:
+    age: [16, 99]
+    flags: [village]
+  weight: 0.3
+  text: 'Крайний Север: северный завоз не пришёл. Посёлок зимует без топлива.'
+  choices:
+  - text: Уехать на материк
+    effects: {money_m: -4, close: -3}
+    clears: [village]
+  - text: Остаться
+    effects: {health: -6, close: 1}
+- id: REP-RU-02
+  type: choice
+  when: {from: 1991, to: 1991, month: 6}
+  where: [RU]
+  who:
+    age: [18, 99]
+    flags: [capital]
+  text: 'Ленинград голосует: вернуть городу имя Санкт-Петербург?'
+  choices:
+  - text: За
+    effects: {views_reform: 5}
+  - text: Против
+    effects: {views_reform: -5}
+- id: REP-RU-03
+  type: choice
+  when: {from: 1992, to: 1999}
+  where: [RU]
+  who:
+    flags: [capital]
+    role: [young, adult]
+  weight: 0.3
+  text: 'Вещевой рынок в Лужниках или на Черкизоне: место можно взять за сотню у.е. в месяц.'
+  choices:
+  - text: Взять место
+    effects: {money_m: -1}
+    sets: [business, entrepreneur]
+    job: kiosk
+  - text: Нет
+    effects: {}
+- id: REP-RU-04
+  type: choice
+  when: {from: 1998, to: 1998, month: 5}
+  where: [RU]
+  who:
+    job: [miner]
+  text: Шахтёры сели на рельсы Транссиба. Поезда стоят до самой Читы.
+  choices:
+  - text: Выйти на рельсы
+    outcomes:
+    - w: 60
+      text: Часть долгов по зарплате выплатили.
+      effects: {money_m: 3, ties: 2}
+    - w: 40
+      text: Разогнали, завели дело.
+      effects: {law: 15, ties: 2}
+  - text: Нет
+    effects: {}
+- id: REP-RU-05
+  type: choice
+  when: {from: 1990, to: 1999}
+  where: [RU]
+  who:
+    job: [engineer, scientist, worker]
+  weight: 0.3
+  text: 'Закрытый город: завод без заказов, въезд по пропускам, выехать насовсем — тоже не просто.'
+  choices:
+  - text: Уехать
+    effects: {ties: -5, money_m: -2}
+    job: unemployed
+  - text: Ждать заказов
+    effects: {money_m: -2, close: 1}
+- id: REP-UA-01
+  type: scene
+  when: {from: 1986, to: 1990}
+  where: [UA]
+  who:
+    flags: [capital]
+  text: Переселенцам из Припяти дали квартиры в Киеве. Соседи шепчутся.
+- id: REP-UA-02
+  type: scene
+  when: {from: 1993, to: 1993}
+  where: [UA]
+  text: Ты миллионер в купонах. Денег хватает на неделю.
+  effects: {close: -1}
+- id: REP-UA-03
+  type: choice
+  when: {from: 1993, to: 1993}
+  where: [UA]
+  who:
+    job: [miner]
+  text: 'Донбасс: шахта бастует. Касками стучат по асфальту у здания облсовета.'
+  choices:
+  - text: Бастовать
+    effects: {ties: 2, money_m: -1}
+  - text: Работать
+    effects: {}
+- id: REP-UA-04
+  type: choice
+  when: {from: 1992, to: 1999}
+  where: [UA]
+  who:
+    role: [young, adult]
+  weight: 0.3
+  text: Одесса. На Привозе челноки разгружают тюки с турецким товаром прямо с парохода.
+  choices:
+  - text: Торговать на Привозе
+    effects: {money_m: 2}
+    sets: [entrepreneur]
+    job: kiosk
+  - text: Нет
+    effects: {}
+- id: REP-UA-05
+  type: choice
+  when: {from: 1992, to: 1999, month: 6}
+  where: [UA]
+  who:
+    role: [adult, pension]
+  text: Крым. Санатории пустуют, отдыхающие ищут комнату у частников.
+  choices:
+  - text: Сдавать комнату
+    effects: {money_m: 2, close: -1}
+  - text: Нет
+    effects: {}
+- id: REP-BY-01
+  type: choice
+  when: {from: 1986, to: 1991}
+  where: [BY]
+  who:
+    flags: [chernobyl_zone]
+    age: [18, 99]
+  text: Деревню отселяют из чернобыльской зоны. Новые дома — за сто километров.
+  choices:
+  - text: Переехать
+    effects: {close: -4, health: 2}
+    clears: [chernobyl_zone]
+  - text: Остаться в «грязной» деревне
+    effects: {close: 1, health: -4}
+- id: REP-BY-02
+  type: scene
+  when: {from: 1992, to: 1992}
+  where: [BY]
+  text: '«Зайчики»: рубли с зайцем, белкой и лосем.'
+- id: REP-BY-03
+  type: choice
+  when: {from: 1992, to: 1999}
+  where: [BY]
+  who:
+    role: [young, adult]
+  weight: 0.3
+  text: Брест. На границе с Польшей очередь из челноков с клетчатыми тюками на сутки.
+  choices:
+  - text: Ездить
+    job: shuttle
+    sets: [entrepreneur]
+  - text: Нет
+    effects: {}
+- id: REP-BY-04
+  type: choice
+  when: {from: 1995, to: 1995, month: 5}
+  where: [BY]
+  who:
+    age: [18, 99]
+  text: 'Референдум: новый флаг, герб и русский язык как государственный.'
+  choices:
+  - text: За
+    effects: {views_union: -10}
+  - text: Против
+    effects: {views_union: 10}
+  - text: Не идти
+    effects: {}
+- id: REP-UZ-01
+  type: choice
+  when: {from: 1986, to: 1989}
+  where: [UZ]
+  who:
+    job: [official]
+  text: '«Хлопковое дело»: проверки, аресты руководителей.'
+  choices:
+  - text: Сотрудничать со следствием
+    effects: {ties: -8, law: -5}
+  - text: Молчать
+    outcomes:
+    - w: 70
+      text: Обошлось.
+      effects: {ties: 1}
+    - w: 30
+      text: Уголовное дело.
+      effects: {law: 30}
+      job: unemployed
+- id: REP-UZ-02
+  type: scene
+  repeat: true
+  when: {from: 1986, to: 1999, month: 9}
+  where: [UZ, TM, TJ]
+  who:
+    age: [12, 25]
+  text: Школьников и студентов отправляют на сбор хлопка.
+  effects: {health: -2, know: -1}
+- id: REP-UZ-03
+  type: scene
+  where: [UZ]
+  who:
+    flags: [village]
+  weight: 0.3
+  text: Каракалпакия. Море ушло на десятки километров, ветер несёт соль и пыль.
+  effects: {health: -4}
+- id: REP-UZ-04
+  type: choice
+  when: {from: 1992, to: 1999}
+  where: [UZ]
+  who:
+    role: [young, adult]
+  weight: 0.3
+  text: 'Базар Чорсу: можно занять место под прилавком с сухофруктами.'
+  choices:
+  - text: Торговать
+    effects: {money_m: 2}
+    job: kiosk
+  - text: Нет
+    effects: {}
+- id: REP-KZ-01
+  type: scene
+  when: {from: 1986, to: 1991}
+  where: [KZ]
+  who:
+    flags: [village]
+  weight: 0.3
+  text: Под Семипалатинском снова трясёт землю — подземный взрыв на полигоне.
+  effects: {health: -3}
+- id: REP-KZ-02
+  type: scene
+  when: {from: 1989, to: 1999}
+  where: [KZ, KG]
+  text: Немецкие соседи уезжают в Германию целыми сёлами.
+  effects: {close: -1}
+- id: REP-KZ-03
+  type: scene
+  when: {from: 1992, to: 1996}
+  where: [KZ]
+  who:
+    flags: [village]
+  text: 'Целинный совхоз разваливается: зарплату выдают зерном.'
+  effects: {money_m: -2}
+- id: REP-KZ-04
+  type: choice
+  when: {from: 1997, to: 1997, month: 12}
+  where: [KZ]
+  who:
+    job: [official]
+  text: 'Указ: столица переезжает в Акмолу. Министерство едет в степь.'
+  choices:
+  - text: Ехать в новую столицу
+    effects: {ties: 3, close: -4}
+  - {text: Уволиться, job: unemployed}
+- id: REP-KZ-05
+  type: scene
+  when: {from: 1994, to: 1999}
+  where: [KZ]
+  text: 'Байконур: город российских военных на казахской земле.'
+- id: REP-GE-01
+  type: choice
+  when: {from: 1991, to: 1993}
+  where: [GE]
+  who:
+    age: [17, 35]
+    sex: m
+  text: Вооружённые отряды на улицах. Зовут к себе.
+  choices:
+  - text: Вступить
+    outcomes:
+    - w: 80
+      text: Автомат, джип, власть на районе.
+      effects: {money_m: 4, law: 15}
+      sets: [veteran]
+    - w: 20
+      text: Ранен в перестрелке.
+      effects: {health: -15}
+      sets: [injury]
+  - text: Нет
+    effects: {}
+- id: REP-GE-02
+  type: scene
+  when: {from: 1992, to: 1995}
+  where: [GE]
+  who:
+    not_flags: [refugee]
+  text: Беженцы из Абхазии живут в гостиницах Тбилиси.
+- id: REP-GE-03
+  type: scene
+  when: {from: 1993, to: 1995}
+  where: [GE]
+  text: Тбилиси без света. Очередь за хлебом с пяти утра.
+  effects: {health: -3}
+- id: REP-GE-04
+  type: choice
+  when: {from: 1993, to: 1999}
+  where: [GE]
+  who:
+    role: [young, adult]
+  weight: 0.3
+  text: Купон, потом лари. Торговля на рынке Лило.
+  choices:
+  - text: Торговать
+    effects: {money_m: 2}
+    job: kiosk
+  - text: Нет
+    effects: {}
+- id: REP-AZ-01
+  type: scene
+  when: {from: 1992, to: 1994}
+  where: [AZ]
+  who:
+    not_flags: [refugee]
+  text: Беженцы из Карабаха и соседних районов в палатках и общежитиях Баку.
+- id: REP-AZ-02
+  type: news
+  when: {from: 1993, to: 1993}
+  where: [AZ]
+  text: К власти возвращается Гейдар Алиев.
+- id: REP-AZ-03
+  type: offer
+  when: {from: 1994, to: 1999}
+  where: [AZ]
+  who:
+    stats: {know: '>60'}
+  text: '«Контракт века»: иностранные нефтяные компании набирают людей.'
+  choices:
+  - text: Пойти на собеседование
+    check: {base: 30, know: 0.5}
+    success:
+      text: Взяли. Зарплата в долларах.
+      effects: {money_m: 8}
+      job: engineer
+    fail:
+      text: Не взяли.
+      effects: {}
+  - text: Нет
+    effects: {}
+- id: REP-AZ-04
+  type: scene
+  when: {from: 1990, to: 1999}
+  where: [AZ, AM]
+  text: Соседи другой национальности уехали, их квартиры заняли беженцы.
+  effects: {close: -2}
+- id: REP-LT-01
+  type: scene
+  when: {from: 1991, to: 1993}
+  where: [LT]
+  text: Зарплату выдают талонами-«вагнорками». Новых литов пока никто не видел.
+- id: REP-LT-02
+  type: scene
+  when: {from: 1993, to: 1993, month: 8}
+  where: [LT]
+  text: Последний эшелон с российскими войсками уходит из Литвы.
+  effects: {views_union: 5}
+- id: REP-LT-03
+  type: choice
+  when: {from: 1986, to: 1999}
+  where: [LT]
+  who:
+    flags: [minority]
+    job: [engineer, worker]
+  text: 'Снечкус, потом Висагинас: город атомщиков, все говорят по-русски.'
+  choices:
+  - text: Остаться на станции
+    effects: {money_m: 1}
+  - text: Уехать в Россию
+    outcomes:
+    - w: 100
+      text: Атомщиков ждут в Сосновом Бору.
+      effects: {close: -4}
+      move: RU
+- id: REP-MD-01
+  type: scene
+  when: {from: 1986, to: 1987}
+  where: [MD]
+  who:
+    flags: [village]
+  text: 'Антиалкогольная кампания: в колхозе вырубают виноградники, которые сажали деды.'
+  effects: {money_m: -2, views_reform: -5}
+- id: REP-MD-02
+  type: choice
+  when: {from: 1990, to: 1994}
+  where: [MD]
+  who:
+    flags: [minority]
+    job: [official, teacher, doctor]
+  text: Экзамен по молдавскому языку для госслужащих.
+  choices:
+  - text: Учить и сдавать
+    check: {base: 40, know: 0.4, mind: 10}
+    success:
+      text: Сдал.
+      effects: {know: 4}
+    fail:
+      text: Не сдал. Понижение.
+      effects: {money_m: -2}
+  - text: Уехать в Приднестровье
+    effects: {close: -3}
+  - {text: Уволиться, job: unemployed}
+- id: REP-MD-03
+  type: news
+  when: {from: 1994, to: 1995}
+  where: [MD]
+  text: Гагаузия получает автономию.
+- id: REP-LV-01
+  type: choice
+  when: {from: 1991, to: 1999}
+  where: [LV, EE]
+  who:
+    job: [officer, pension]
+    flags: [minority]
+  text: 'Отставники собираются у Дома офицеров: оставаться в Латвии или уезжать в Россию?'
+  choices:
+  - text: Уехать
+    outcomes:
+    - w: 100
+      text: Квартира в Подмосковье по программе.
+      effects: {close: -4}
+      move: RU
+  - text: Остаться
+    effects: {}
+- id: REP-LV-02
+  type: scene
+  when: {from: 1995, to: 1995, month: 5}
+  where: [LV]
+  text: Рухнул банк «Балтия». Вклады заморожены.
+  effects: {money_m: -3}
+- id: REP-LV-03
+  type: offer
+  when: {from: 1992, to: 1999}
+  where: [LV]
+  who:
+    role: [young, adult]
+  text: Транзит через порты Риги и Вентспилса. Зовут в порт.
+  choices:
+  - text: Пойти
+    effects: {money_m: 3}
+    job: worker
+  - text: Нет
+    effects: {}
+- id: REP-KG-01
+  type: news
+  when: {from: 1993, to: 1993}
+  where: [KG]
+  text: 'Сом. Реформы Акаева: «Швейцария Средней Азии».'
+- id: REP-KG-02
+  type: offer
+  when: {from: 1996, to: 1999}
+  where: [KG]
+  who:
+    sex: m
+    role: [young, adult]
+  text: 'На руднике Кумтор набирают людей: вахта в горах, зарплата в долларах.'
+  choices:
+  - text: Ехать
+    effects: {money_m: 5, close: -4, health: -2}
+    job: shift
+  - text: Нет
+    effects: {}
+- id: REP-KG-03
+  type: choice
+  when: {from: 1992, to: 1999}
+  where: [KG]
+  who:
+    role: [adult]
+  text: 'Иссык-Куль: санатории пустеют. Можно сдавать дом отдыхающим.'
+  choices:
+  - text: Сдавать
+    effects: {money_m: 2, close: -2, happy: -1}
+  - text: Нет
+    effects: {}
+- id: REP-KG-04
+  type: scene
+  when: {from: 1999, to: 1999, month: 9}
+  where: [KG]
+  who:
+    sex: m
+    age: [18, 40]
+  text: 'Баткен: в военкомате списки резервистов, твоя фамилия там есть.'
+  effects: {close: -2}
+- id: REP-TJ-01
+  type: scene
+  repeat: true
+  when: {from: 1992, to: 1996}
+  where: [TJ]
+  text: Мука по талонам, хлеба с утра не достать.
+  effects: {health: -3}
+- id: REP-TJ-02
+  type: scene
+  when: {from: 1992, to: 1999}
+  where: [TJ]
+  text: 201-я российская дивизия стоит в Душанбе.
+- id: REP-TJ-03
+  type: scene
+  when: {from: 1997, to: 1999}
+  where: [TJ]
+  who:
+    not_flags: [refugee]
+  text: После мира беженцы возвращаются в разорённые кишлаки.
+- id: REP-AM-01
+  type: choice
+  when: {from: 1988, to: 1988}
+  where: [AM]
+  who:
+    age: [16, 99]
+  text: Митинги на Театральной площади, вся республика бастует.
+  choices:
+  - text: Ходить на митинги
+    effects: {ties: 2, views_union: 20}
+    sets: [activist]
+  - text: Работать
+    effects: {}
+- id: REP-AM-02
+  type: scene
+  when: {from: 1989, to: 1989}
+  where: [AM]
+  text: Армянская АЭС остановлена после землетрясения.
+- id: REP-AM-03
+  type: scene
+  when: {from: 1995, to: 1995, month: 11}
+  where: [AM]
+  text: Армянскую АЭС снова запустили. В квартире горит свет — впервые за годы без перерыва.
+  effects: {close: 1}
+- id: REP-AM-04
+  type: scene
+  when: {from: 1989, to: 1999}
+  where: [AM]
+  who:
+    not_flags: [capital]
+  weight: 0.5
+  text: 'Зона бедствия: семьи годами живут во временных вагончиках-«домиках».'
+  effects: {health: -2}
+- id: REP-TM-01
+  type: scene
+  when: {from: 1992, to: 1999}
+  where: [TM]
+  text: Портреты Туркменбаши повсюду, клятва в школах.
+- id: REP-TM-02
+  type: scene
+  when: {from: 1993, to: 1999}
+  where: [TM]
+  text: Газ, свет и соль бесплатно. Зарплаты маленькие.
+  effects: {money_m: 1}
+- id: REP-TM-03
+  type: choice
+  when: {from: 1995, to: 1999}
+  where: [TM]
+  who:
+    age: [18, 70]
+  text: 'Выехать из страны всё труднее: нужна выездная виза и десятки справок.'
+  choices:
+  - text: Уехать в Россию, пока можно
+    outcomes:
+    - w: 100
+      text: Уезжаешь налегке.
+      effects: {money_m: -3, close: -4}
+      move: RU
+  - text: Остаться
+    effects: {}
+- id: REP-EE-01
+  type: scene
+  when: {from: 1992, to: 1992}
+  where: [EE]
+  text: Крона, быстрые реформы, цены почти как в Финляндии.
+- id: REP-EE-02
+  type: choice
+  when: {from: 1993, to: 1993, month: 7}
+  where: [EE]
+  who:
+    flags: [minority]
+    age: [18, 99]
+  text: Нарва голосует на референдуме об автономии.
+  choices:
+  - text: Голосовать
+    effects: {views_union: -10, ties: 2, law: 3}
+  - text: Не идти
+    effects: {}
+- id: REP-EE-03
+  type: offer
+  when: {from: 1992, to: 1999}
+  where: [EE]
+  who:
+    role: [young, adult]
+  text: Финская фирма набирает людей на стройку в Хельсинки. Сезон — три месяца.
+  choices:
+  - text: Ехать
+    effects: {money_m: 5, close: -4}
+  - text: Нет
+    effects: {}
+- id: REP-EE-04
+  type: news
+  when: {from: 1994, to: 1994, month: 9}
+  where: [EE]
+  text: Гибель парома «Эстония».
+- id: REP-LV-04
+  type: choice
+  when: {from: 1995, to: 1999}
+  where: [LV, EE]
+  who:
+    flags: [noncitizen]
+  text: 'Экзамен на гражданство: язык, история, гимн наизусть.'
+  choices:
+  - text: Сдавать
+    check: {base: 40, know: 0.5, mind: 10}
+    success:
+      text: Паспорт гражданина.
+      effects: {ties: 2}
+      clears: [noncitizen]
+    fail:
+      text: Не сдал. Через год можно снова.
+      effects: {}
+  - text: Остаться с серым паспортом
+    effects: {}

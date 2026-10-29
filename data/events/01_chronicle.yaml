@@ -1,0 +1,809 @@
+title: 1. Хроника эпохи (H)
+note: Обязательные события. Срабатывают у всех, кто подходит по месту и возрасту, сверх годового бюджета событий.
+events:
+- id: H-86-01
+  type: choice
+  fixed: true
+  when: {from: 1986, to: 1986, month: 3}
+  who:
+    age: [18, 99]
+  text: В винный пускают с двух часов. К обеду хвост очереди заворачивает за угол дома.
+  choices:
+  - text: Гнать самогон
+    effects: {money_m: 1, health: -2, law: 5}
+  - text: Не пить вообще
+    effects: {health: 3, ties: -2}
+  - text: Доставать по блату
+    check: {base: 50, ties: 0.5}
+    success:
+      text: Достал, всё как у людей.
+      effects: {ties: 1}
+    fail:
+      text: Не вышло. Осталось без праздника.
+      effects: {close: -1}
+  texts_by_age: {school: 'Взрослые ругают антиалкогольную кампанию: водку теперь продают с двух часов.'}
+  variants: [В винный пускают с двух часов. К обеду хвост очереди заворачивает за угол дома., Сосед по площадке выпросил у тебя талон на сахар. Ночью из его кухни тянет бражкой.]
+- id: H-86-02
+  type: choice
+  fixed: true
+  when: {from: 1986, to: 1986, month: 5}
+  where: [UA, BY]
+  who:
+    age: [18, 99]
+  text: Первомайская демонстрация идёт как обычно, а через неделю по улицам ездят поливальные машины. О радиации почти молчат.
+  choices:
+  - text: Увезти детей к родне подальше
+    effects: {money_m: -1, close: 1}
+  - text: Остаться
+    outcomes:
+    - {w: 70, text: Ничего заметного не случилось. Пока.}
+    - w: 30
+      mods: {chernobyl_zone: 40}
+      text: Через пару лет у ребёнка щитовидка.
+      effects: {close: -3}
+- id: H-86-03
+  type: choice
+  fixed: true
+  when: {from: 1986, to: 1986, month: 6}
+  who:
+    age: [20, 45]
+    sex: m
+    stats: {fit: '>40'}
+    not_flags: [whiteticket]
+  weight: 0.15
+  text: Повестка на «военные сборы». Все понимают, что это Чернобыль.
+  choices:
+  - text: Ехать
+    effects: {money_m: 3, health: -3, ties: 1}
+    sets: [liquidator]
+  - text: Откосить
+    check: {base: 25, ties: 0.6}
+    success:
+      text: Справка из поликлиники помогла.
+      effects: {ties: -1}
+    fail:
+      text: Не вышло. Едешь.
+      effects: {health: -3, money_m: 3}
+      sets: [liquidator]
+- id: H-86-04
+  type: choice
+  fixed: true
+  when: {from: 1986, to: 1986, month: 12}
+  where: [KZ]
+  who:
+    age: [16, 30]
+  text: Алма-Ата. Студенты вышли на площадь против назначения нового первого секретаря. Ночью площадь разгоняют.
+  choices:
+  - text: Пойти на площадь
+    outcomes:
+    - w: 60
+      text: Видел всё своими глазами. Потом долго об этом молчал.
+      effects: {views_union: 15, close: -2}
+    - w: 30
+      text: Задержали, исключили из института или комсомола.
+      effects: {law: 15, know: -5, views_union: 25}
+    - w: 10
+      text: Сильно избили при разгоне.
+      effects: {health: -10, views_union: 25}
+  - text: Сидеть дома
+    effects: {happy: -2}
+- id: H-87-01
+  type: news
+  fixed: true
+  when: {from: 1987, to: 1987, month: 5}
+  text: 'Вступил в силу закон об индивидуальной трудовой деятельности: можно официально шить, чинить, подвозить.'
+- id: H-88-01
+  type: news
+  fixed: true
+  when: {from: 1988, to: 1988, month: 2}
+  where: [AZ, AM]
+  text: Карабах просится в Армению. Митинги в Ереване и Степанакерте, погромы армян в Сумгаите.
+- id: H-88-02
+  type: news
+  fixed: true
+  when: {from: 1988, to: 1988, month: 5}
+  text: 'Закон о кооперации: можно открывать своё дело. Знакомые шьют «варёнки» и открывают кафе.'
+- id: H-88-03
+  type: choice
+  fixed: true
+  when: {from: 1988, to: 1988, month: 6}
+  where: [LT, LV, EE]
+  who:
+    age: [14, 99]
+  text: На стадионе поёт весь город — песни, за которые ещё год назад могли посадить. Над сценой запрещённый флаг.
+  choices:
+  - text: Ходить на митинги
+    effects: {ties: 2, views_union: 20, views_reform: 10}
+    sets: [activist]
+  - text: Держаться в стороне
+    effects: {}
+- id: H-88-04
+  type: choice
+  fixed: true
+  when: {from: 1988, to: 1988, month: 12}
+  where: [AM]
+  text: 7 декабря, 11:41. Землетрясение. Спитак разрушен почти полностью, Ленинакан наполовину.
+  choices:
+  - text: Ехать разбирать завалы
+    effects: {health: -3, close: 1, ties: 1}
+  - text: Сдать кровь и деньги
+    effects: {money_m: -1, close: 1}
+- id: H-89-01
+  type: news
+  fixed: true
+  when: {from: 1989, to: 1989, month: 2}
+  text: Последний советский солдат вышел из Афганистана.
+- id: H-89-02
+  type: choice
+  fixed: true
+  when: {from: 1989, to: 1989, month: 4}
+  where: [GE]
+  who:
+    age: [14, 70]
+  text: Тбилиси. Митинг у Дома правительства идёт несколько дней.
+  choices:
+  - text: Пойти на митинг
+    outcomes:
+    - w: 75
+      text: Ночью 9 апреля митинг разогнали войска. Ты успел уйти.
+      effects: {views_union: 30, close: -2}
+    - w: 20
+      text: Попал в давку при разгоне.
+      effects: {health: -10, views_union: 35}
+    - w: 5
+      text: Отравился газом при разгоне, долго лечился.
+      effects: {health: -20, views_union: 35}
+  - text: Остаться дома
+    effects: {views_union: 10, happy: -2}
+- id: H-89-03
+  type: scene
+  fixed: true
+  when: {from: 1989, to: 1989, month: 5}
+  who:
+    age: [16, 99]
+  text: Съезд народных депутатов в прямом эфире. Страна сидит у телевизоров, на работе спорят о Сахарове.
+  effects: {views_reform: 5}
+  texts_by_age: {school: Учительница истории включила в классе трансляцию Съезда народных депутатов., kid: Взрослые весь вечер не отходят от телевизора.}
+- id: H-89-04
+  type: choice
+  fixed: true
+  when: {from: 1989, to: 1989, month: 6}
+  where: [UZ]
+  who:
+    age: [14, 99]
+  weight: 0.3
+  text: Ферганская долина. Погромы турок-месхетинцев, войска вывозят людей.
+  choices:
+  - text: Укрыть соседей
+    outcomes:
+    - w: 85
+      text: Две ночи соседи прятались у вас в подвале.
+      effects: {close: 2}
+      sets: [helped_neighbors]
+    - w: 15
+      text: Вам угрожали, но обошлось.
+      effects: {close: 1, health: -3}
+      sets: [helped_neighbors]
+  - text: Не вмешиваться
+    effects: {close: -2}
+- id: H-89-05
+  type: choice
+  fixed: true
+  when: {from: 1989, to: 1989, month: 7}
+  where: [RU, UA, KZ]
+  who:
+    job: [miner]
+  text: Шахтёры бастуют. Касками по асфальту на площади.
+  choices:
+  - text: Выйти на площадь
+    effects: {ties: 3, views_reform: 15, fame: 3}
+    sets: [activist]
+  - text: Работать
+    effects: {ties: -2}
+- id: H-89-06
+  type: choice
+  fixed: true
+  when: {from: 1989, to: 1989, month: 8}
+  where: [LT, LV, EE]
+  who:
+    age: [12, 99]
+  text: '23 августа. Балтийский путь: живая цепь от Таллина до Вильнюса.'
+  choices:
+  - text: Встать в цепь
+    effects: {ties: 3, close: 2, views_union: 20, happy: 6, health: -1}
+  - text: Смотреть дома по телевизору
+    effects: {happy: -1}
+- id: H-90-01
+  type: news
+  fixed: true
+  when: {from: 1990, to: 1990, month: 1}
+  where: [AZ, AM]
+  text: 'Баку: погромы армян, потом в город входят войска. Чёрный январь.'
+- id: H-90-02
+  type: choice
+  fixed: true
+  when: {from: 1990, to: 1990, month: 2}
+  where: [TJ]
+  who:
+    age: [18, 99]
+    flags: [minority]
+  text: Беспорядки в Душанбе. Русские семьи впервые всерьёз думают уехать.
+  choices:
+  - text: Уехать в Россию
+    effects: {money_m: -4, close: -3}
+    sets: [migrant]
+    outcomes:
+    - {w: 100, text: 'Продали квартиру за бесценок. Контейнер, поезд, родня под Саратовом.', move: RU}
+  - text: Остаться
+    effects: {}
+- id: H-90-03
+  type: choice
+  fixed: true
+  when: {from: 1990, to: 1990, month: 4}
+  where: [LT]
+  who:
+    age: [16, 99]
+  text: '11 марта Литва объявила независимость. Москва ответила блокадой: бензина нет, газ по часам.'
+  choices:
+  - text: Пересесть на велосипед и держаться
+    effects: {fit: 3, views_union: 10}
+  - text: Доставать бензин у военных
+    check: {base: 45, ties: 0.5}
+    success:
+      text: Канистра раз в неделю.
+      effects: {money_m: -1, ties: 1}
+    fail:
+      text: Обманули с деньгами.
+      effects: {money_m: -1}
+- id: H-90-04
+  type: choice
+  fixed: true
+  when: {from: 1990, to: 1990, month: 6}
+  where: [KG]
+  who:
+    age: [14, 99]
+  weight: 0.3
+  text: 'Ош и Узген: столкновения между киргизами и узбеками.'
+  choices:
+  - text: Укрыть соседей
+    effects: {close: 2, health: -2}
+    sets: [helped_neighbors]
+  - text: Уехать к родне
+    effects: {money_m: -1, close: -1, happy: -1}
+  - text: Не выходить из дома
+    effects: {}
+    outcomes:
+    - w: 80
+      text: Отсиделись. Страшные три дня.
+      effects: {happy: -4}
+    - w: 20
+      text: Погром дошёл до вашего двора.
+      effects: {health: -10, happy: -8}
+- id: H-90-05
+  type: choice
+  fixed: true
+  when: {from: 1990, to: 1990, month: 8}
+  who:
+    flags: [smoker]
+  text: Табачный кризис. Сигарет нет даже по талонам, курильщики перекрывают улицы.
+  choices:
+  - text: Бросить
+    check: {base: 35, will: 15}
+    success:
+      text: Бросил. Хоть какая-то польза от дефицита.
+      effects: {health: 3}
+      clears: [smoker]
+    fail:
+      text: Сорвался через неделю.
+      effects: {close: -1}
+  - text: Самосад и «бычки» в банке
+    effects: {health: -2}
+  - text: Доставать по блату
+    check: {base: 50, ties: 0.5}
+    success:
+      text: Блок «Явы» за три цены.
+      effects: {money_m: -0.5}
+    fail:
+      text: Не достал. Злой месяц.
+      effects: {close: -2}
+- id: H-90-06
+  type: choice
+  fixed: true
+  when: {from: 1990, to: 1990, month: 9}
+  where: [MD]
+  who:
+    age: [18, 99]
+  text: Год назад молдавский стал государственным и перешёл на латиницу. Теперь на левом берегу провозглашена ПМР, на юге — Гагаузия.
+  choices:
+  - text: Учить язык
+    effects: {know: 3, money_m: -0.3, happy: -2, ties: 1}
+  - text: Поддержать ПМР
+    effects: {views_union: -25, ties: 1}
+  - text: Держаться в стороне
+    effects: {}
+- id: H-90-07
+  type: news
+  fixed: true
+  when: {from: 1990, to: 1990, month: 11}
+  text: Республики объявляют суверенитет одна за другой. Пустые прилавки, талоны на мыло, сахар и водку.
+- id: H-91-01
+  type: choice
+  fixed: true
+  when: {from: 1991, to: 1991, month: 1}
+  who:
+    age: [18, 99]
+  text: 'По радио объявили: полтинники и сотни меняют только три дня. У сберкассы с утра толпа и милиция.'
+  choices:
+  - text: Стоять в очереди в сберкассе
+    effects: {health: -1, happy: -3}
+  - text: Махнуть рукой
+    effects: {money_m: -1, happy: 1}
+  - text: Обменять через знакомых
+    check: {base: 50, ties: 0.6}
+    success:
+      text: Обменяли всё, даже заначку.
+      effects: {ties: 1}
+    fail:
+      text: Знакомый взял процент и половину потерял.
+      effects: {money_m: -2}
+  variants: ['По радио объявили: полтинники и сотни меняют только три дня. У сберкассы с утра толпа и милиция.']
+- id: H-91-02
+  type: choice
+  fixed: true
+  when: {from: 1991, to: 1991, month: 1}
+  where: [LT]
+  who:
+    age: [16, 80]
+  text: Ночь на 13 января. Войска идут к телебашне в Вильнюсе. Люди встают живой стеной.
+  choices:
+  - text: Идти к телебашне
+    outcomes:
+    - w: 85
+      text: Простоял до утра в толпе.
+      effects: {ties: 2, views_union: 25}
+    - w: 13
+      text: Ранен в давке у телебашни.
+      effects: {health: -12, views_union: 30}
+    - {w: 2, text: Погиб у телебашни., end: death}
+  - text: Остаться дома
+    effects: {}
+- id: H-91-03
+  type: choice
+  fixed: true
+  when: {from: 1991, to: 1991, month: 1}
+  where: [LV]
+  who:
+    age: [16, 80]
+  text: Январская ночь в Риге. Самосвалы перегородили улицы, у Домского собора горят костры, люди греют руки.
+  choices:
+  - text: Везти дрова на баррикады
+    effects: {ties: 3, health: -2, views_union: 20}
+    sets: [front]
+  - text: Сидеть дома
+    effects: {}
+- id: H-91-04
+  type: choice
+  fixed: true
+  when: {from: 1991, to: 1991, month: 3}
+  where: [RU, UA, BY, UZ, KZ, AZ, KG, TJ, TM]
+  who:
+    age: [18, 99]
+  text: 'Март 1991-го. На участке очередь: в бюллетене вопрос, нужен ли «обновлённый Союз».'
+  choices:
+  - text: За
+    effects: {views_union: -15}
+  - text: Против
+    effects: {views_union: 15}
+  - text: Не идти
+    effects: {}
+- id: H-91-05
+  type: news
+  fixed: true
+  when: {from: 1991, to: 1991, month: 4}
+  text: Цены подняли в два-три раза одним днём.
+- id: H-91-06
+  type: choice
+  fixed: true
+  when: {from: 1991, to: 1991, month: 8}
+  who:
+    age: [18, 99]
+  text: 19 августа. По всем каналам «Лебединое озеро». В Москве танки на улицах.
+  choices:
+  - text: Идти к Белому дому
+    who:
+      flags: [capital]
+    outcomes:
+    - w: 75
+      text: Три ночи на баррикадах. Кажется, вы победили.
+      effects: {ties: 4, fame: 3, views_reform: 20}
+      sets: [defender91]
+    - w: 24
+      text: Простудился под дождём, но был там.
+      effects: {health: -3, views_reform: 20}
+      sets: [defender91]
+    - {w: 1, text: Погиб в тоннеле на Садовом кольце., end: death}
+  - text: Поддержать ГКЧП
+    who:
+      job: [official, officer, police]
+    outcomes:
+    - w: 60
+      mods:
+        region: {UZ: -40, TM: -40, TJ: -30, KZ: -20}
+      text: Через три дня всё кончилось. Начались проверки.
+      effects: {ties: -10, views_reform: -20}
+      sets: [gkchp]
+    - w: 40
+      text: Пересидел. Никто не вспомнил.
+      effects: {views_reform: -15}
+  - text: Ждать
+    effects: {}
+- id: H-91-07
+  type: news
+  fixed: true
+  when: {from: 1991, to: 1991, month: 9}
+  text: Республики объявляют независимость. С госучреждений снимают красные флаги.
+- id: H-91-08
+  type: choice
+  fixed: true
+  when: {from: 1991, to: 1991, month: 12}
+  where: [UA]
+  who:
+    age: [18, 99]
+  text: 1 декабря. Референдум о независимости Украины.
+  choices:
+  - text: За
+    effects: {views_union: 15}
+  - text: Против
+    effects: {views_union: -15}
+  - text: Не идти
+    effects: {}
+- id: H-91-09
+  type: scene
+  fixed: true
+  when: {from: 1991, to: 1991, month: 12}
+  text: '26 декабря. Советского Союза больше нет. Пауза: что ты чувствуешь?'
+- id: H-91-10
+  type: choice
+  fixed: true
+  when: {from: 1991, to: 1991, month: 12}
+  where: [GE]
+  who:
+    age: [14, 99]
+  text: В центре Тбилиси идут бои за Дом правительства.
+  choices:
+  - text: Уехать к родне в деревню
+    effects: {money_m: -1, close: 1}
+  - text: Остаться в городе
+    outcomes:
+    - w: 85
+      text: Две недели без света и хлеба.
+      effects: {health: -3}
+    - w: 15
+      text: Попал под обстрел на проспекте.
+      effects: {health: -15}
+- id: H-92-01
+  type: scene
+  fixed: true
+  when: {from: 1992, to: 1992, month: 1}
+  text: 'Цены отпустили. Сбережения теперь считаются в у.е., и видно, сколько от них осталось. Пауза: что ты чувствуешь?'
+  effects: {views_reform: -5, close: -2}
+  texts_by_age: {school: Цены отпустили. Мама плачет над сберкнижкой., kid: Взрослые говорят о ценах шёпотом.}
+- id: H-92-02
+  type: news
+  fixed: true
+  when: {from: 1992, to: 1992, month: 2}
+  where: [AZ, AM]
+  text: Ходжалы. Война за Карабах в разгаре.
+- id: H-92-03
+  type: choice
+  fixed: true
+  when: {from: 1992, to: 1992, month: 3}
+  where: [MD]
+  who:
+    age: [16, 99]
+  text: 'Война в Приднестровье: Бендеры, мосты через Днестр.'
+  choices:
+  - text: Бежать к родне
+    outcomes:
+    - w: 85
+      text: Добрались. Живёте у родни в тесноте.
+      effects: {close: -2, money_m: -2}
+      sets: [refugee]
+    - w: 15
+      text: Потеряли почти всё имущество.
+      effects: {money_m: -6, close: -3}
+      sets: [refugee]
+  - text: Остаться
+    outcomes:
+    - w: 85
+      text: Пережили обстрелы в подвале.
+      effects: {health: -4}
+    - w: 13
+      mods: {base: 0}
+      text: Ранен осколком.
+      effects: {health: -15}
+    - {w: 2, text: Погиб при обстреле., end: death}
+  - text: Пойти в ополчение
+    who:
+      age: [18, 50]
+      sex: m
+    ref: §7.10
+    outcomes:
+    - w: 85
+      text: Окопы у Днестра. Вернулся.
+      effects: {health: -6, ties: 4}
+      sets: [veteran]
+    - w: 12
+      text: Ранен.
+      effects: {health: -20}
+      sets: [veteran]
+    - {w: 3, text: Погиб., end: death}
+- id: H-92-04
+  type: choice
+  fixed: true
+  when: {from: 1992, to: 1992, month: 5}
+  where: [TJ]
+  text: Гражданская война. Стреляют уже не только в Душанбе.
+  choices:
+  - text: Бежать в Россию
+    outcomes:
+    - w: 85
+      text: Поезд, узлы, вокзалы. Начинать с нуля.
+      effects: {money_m: -4, close: -4}
+      sets: [refugee]
+      move: RU
+    - w: 15
+      text: По дороге отобрали почти всё.
+      effects: {money_m: -8, close: -5, health: -3}
+      sets: [refugee]
+      move: RU
+  - text: Остаться
+    outcomes:
+    - w: 80
+      text: Прячетесь, пережидаете, ищете еду.
+      effects: {health: -6, close: -3}
+    - w: 17
+      text: Тяжело ранен.
+      effects: {health: -20}
+    - {w: 3, text: Погиб., end: death}
+  - text: Укрыть соседей с другой стороны
+    outcomes:
+    - w: 90
+      text: Неделю прятали их в доме.
+      effects: {close: 3}
+      sets: [helped_neighbors]
+    - w: 10
+      text: За это пришли к вам.
+      effects: {health: -10, close: 1}
+      sets: [helped_neighbors]
+- id: H-92-05
+  type: choice
+  fixed: true
+  when: {from: 1992, to: 1992, month: 8}
+  where: [GE]
+  who:
+    age: [16, 99]
+  text: Август. В Сухуми стреляют. По радио говорят о «наведении порядка», соседи собирают чемоданы.
+  choices:
+  - text: Бежать через перевал
+    outcomes:
+    - w: 80
+      text: Неделя в горах. Добрались до Тбилиси.
+      effects: {health: -6, money_m: -6}
+      sets: [refugee]
+    - w: 20
+      text: Потеряли всё, младший простыл в дороге.
+      effects: {health: -8, money_m: -10, close: -4}
+      sets: [refugee]
+  - text: Остаться
+    outcomes:
+    - w: 85
+      text: Пережили.
+      effects: {health: -5}
+    - w: 15
+      text: Ранен.
+      effects: {health: -15}
+  - text: Добровольцем
+    who:
+      age: [18, 50]
+      sex: m
+    outcomes:
+    - w: 85
+      text: Вернулся с войны.
+      effects: {health: -8, ties: 3}
+      sets: [veteran]
+    - {w: 15, text: Погиб., end: death}
+- id: H-92-06
+  type: news
+  fixed: true
+  when: {from: 1992, to: 1992, month: 10}
+  where: [RU]
+  text: Каждому выдают ваучер номиналом 10 000. Обещают, что это две «Волги». Что с ним делать — раздел PRIV.
+- id: H-92-07
+  type: news
+  fixed: true
+  when: {from: 1992, to: 1992, month: 7}
+  where: [UA, BY, UZ, KZ, GE, AZ, LT, MD, LV, KG, TJ, AM, TM, EE]
+  text: 'Рублёвая зона распадается: с 1992 по 1995 год у каждой республики появляются свои деньги — купоны и гривна, «зайчики», кроны, литы, латы, сомы, манаты, драмы, сумы, тенге, лари, леи.'
+- id: H-92-08
+  type: choice
+  fixed: true
+  when: {from: 1992, to: 1992, month: 3}
+  where: [LV, EE]
+  who:
+    age: [18, 99]
+    flags: [minority]
+  text: Тебе выдали серый паспорт негражданина. Голосовать нельзя, на госслужбу дорога закрыта.
+  sets: [noncitizen]
+  choices:
+  - text: Учить язык и готовиться к натурализации
+    effects: {know: 3, ties: 1}
+  - text: Уехать в Россию
+    outcomes:
+    - w: 100
+      text: Пакуешь вещи в контейнер.
+      effects: {money_m: -3, close: -3}
+      sets: [migrant]
+      clears: [noncitizen]
+      move: RU
+  - text: Бороться за права
+    effects: {fame: 4, law: 3, views_union: -10}
+    sets: [activist]
+- id: H-92-09
+  type: choice
+  fixed: true
+  when: {from: 1992, to: 1992, month: 11}
+  where: [AM]
+  text: Блокада. Света нет по 20 часов в сутки, газа нет совсем. В парках рубят деревья на дрова.
+  choices:
+  - text: Уехать на заработки в Россию
+    who:
+      age: [18, 60]
+    outcomes:
+    - w: 100
+      text: Едешь к знакомым. Семье будешь слать деньги.
+      effects: {close: -6, money_m: 2}
+      sets: [migrant]
+      move: RU
+  - text: Пережить зиму здесь
+    effects: {health: -5, close: 2}
+- id: H-93-01
+  type: choice
+  fixed: true
+  when: {from: 1993, to: 1993, month: 10}
+  where: [RU]
+  who:
+    age: [18, 99]
+  text: 'Конфликт Ельцина и Верховного Совета. 3–4 октября: стрельба у Останкино, танки бьют по Белому дому.'
+  choices:
+  - text: Защищать Верховный Совет
+    who:
+      flags: [capital]
+    outcomes:
+    - w: 65
+      text: Ушёл до штурма.
+      effects: {views_reform: -20}
+      sets: [opposition]
+    - w: 30
+      text: Задержали, избили в отделении.
+      effects: {health: -6, law: 15, views_reform: -25}
+      sets: [opposition]
+    - {w: 5, text: Погиб у Останкино., end: death}
+  - text: Поддержать Ельцина
+    effects: {views_reform: 10, ties: 3, close: -2}
+  - text: Не вмешиваться
+    effects: {}
+- id: H-93-02
+  type: news
+  fixed: true
+  when: {from: 1993, to: 1993, month: 9}
+  where: [GE]
+  text: Сухуми пал. Беженцы идут через перевалы. В Мегрелии гражданская война.
+- id: H-94-01
+  type: news
+  fixed: true
+  when: {from: 1994, to: 1994, month: 7}
+  where: [RU]
+  text: Рухнула МММ. Толпа вкладчиков у офиса на Варшавке.
+- id: H-94-02
+  type: news
+  fixed: true
+  when: {from: 1994, to: 1994, month: 5}
+  where: [AM, AZ]
+  text: Перемирие в Карабахе.
+- id: H-94-03
+  type: news
+  fixed: true
+  when: {from: 1994, to: 1994, month: 10}
+  where: [RU]
+  text: '«Чёрный вторник»: рубль за день упал на четверть.'
+- id: H-94-04
+  type: news
+  fixed: true
+  when: {from: 1994, to: 1994, month: 12}
+  where: [RU]
+  text: Войска вошли в Чечню.
+- id: H-95-01
+  type: news
+  fixed: true
+  when: {from: 1995, to: 1995, month: 6}
+  where: [RU]
+  text: Захват больницы в Будённовске. Больше сотни погибших.
+- id: H-96-01
+  type: choice
+  fixed: true
+  when: {from: 1996, to: 1996, month: 6}
+  where: [RU]
+  who:
+    age: [18, 99]
+  text: 'Выборы президента. По телевизору: «Голосуй или проиграешь».'
+  choices:
+  - text: Ельцин
+    effects: {views_reform: 5}
+  - text: Зюганов
+    effects: {views_reform: -10}
+  - text: Другой кандидат
+    effects: {}
+  - text: Не идти
+    effects: {}
+- id: H-96-02
+  type: news
+  fixed: true
+  when: {from: 1996, to: 1996, month: 8}
+  where: [RU]
+  text: 'Хасавюрт: войну в Чечне остановили.'
+- id: H-97-01
+  type: choice
+  fixed: true
+  when: {from: 1997, to: 1997, month: 6}
+  where: [TJ, RU]
+  who:
+    flags: [refugee]
+  text: В Москве подписан мир для Таджикистана. Беженцы начинают возвращаться.
+  choices:
+  - text: Вернуться
+    outcomes:
+    - w: 100
+      text: Дом разграблен, но стоит.
+      effects: {close: 2, money_m: -2}
+      move: TJ
+  - text: Остаться в России
+    effects: {}
+- id: H-98-01
+  type: scene
+  fixed: true
+  when: {from: 1998, to: 1998, month: 8}
+  where: [RU, UA, BY, KZ, KG]
+  text: 17 августа. Дефолт. Цены на ценниках меняют каждый день, импорт исчезает с полок. Кто держал доллары, выиграл; ГКО и банки — §7.7.
+  effects: {close: -2, views_reform: -10}
+- id: H-99-01
+  type: news
+  fixed: true
+  when: {from: 1999, to: 1999, month: 2}
+  where: [UZ]
+  text: Взрывы в центре Ташкента.
+- id: H-99-02
+  type: choice
+  fixed: true
+  when: {from: 1999, to: 1999, month: 9}
+  where: [RU]
+  who:
+    age: [18, 80]
+  text: Бои в Дагестане, взрывы жилых домов в Москве, Буйнакске, Волгодонске. Во дворах дежурят жильцы.
+  choices:
+  - text: Дежурить по ночам
+    effects: {health: -2, close: 1, ties: 1}
+  - text: Нет
+    effects: {}
+- id: H-99-03
+  type: news
+  fixed: true
+  when: {from: 1999, to: 1999, month: 8}
+  where: [KG]
+  text: 'Баткен: боевики в горах на юге.'
+- id: H-99-04
+  type: scene
+  fixed: true
+  when: {from: 1999, to: 1999, month: 12}
+  where: [RU]
+  text: 31 декабря. «Я устал, я ухожу». Финальная пауза.

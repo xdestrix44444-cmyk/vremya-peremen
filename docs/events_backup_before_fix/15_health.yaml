@@ -1,0 +1,126 @@
+title: "15. Здоровье (HLT)"
+note: "Новый раздел. Шкала Здоровья падает с возрастом (CONCEPT §3.13); эти события дают ей лицо: болезни, травмы, лечение, питание."
+events:
+- id: HLT-01
+  type: choice
+  repeat: true
+  who: {age: [18, 99]}
+  weight: 2
+  text: "Грипп с температурой под сорок."
+  choices:
+    - {text: Отлежаться на больничном, effects: {health: -1, money_m: -0.3}}
+    - {text: Перенести на ногах, outcomes: [{w: 70, text: "Обошлось.", effects: {health: -2}}, {w: 30, text: "Осложнение на сердце или лёгкие.", effects: {health: -8}, sets: [chronic]}]}
+- id: HLT-02
+  type: choice
+  who: {age: [35, 99], not_flags: [heart_warning]}
+  weight: 1.5
+  text: "Давит в груди, отдаёт в левую руку. «Звоночек»."
+  sets: [heart_warning]
+  choices:
+    - {text: Пойти к врачу, effects: {money_m: -0.5, health: 2}}
+    - {text: Отмахнуться, effects: {health: -3}}
+- id: HLT-03
+  type: choice
+  repeat: true
+  who: {flags: [heart_warning]}
+  text: "Сердце снова напоминает о себе."
+  choices:
+    - text: Лечиться и беречься
+      effects: {money_m: -1, health: 3}
+      sets: [diet]
+    - text: Жить как жил
+      outcomes:
+        - {w: 70, mods: {health: -0.5, constitution: -10}, text: "Пронесло.", effects: {health: -3}}
+        - {w: 25, mods: {drinker: 15, smoker: 10}, text: "Инфаркт. Выжил, долго восстанавливался.", effects: {health: -20, money_m: -3}, sets: [chronic]}
+        - {w: 5, mods: {drinker: 5, smoker: 5}, text: "Инфаркт.", end: death}
+- id: HLT-04
+  type: choice
+  when: {from: 1986, to: 1991}
+  who: {role: [young, adult]}
+  text: "Профсоюз даёт путёвку в санаторий."
+  choices:
+    - {text: Поехать, effects: {health: 5, close: 1}}
+    - {text: Отдать коллеге, effects: {ties: 1}}
+- id: HLT-05
+  type: choice
+  repeat: true
+  who: {age: [18, 99]}
+  text: "Болит зуб."
+  choices:
+    - {text: Районная стоматология без наркоза, effects: {health: -1}}
+    - {text: Платная клиника, effects: {money_m: -1}}
+    - {text: Терпеть, outcomes: [{w: 60, text: "Само прошло."}, {w: 40, text: "Флюс, больница.", effects: {health: -4}}]}
+- id: HLT-06
+  type: scene
+  who: {flags: [injury]}
+  repeat: true
+  weight: 0.5
+  text: "Старая травма ноет к перемене погоды."
+  effects: {fit: -2, health: -1}
+- id: HLT-07
+  type: choice
+  when: {from: 1990, to: 1999}
+  who: {flags: [liquidator]}
+  text: "Ликвидаторам положены льготы, но здоровье сдаёт: щитовидка, сосуды."
+  choices:
+    - {text: Выбивать льготы, check: {base: 50, ties: 0.4}, success: {text: "Дали путёвку и надбавку.", effects: {health: 3, money_m: 1}}, fail: {text: "Бегаешь по кабинетам годами.", effects: {close: -2}}}
+    - {text: Лечиться за свой счёт, effects: {money_m: -2, health: 2}}
+  effects: {health: -4}
+- id: HLT-08
+  type: choice
+  repeat: true
+  who: {flags: [chronic]}
+  text: "Хроническая болезнь обострилась."
+  choices:
+    - {text: Лечь в больницу, effects: {money_m: -1, health: 3}}
+    - {text: Лечиться народными средствами, effects: {health: -2}}
+- id: HLT-09
+  type: choice
+  when: {from: 1992, to: 1999}
+  who: {age: [18, 99]}
+  text: "Нужна операция. Хирург намекает на «благодарность»."
+  choices:
+    - {text: Заплатить, effects: {money_m: -4, health: 8}}
+    - {text: Ждать бесплатной очереди, outcomes: [{w: 60, text: "Через полгода прооперировали.", effects: {health: 4}}, {w: 40, text: "Не дождался, стало хуже.", effects: {health: -10}, sets: [chronic]}]}
+- id: HLT-10
+  type: choice
+  who: {age: [30, 99], not_flags: [diet]}
+  text: "Врач советует следить за питанием: меньше жирного и солёного."
+  choices:
+    - {text: Следить, effects: {money_m: -0.5, health: 2}, sets: [diet]}
+    - {text: «Всё равно от чего-то умирать», effects: {}}
+- id: HLT-11
+  type: scene
+  repeat: true
+  who: {flags: [diet]}
+  text: "Режим и нормальная еда дают силы."
+  effects: {health: 2, money_m: -0.3}
+- id: HLT-12
+  type: choice
+  repeat: true
+  who: {age: [16, 70]}
+  text: "Гололёд, драка, авария на дороге."
+  weight: 0.5
+  choices:
+    - {text: Дальше, outcomes: [{w: 80, text: "Синяки и испуг.", effects: {health: -2}}, {w: 18, text: "Перелом, гипс на два месяца.", effects: {health: -6, fit: -4}, sets: [injury]}, {w: 2, text: "Погиб в аварии.", end: death}]}
+- id: HLT-13
+  type: choice
+  when: {from: 1990, to: 1999}
+  who: {age: [16, 70]}
+  text: "Начал(а) бегать по утрам или ходить в качалку."
+  choices:
+    - {text: Втянуться, check: {base: 50, will: 15}, success: {text: "Уже полгода не пропускаешь.", effects: {fit: 6, health: 3}}, fail: {text: "Бросил через месяц.", effects: {fit: 1}}}
+    - {text: Не моё, effects: {}}
+- id: HLT-14
+  type: scene
+  when: {from: 1992, to: 1999}
+  who: {role: [pension]}
+  text: "Лекарства подорожали в десять раз. Покупаешь половину рецепта."
+  effects: {health: -3}
+- id: HLT-15
+  type: choice
+  who: {age: [16, 45], sex: f, flags: [married]}
+  text: "Беременность протекает тяжело."
+  choices:
+    - {text: Лечь на сохранение, effects: {money_m: -1, health: 2}}
+    - {text: Работать до последнего, outcomes: [{w: 80, text: "Обошлось.", effects: {health: -3}}, {w: 20, text: "Осложнения.", effects: {health: -10}}]}

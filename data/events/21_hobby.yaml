@@ -1,0 +1,235 @@
+title: 21. Увлечения (HOB)
+note: Новый раздел. Увлечение выбирается в детстве (KID-10, KID-16) или взрослым (HOB-00). Фокус «Увлечение» делает эти события втрое чаще. Счастье здесь и сейчас — против денег, семьи и сна.
+events:
+- id: HOB-00
+  type: choice
+  who:
+    age: [17, 75]
+    not_flags: [hobby_sport, hobby_music, hobby_tech, hobby_books, hobby_garden, hobby_fishing]
+  weight: 2
+  text: Хочется чего-то для души. Чем заняться в свободное время?
+  choices:
+  - text: 'Спорт: футбол, лыжи, качалка'
+    effects: {fit: 2, happy: 2}
+    sets: [hobby_sport]
+  - text: Гитара и песни под неё
+    effects: {happy: 3}
+    sets: [hobby_music]
+  - text: Паять, чинить, собирать технику
+    effects: {know: 2, happy: 1}
+    sets: [hobby_tech]
+  - text: Книги и толстые журналы
+    effects: {know: 2, happy: 2}
+    sets: [hobby_books]
+  - text: Огород и сад
+    effects: {fit: 1, happy: 1}
+    sets: [hobby_garden]
+  - text: Рыбалка и охота
+    effects: {happy: 3, close: -1}
+    sets: [hobby_fishing]
+  - text: Некогда
+    effects: {}
+- id: HOB-01
+  type: scene
+  repeat: true
+  who:
+    flags: [hobby_sport]
+    age: [12, 70]
+  text: Каждую субботу — футбол во дворе. Ворота из двух портфелей.
+  focus: hobby
+  chance: 0.7
+  effects: {fit: 3, ties: 2, happy: 3}
+  variants: [Каждую субботу — футбол во дворе. Ворота из двух портфелей., Мужики со двора позвали в команду на первенство района.]
+- id: HOB-02
+  type: choice
+  who:
+    flags: [hobby_sport]
+    age: [14, 35]
+  text: Тренер зовёт на соревнования за район.
+  choices:
+  - text: Ехать
+    check: {base: 40, fit: 0.6, strength: 15}
+    success:
+      text: Медаль и фото в районной газете.
+      effects: {fame: 4, happy: 5, ties: 2}
+    fail:
+      text: Проиграл в первом круге, но съездил весело.
+      effects: {happy: 1}
+  - text: Не ехать
+    effects: {money_m: 0.2}
+- id: HOB-03
+  type: scene
+  repeat: true
+  who:
+    flags: [hobby_sport]
+    age: [16, 60]
+  text: Выходной ушёл на тренировку. Зато тело слушается.
+  focus: health
+  chance: 0.6
+  effects: {fit: 3, health: 1, happy: 2}
+  variants: [Выходной ушёл на тренировку. Зато тело слушается.]
+- id: HOB-04
+  type: scene
+  repeat: true
+  who:
+    flags: [hobby_music]
+    age: [12, 70]
+  text: Вечер с гитарой на кухне. Соседи сначала стучали по батарее, потом начали подпевать.
+  focus: hobby
+  chance: 0.7
+  effects: {happy: 4, ties: 1}
+  variants: ['Вечер с гитарой на кухне. Соседи сначала стучали по батарее, потом начали подпевать.', Подобрал на гитаре «Группу крови». Друзья просят ещё.]
+- id: HOB-05
+  type: choice
+  who:
+    flags: [hobby_music]
+    age: [15, 45]
+  text: Друзья собирают группу. Репетиции в подвале ЖЭКа.
+  choices:
+  - text: Играть в группе
+    effects: {happy: 5, ties: 3, close: -2, money_m: -0.3}
+    sets: [talent_found]
+  - text: Не тянуть
+    effects: {}
+- id: HOB-06
+  type: choice
+  who:
+    flags: [hobby_music]
+    age: [16, 60]
+  when: {from: 1990, to: 1999}
+  text: Зовут подыграть на свадьбе за наличные.
+  choices:
+  - text: Играть
+    effects: {money_m: 1, happy: 2, health: -1}
+  - text: Отказаться
+    effects: {}
+- id: HOB-07
+  type: scene
+  repeat: true
+  who:
+    flags: [hobby_tech]
+    age: [12, 70]
+  text: Соседка принесла чинить магнитофон. Вечер с паяльником — и он снова играет.
+  focus: hobby
+  chance: 0.7
+  effects: {ties: 3, know: 1, happy: 1}
+  variants: [Соседка принесла чинить магнитофон. Вечер с паяльником — и он снова играет., Починил соседу телевизор. Теперь весь подъезд знает твой номер квартиры.]
+- id: HOB-08
+  type: choice
+  who:
+    flags: [hobby_tech]
+    age: [14, 40]
+  when: {from: 1990, to: 1999}
+  text: Можно собрать компьютер из деталей с радиорынка.
+  choices:
+  - text: Собрать
+    effects: {money_m: -3, know: 5, happy: 4}
+    item: {add: computer}
+  - text: Подождать
+    effects: {}
+- id: HOB-09
+  type: scene
+  repeat: true
+  who:
+    flags: [hobby_books]
+    age: [12, 90]
+  text: Ночью читаешь «Мастера и Маргариту» в журнальном варианте — до утра не оторваться.
+  focus: hobby
+  chance: 0.7
+  effects: {know: 3, happy: 3}
+  variants: [Ночью читаешь «Мастера и Маргариту» в журнальном варианте — до утра не оторваться., В библиотеке на «Новый мир» запись на месяц вперёд. Дождался.]
+- id: HOB-10
+  type: choice
+  who:
+    flags: [hobby_books]
+    age: [14, 90]
+  when: {from: 1992, to: 1999}
+  text: На лотках у метро — всё, о чём раньше мечтал. Но денег мало.
+  choices:
+  - text: Купить стопку книг
+    effects: {money_m: -0.5, know: 2, happy: 3}
+  - text: Брать у знакомых
+    effects: {ties: 1, happy: 1}
+- id: HOB-11
+  type: scene
+  repeat: true
+  when: {from: 1986, to: 1999}
+  who:
+    flags: [hobby_garden]
+    age: [16, 90]
+  text: 'Все выходные на огороде: рассада, теплица, бочка с водой.'
+  focus: hobby
+  chance: 0.8
+  effects: {money_m: 1, fit: 2, happy: 3}
+  variants: ['Все выходные на огороде: рассада, теплица, бочка с водой.', 'Огурцы пошли так, что закатывали банки всю ночь.']
+- id: HOB-12
+  type: choice
+  who:
+    flags: [hobby_garden]
+    age: [16, 90]
+  text: 'Урожай удался: банки уже некуда ставить.'
+  choices:
+  - text: Раздать родне и соседям
+    effects: {close: 3, ties: 2, happy: 2}
+  - text: Продать на рынке
+    effects: {money_m: 1, happy: 1}
+- id: HOB-13
+  type: scene
+  repeat: true
+  who:
+    flags: [hobby_fishing]
+    age: [12, 90]
+  text: 'Рыбалка с ночёвкой: костёр, уха, туман над рекой.'
+  focus: hobby
+  chance: 0.7
+  effects: {happy: 5, ties: 2, close: -1}
+  variants: ['Рыбалка с ночёвкой: костёр, уха, туман над рекой.', 'Привёз с рыбалки ведро карасей. Жена ворчит, но жарит.']
+- id: HOB-14
+  type: choice
+  who:
+    flags: [hobby_fishing]
+    age: [16, 70]
+  text: На рыбалке «согрелись» как следует. Мужики наливают ещё.
+  choices:
+  - text: Ещё по одной
+    check: {base: 70, will: 15}
+    success:
+      text: Обошлось.
+      effects: {happy: 2}
+    fail:
+      text: Неделю болела голова и душа.
+      effects: {health: -3, close: -3}
+      sets: [drinker]
+  - text: Хватит
+    effects: {ties: -1}
+- id: HOB-15
+  type: scene
+  repeat: true
+  who:
+    any_flags: [hobby_sport, hobby_music, hobby_tech, hobby_books, hobby_garden, hobby_fishing]
+    age: [12, 90]
+  text: Вечер за любимым делом. Хоть что-то в этой жизни своё.
+  effects: {happy: 3}
+  focus: hobby
+  chance: 0.6
+  variants: [Вечер за любимым делом. Хоть что-то в этой жизни своё.]
+- id: HOB-16
+  type: choice
+  who:
+    any_flags: [hobby_sport, hobby_music, hobby_tech, hobby_books, hobby_garden, hobby_fishing]
+    age: [25, 70]
+  text: 'Партнёр ворчит: «Опять ты со своим увлечением, а дома дел полно».'
+  choices:
+  - text: Бросить увлечение
+    effects: {rel: 3, happy: -5}
+    clears: [hobby_sport, hobby_music, hobby_tech, hobby_books, hobby_garden, hobby_fishing]
+  - text: Договориться о времени
+    check: {base: 55, charm: 10, rel: 0.3}
+    success:
+      text: Нашли компромисс.
+      effects: {rel: 2}
+    fail:
+      text: Поругались.
+      effects: {rel: -4}
+  - text: Не обращать внимания
+    effects: {rel: -4, happy: 1}

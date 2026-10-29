@@ -1,0 +1,220 @@
+title: "2. Политика (POL)"
+note: "Ступени: Слушатель → Активист → Депутат местного совета → Депутат республики → Дума, губернатор, чиновник или оппозиция."
+events:
+- id: POL-01
+  type: choice
+  when: {from: 1986, to: 1990}
+  who: {age: [16, 75]}
+  weight: 2
+  text: "Ночью на кухне друг читает вслух «Огонёк». Спорите до трёх утра."
+  choices:
+    - {text: Ввязаться в спор, effects: {ties: 1, views_reform: 8}, sets: [arguer]}
+    - {text: Сменить тему, effects: {close: 1}}
+- id: POL-02
+  type: choice
+  when: {from: 1987, to: 1990}
+  who: {age: [17, 70]}
+  text: "Знакомые зовут на митинг неформалов. Милиция переписывает фамилии."
+  choices:
+    - text: Пойти
+      check: {base: 75, arguer: 10, year: {1987: -15, 1988: -10}}
+      success: {text: "Тысячи людей, самодельные плакаты, ощущение, что всё можно.", effects: {ties: 2, views_reform: 10}, sets: [activist]}
+      fail: {text: "Задержали, сообщили на работу.", effects: {law: 8, ties: -2}, sets: [activist]}
+    - {text: Не идти, effects: {}}
+- id: POL-03
+  type: choice
+  when: {from: 1988, to: 1991}
+  who: {age: [17, 75], flags: [activist]}
+  text: "Каким движением заняться?"
+  choices:
+    - {text: Народный фронт или демократы, effects: {views_reform: 15, views_union: 15, ties: 1}, sets: [front]}
+    - {text: Интерфронт или «За Союз», effects: {views_reform: -10, views_union: -20, ties: 1}, sets: [interfront]}
+    - {text: «Мемориал», effects: {views_reform: 15, know: 3, close: 1}}
+    - {text: Экологи, effects: {views_reform: 5, ties: 1}}
+- id: POL-04
+  type: choice
+  when: {from: 1988, to: 1990}
+  who: {flags: [activist], role: [young, adult]}
+  text: "Партком вызывает «на беседу» о твоих митингах."
+  choices:
+    - {text: Отступить, effects: {ties: -2, views_reform: -3}}
+    - text: Стоять на своём
+      check: {base: 70, ties: 0.3, year: {1988: -15}}
+      success: {text: "Пожурили и отпустили. О тебе заговорили.", effects: {fame: 5}}
+      fail: {text: "Лишили премии и очереди на квартиру.", effects: {money_m: -2, close: -3, fame: 5}}
+- id: POL-05
+  type: choice
+  when: {from: 1990, to: 1990, month: 3}
+  who: {age: [21, 70], role: [young, adult, pension], any_flags: [activist, official, party_member, komsomol_active, front, interfront, defender91, deputy_local]}
+  text: "Весна 1990-го: первые альтернативные выборы в местные советы и Верховные Советы республик. Предлагают выдвинуться в горсовет."
+  choices:
+    - text: Выдвинуться
+      check: {base: 15, edu: {university: 10, technikum: 3}, official: 10, activist: 10, front: 8, interfront: 8, party_member: 5, ties: 0.3, charm: 8}
+      success: {text: "Ты депутат горсовета.", effects: {fame: 10, ties: 8}, sets: [deputy_local]}
+      fail: {text: "Проиграл, но тебя запомнили.", effects: {fame: 4}}
+    - {text: Отказаться, effects: {}}
+- id: POL-06
+  type: choice
+  when: {from: 1990, to: 1990, month: 3}
+  who: {age: [21, 70], flags: [deputy_local]}
+  weight: 0.5
+  text: "В тот же день выбирают и Верховный Совет республики. Можно идти и туда."
+  choices:
+    - text: Идти
+      check: {base: 30, edu: {university: 15}, official: 10, fame: 0.3, ties: 0.3, charm: 10}
+      success: {text: "Ты народный депутат республики.", effects: {fame: 15, ties: 10}, sets: [deputy_rep]}
+      fail: {text: "Проиграл. Остаёшься в горсовете.", effects: {fame: 3}}
+    - {text: Остаться в горсовете, effects: {}}
+- id: POL-07
+  type: choice
+  when: {from: 1990, to: 1993}
+  who: {flags: [deputy_local]}
+  repeat: true
+  text: "Сессия до ночи: делят здания, лицензии, квартиры. Коммерсант просит «поговорить» после заседания."
+  choices:
+    - text: Взять конверт
+      outcomes:
+        - {w: 80, text: "Деньги взял, бумагу подписал.", effects: {money_m: 6, law: 10}}
+        - {w: 20, mods: {law: 0.5}, text: "Через год об этом пишет газета.", effects: {money_m: 6, law: 25, fame: -5}}
+    - {text: Отказаться, effects: {ties: -3, fame: 2}}
+    - text: Публично рассказать об этом
+      check: {base: 50, fame: 0.4}
+      success: {text: "Скандал в прессе, тебя знают как честного.", effects: {fame: 12}}
+      fail: {text: "Скандал замяли, а тебя перестали звать на важные заседания.", effects: {ties: -8, fame: 3}}
+- id: POL-08
+  type: choice
+  when: {from: 1990, to: 1991}
+  who: {flags: [deputy_rep]}
+  text: "Голосование о независимости республики."
+  choices:
+    - {text: За, effects: {views_union: 20, fame: 3}}
+    - {text: Против, effects: {views_union: -20, fame: 3}}
+    - {text: Воздержаться, effects: {ties: -3}}
+- id: POL-09
+  type: choice
+  when: {from: 1991, to: 1993}
+  who: {age: [21, 65]}
+  text: "Предложение должности в новой мэрии или администрации."
+  choices:
+    - text: Принять
+      check: {base: 20, edu: {university: 15, technikum: 5}, ties: 0.4, defender91: 25, front: 20, deputy_local: 15, activist: 10, official: 10, gkchp: -30, interfront: -25}
+      success: {text: "Кабинет, секретарь, телефон с гербом.", effects: {ties: 10, money_m: 1}, sets: [official], job: official}
+      fail: {text: "Место отдали другому.", effects: {}}
+    - {text: Отказаться, effects: {}}
+- id: POL-10-1993
+  type: choice
+  when: {from: 1993, to: 1993, month: 12}
+  who: {age: [21, 70], any_flags: [deputy_local, deputy_rep, official]}
+  text: "Выборы в Госдуму. Тебя зовут в списки."
+  choices:
+    - text: Идти от партии
+      check: {base: 3, edu: {university: 3}, deputy_local: 3, deputy_rep: 10, official: 3, fame: 0.3, ties: 0.1, charm: 3}
+      success: {text: "Ты депутат Государственной думы.", effects: {fame: 20, ties: 10}, sets: [deputy_duma], job: politician}
+      fail: {text: "Партия не прошла.", effects: {fame: 5, money_m: -2}}
+    - text: Одномандатником
+      check: {base: 2, deputy_local: 3, deputy_rep: 8, official: 3, fame: 0.4, charm: 3, grit: 2}
+      success: {text: "Выиграл округ.", effects: {fame: 25, ties: 8}, sets: [deputy_duma], job: politician}
+      fail: {text: "Потратил все сбережения и проиграл.", effects: {money_m: -6, fame: 6}}
+    - {text: Не идти, effects: {}}
+  where: [RU]
+- id: POL-10-1995
+  type: choice
+  when: {from: 1995, to: 1995, month: 12}
+  who: {age: [21, 70], any_flags: [deputy_local, deputy_rep, official]}
+  text: "Выборы в Госдуму. Тебя зовут в списки."
+  choices:
+    - text: Идти от партии
+      check: {base: 3, edu: {university: 3}, deputy_local: 3, deputy_rep: 10, official: 3, fame: 0.3, ties: 0.1, charm: 3}
+      success: {text: "Ты депутат Государственной думы.", effects: {fame: 20, ties: 10}, sets: [deputy_duma], job: politician}
+      fail: {text: "Партия не прошла.", effects: {fame: 5, money_m: -2}}
+    - text: Одномандатником
+      check: {base: 2, deputy_local: 3, deputy_rep: 8, official: 3, fame: 0.4, charm: 3, grit: 2}
+      success: {text: "Выиграл округ.", effects: {fame: 25, ties: 8}, sets: [deputy_duma], job: politician}
+      fail: {text: "Потратил все сбережения и проиграл.", effects: {money_m: -6, fame: 6}}
+    - {text: Не идти, effects: {}}
+  where: [RU]
+- id: POL-10-1999
+  type: choice
+  when: {from: 1999, to: 1999, month: 12}
+  who: {age: [21, 70], any_flags: [deputy_local, deputy_rep, official]}
+  text: "Выборы в Госдуму. Тебя зовут в списки."
+  choices:
+    - text: Идти от партии
+      check: {base: 3, edu: {university: 3}, deputy_local: 3, deputy_rep: 10, official: 3, fame: 0.3, ties: 0.1, charm: 3}
+      success: {text: "Ты депутат Государственной думы.", effects: {fame: 20, ties: 10}, sets: [deputy_duma], job: politician}
+      fail: {text: "Партия не прошла.", effects: {fame: 5, money_m: -2}}
+    - text: Одномандатником
+      check: {base: 2, deputy_local: 3, deputy_rep: 8, official: 3, fame: 0.4, charm: 3, grit: 2}
+      success: {text: "Выиграл округ.", effects: {fame: 25, ties: 8}, sets: [deputy_duma], job: politician}
+      fail: {text: "Потратил все сбережения и проиграл.", effects: {money_m: -6, fame: 6}}
+    - {text: Не идти, effects: {}}
+  where: [RU]
+- id: POL-11
+  type: choice
+  when: {from: 1994, to: 1999}
+  who: {flags: [deputy_duma]}
+  repeat: true
+  text: "Лоббисты, телекамеры и «нужный» закон."
+  choices:
+    - {text: Взять, outcomes: [{w: 85, text: "Закон прошёл, у тебя новая дача.", effects: {money_m: 20, law: 10}}, {w: 15, text: "Журналисты раскопали.", effects: {money_m: 20, law: 25, fame: -10}}]}
+    - {text: Отказать, effects: {ties: -5}}
+    - {text: Разоблачить, check: {base: 40, fame: 0.4}, success: {text: "Громкий скандал, рейтинг вырос.", effects: {fame: 15}}, fail: {text: "Тебе дали понять, что лучше молчать.", effects: {ties: -10}, sets: [threatened]}}
+- id: POL-12
+  type: choice
+  when: {from: 1996, to: 1999}
+  where: [RU]
+  who: {age: [30, 70], any_flags: [deputy_duma, deputy_rep, official]}
+  text: "Выборы губернатора или мэра."
+  choices:
+    - text: Идти
+      check: {base: 15, edu: {university: 10}, official: 20, deputy_duma: 15, deputy_rep: 10, fame: 0.3, ties: 0.5, charm: 10, grit: 10}
+      success: {text: "Ты губернатор. Теперь к тебе приходят все.", effects: {fame: 20, ties: 15, money_m: 3}, job: politician}
+      fail: {text: "Проиграл. Новая власть это запомнит.", effects: {money_m: -10, ties: -5}, sets: [opposition]}
+    - {text: Поддержать сильного кандидата, effects: {ties: 4}}
+    - {text: Не лезть, effects: {}}
+- id: POL-13
+  type: choice
+  when: {from: 1992, to: 1999}
+  who: {flags: [opposition]}
+  repeat: true
+  text: "Митинги, своя газета, за тобой ходят «двое в штатском»."
+  choices:
+    - {text: Продолжать, outcomes: [{w: 70, text: "Ещё один год в оппозиции.", effects: {fame: 5, law: 5}}, {w: 25, text: "Обыск дома.", effects: {law: 10, close: -4}}, {w: 5, text: "Нападение в подъезде.", effects: {health: -15}}]}
+    - {text: Уйти в бизнес, effects: {ties: 1}, clears: [opposition], sets: [entrepreneur]}
+    - {text: Уехать за границу, outcomes: [{w: 100, text: "Политическое убежище.", end: abroad}]}
+- id: POL-14
+  type: choice
+  when: {from: 1988, to: 1992}
+  where: [LT, LV, EE, GE, AM, MD, UA, AZ]
+  who: {age: [17, 70], not_flags: [minority]}
+  text: "Независимость. Что ты делаешь для своей страны?"
+  choices:
+    - {text: Народный фронт, effects: {ties: 3, views_union: 20}, sets: [front, activist]}
+    - {text: Добровольцы в охрану парламента, effects: {fit: 2, ties: 2, views_union: 20}, sets: [front]}
+    - {text: Работать в новой администрации, check: {base: 40, know: 0.4, ties: 0.4}, success: {text: "Взяли в новое министерство.", effects: {ties: 4}, sets: [official], job: official}, fail: {text: "Мест нет.", effects: {}}}
+    - {text: Держаться в стороне, effects: {}}
+- id: POL-15
+  type: choice
+  when: {from: 1986, to: 1990}
+  who: {age: [18, 50], role: [young, adult], not_flags: [party_member]}
+  text: "Предлагают вступить в КПСС: без партбилета дальше начальника участка не пустят."
+  choices:
+    - {text: Вступить, effects: {ties: 2, views_reform: -3}, sets: [party_member]}
+    - {text: Отказаться, effects: {ties: -2}}
+- id: POL-16
+  type: choice
+  when: {from: 1989, to: 1991}
+  who: {flags: [party_member]}
+  text: "Коллеги сдают партбилеты."
+  choices:
+    - {text: Сдать, effects: {views_reform: 10}, clears: [party_member]}
+    - {text: Сохранить, effects: {views_reform: -5}}
+- id: POL-17
+  type: choice
+  when: {from: 1992, to: 1999}
+  who: {flags: [interfront]}
+  where: [LT, LV, EE, MD]
+  text: "Бывшие соратники по интерфронту зовут в общественную организацию русскоязычных."
+  choices:
+    - {text: Вступить, effects: {ties: 2, fame: 3, law: 3}, sets: [activist]}
+    - {text: Отойти от политики, effects: {}}

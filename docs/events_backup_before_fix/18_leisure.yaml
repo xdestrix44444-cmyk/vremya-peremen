@@ -1,0 +1,72 @@
+title: "18. Отдых и покупки (LEI)"
+note: "Новый раздел. Траты из бюджета (CONCEPT §3.10): путешествия, покупки, досуг."
+events:
+- id: LEI-01
+  type: choice
+  when: {from: 1986, to: 1991, month: 7}
+  who: {role: [young, adult]}
+  text: "Отпуск: Сочи «дикарём», Прибалтика или Болгария по путёвке."
+  choices:
+    - {text: Сочи дикарём, effects: {money_m: -1, health: 3, close: 1}}
+    - {text: Болгария по путёвке, check: {base: 40, ties: 0.5, party_member: 15}, success: {text: "Заграница! Первый раз.", effects: {money_m: -2, close: 2, ties: 1}}, fail: {text: "Путёвку отдали другому.", effects: {}}}
+    - {text: На даче, effects: {fit: 2, close: 1}}
+- id: LEI-02
+  type: choice
+  repeat: true
+  when: {from: 1992, to: 1999, month: 7}
+  who: {role: [young, adult]}
+  text: "Отпуск: Турция, с 1995-го ещё и Египет. Или опять дача."
+  choices:
+    - {text: Турция, effects: {money_m: -3, health: 4, close: 2}}
+    - {text: Египет, who: {years: [1995, 1999]}, effects: {money_m: -4, health: 4, close: 2}}
+    - {text: Дача, effects: {fit: 2, close: 1}}
+- id: LEI-03
+  type: choice
+  repeat: true
+  who: {age: [16, 99]}
+  text: "День рождения: позвать всех или тихо дома?"
+  choices:
+    - {text: Позвать всех, effects: {money_m: -1, ties: 2, close: 1}}
+    - {text: Тихо дома, effects: {close: 1}}
+- id: LEI-04
+  type: choice
+  when: {from: 1986, to: 1991}
+  who: {role: [young, adult]}
+  text: "Достать дефицит: дублёнку, импортную стенку, сервиз «Мадонна»."
+  choices:
+    - {text: Достать по блату, check: {base: 45, ties: 0.6}, success: {text: "Достал. Все завидуют.", effects: {money_m: -8, close: 1, ties: 1}}, fail: {text: "Обещали и не достали.", effects: {}}}
+    - {text: Обойтись, effects: {}}
+- id: LEI-05
+  type: choice
+  when: {from: 1992, to: 1999}
+  who: {role: [young, adult]}
+  text: "Купить видеомагнитофон, музыкальный центр или компьютер."
+  choices:
+    - {text: Купить видик, effects: {money_m: -6, close: 1}, item: {add: tv_vcr}}
+    - {text: Купить компьютер, who: {years: [1993, 1999]}, effects: {money_m: -12}, item: {add: computer}}
+    - {text: Подождать, effects: {}}
+- id: LEI-06
+  type: choice
+  repeat: true
+  who: {age: [16, 60]}
+  text: "Друзья зовут на шашлыки, рыбалку, в баню."
+  choices:
+    - {text: Поехать, effects: {money_m: -0.3, ties: 1, close: 1, fit: 1}}
+    - {text: Отказаться, effects: {ties: -1}}
+- id: LEI-07
+  type: choice
+  when: {from: 1993, to: 1999}
+  who: {age: [16, 35]}
+  text: "Ночной клуб, дискотека, казино на первом этаже гостиницы."
+  choices:
+    - {text: Пойти, effects: {money_m: -0.5, ties: 1}}
+    - {text: Сыграть в казино, outcomes: [{w: 30, text: "Выиграл!", effects: {money_m: 2}}, {w: 70, text: "Проиграл всё, что было.", effects: {money_m: -3}}]}
+    - {text: Дома, effects: {}}
+- id: LEI-08
+  type: choice
+  repeat: true
+  who: {age: [10, 99]}
+  text: "Книги: стопка «толстых» журналов, потом детективы с лотков."
+  choices:
+    - {text: Читать по вечерам, effects: {know: 2}}
+    - {text: Некогда, effects: {}}

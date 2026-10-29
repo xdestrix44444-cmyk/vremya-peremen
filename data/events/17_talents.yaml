@@ -1,0 +1,114 @@
+title: 17. Задатки и таланты (TAL)
+note: Новый раздел. Задатки выпадают при рождении (CONCEPT §3.3); здесь они открываются и начинают работать.
+events:
+- id: TAL-01
+  type: choice
+  who:
+    age: [6, 14]
+    traits: {talent: music}
+    not_flags: [talent_found]
+  text: 'Учитель музыки услышал, как ты поёшь: «У ребёнка абсолютный слух».'
+  choices:
+  - text: Отдать в музыкальную школу
+    effects: {know: 3, money_m: -0.5}
+    sets: [talent_found]
+  - text: «Музыкой сыт не будешь»
+    effects: {}
+- id: TAL-02
+  type: choice
+  who:
+    age: [8, 16]
+    traits: {strength: strong}
+    not_flags: [talent_found]
+  text: 'Учитель физкультуры: «Приводи его в секцию, будет толк».'
+  choices:
+  - text: Записаться
+    effects: {fit: 8}
+    sets: [talent_found, fighter]
+  - text: Нет
+    effects: {}
+- id: TAL-03
+  type: choice
+  who:
+    age: [10, 25]
+    traits: {talent: tech}
+    not_flags: [talent_found]
+  text: Ты разобрал и собрал магнитофон, и он заработал лучше прежнего.
+  choices:
+  - text: Чинить технику всем соседям
+    effects: {ties: 2, money_m: 0.5, know: 3}
+    sets: [talent_found]
+  - text: Забросить
+    effects: {}
+- id: TAL-04
+  type: choice
+  who:
+    age: [10, 20]
+    traits: {mind: strong}
+  text: Учитель математики зовёт в физматшколу или кружок при университете.
+  choices:
+  - text: Перейти
+    effects: {know: 8, close: -1}
+  - text: Остаться в своей школе
+    effects: {ties: 1}
+- id: TAL-05
+  type: scene
+  who:
+    age: [14, 40]
+    traits: {charm: strong}
+  text: 'Ты замечаешь, что люди тянутся к тебе: тебя слушают, тебе верят.'
+  effects: {ties: 3}
+- id: TAL-06
+  type: scene
+  who:
+    age: [16, 40]
+    traits: {grit: strong}
+  text: Ты видишь выгоду там, где другие видят беспорядок.
+  effects: {money_m: 1}
+- id: TAL-07
+  type: choice
+  who:
+    age: [10, 30]
+    traits: {talent: lang}
+    not_flags: [talent_found]
+  text: За полгода заговорил по-английски по кассетам и старому учебнику.
+  choices:
+  - text: Учить дальше
+    effects: {know: 6}
+    sets: [talent_found]
+  - text: Хватит
+    effects: {}
+- id: TAL-08
+  type: scene
+  who:
+    age: [20, 99]
+    traits: {constitution: weak}
+  text: Опять давление. Врач в поликлинике разводит руками.
+  effects: {health: -3}
+  variants: [Опять давление. Врач в поликлинике разводит руками.]
+- id: TAL-09
+  type: scene
+  who:
+    age: [20, 99]
+    traits: {will: weak}
+  text: Опять не смог отказать — и опять жалеешь.
+  effects: {close: 1}
+- id: TAL-10
+  type: choice
+  who:
+    flags: [talent_found]
+    age: [16, 40]
+  text: 'Районный конкурс: тебя записали без спроса.'
+  choices:
+  - text: Участвовать
+    check: {base: 35, know: 0.3, fit: 0.3}
+    success:
+      text: Победа. О тебе пишут в газете.
+      effects: {fame: 10, ties: 2}
+    fail:
+      text: Не прошёл, но запомнили.
+      effects: {fame: 3}
+    effects: {money_m: -0.5}
+  - text: Не тратить время
+    effects: {}
+  variants: ['Районный конкурс: тебя записали без спроса.']

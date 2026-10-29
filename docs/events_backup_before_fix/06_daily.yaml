@@ -1,0 +1,183 @@
+title: "6. Быт (DAY)"
+note: "Повседневные события. Появляются чаще всего и задают ощущение эпохи."
+events:
+- id: DAY-01
+  type: choice
+  repeat: true
+  when: {from: 1986, to: 1991}
+  who: {age: [14, 99]}
+  weight: 3
+  text: "«Выбросили» колбасу. Очередь на два часа, номер пишут ручкой на ладони."
+  choices:
+    - {text: Встать в очередь, effects: {health: -1, close: 1}}
+    - {text: Пройти мимо, effects: {}}
+- id: DAY-02
+  type: choice
+  when: {from: 1986, to: 1991}
+  who: {age: [20, 99]}
+  text: "Запись на ковёр (стенку, холодильник). Перекличка каждую ночь у магазина."
+  choices:
+    - {text: Отмечаться, effects: {health: -2, close: 1, money_m: -1}}
+    - {text: Плюнуть, effects: {}}
+- id: DAY-03
+  type: scene
+  repeat: true
+  when: {from: 1986, to: 1991}
+  who: {role: [young, adult]}
+  text: "Продуктовый «заказ» к празднику на работе: гречка, шпроты, майонез, банка растворимого кофе."
+  effects: {close: 1}
+- id: DAY-04
+  type: offer
+  when: {from: 1986, to: 1991}
+  who: {role: [adult], stats: {ties: ">30"}}
+  weight: 0.5
+  text: "Подошла очередь на «Жигули» по записи с работы."
+  choices:
+    - {text: Купить, effects: {money_m: -30, close: 3, ties: 1}, item: {add: car}}
+    - {text: Уступить очередь за деньги, effects: {money_m: 5, law: 3}}
+    - {text: Отказаться, effects: {}}
+- id: DAY-05
+  type: choice
+  repeat: true
+  when: {from: 1987, to: 1995}
+  who: {age: [10, 50]}
+  text: "Видеосалон: боевики с гнусавым переводом, сеанс за рубль."
+  choices:
+    - {text: Ходить, effects: {ties: 1, money_m: -0.1}}
+    - {text: Нет, effects: {}}
+- id: DAY-06
+  type: choice
+  when: {from: 1988, to: 1990}
+  who: {age: [16, 99]}
+  text: "По телевизору Кашпировский и Чумак «заряжают» воду и кремы."
+  choices:
+    - {text: Ставить банку перед экраном, effects: {close: 1}}
+    - {text: Смеяться, effects: {}}
+- id: DAY-07
+  type: choice
+  when: {from: 1988, to: 1993}
+  who: {age: [12, 99]}
+  text: "Открываются храмы и мечети. Родня зовёт креститься или на праздник в мечеть."
+  choices:
+    - {text: Пойти, effects: {close: 1}}
+    - {text: Нет, effects: {}}
+- id: DAY-08
+  type: choice
+  when: {from: 1989, to: 1991}
+  who: {age: [18, 99]}
+  text: "Всё по талонам. Сосед меняет водочные талоны на сахарные."
+  choices:
+    - {text: Меняться, effects: {ties: 1}}
+    - {text: Нет, effects: {}}
+- id: DAY-09
+  type: scene
+  when: {from: 1990, to: 1991}
+  text: "Пустые прилавки: берёзовый сок, морская капуста и уксус."
+  effects: {views_reform: -3}
+- id: DAY-10
+  type: scene
+  when: {from: 1991, to: 1992}
+  who: {role: [pension]}
+  text: "«Гуманитарка» из Германии: банки тушёнки, пакеты с поношенной одеждой."
+  effects: {close: 1}
+- id: DAY-11
+  type: choice
+  repeat: true
+  when: {from: 1991, to: 1999, month: 5}
+  who: {age: [16, 99]}
+  weight: 2
+  text: "Посадка картошки на даче или огороде."
+  choices:
+    - {text: Сажать, effects: {money_m: 1, fit: 2, close: 1, health: -1}}
+    - {text: Покупать на рынке, effects: {money_m: -1}}
+- id: DAY-12
+  type: scene
+  when: {from: 1992, to: 1993}
+  text: "Рынок вместо магазина: «Сникерсы», ликёр «Амаретто», спирт Royal, турецкие куртки."
+- id: DAY-13
+  type: choice
+  when: {from: 1992, to: 1996}
+  who: {role: [adult, pension]}
+  text: "Приватизация квартиры: очереди в БТИ, справки, госпошлина."
+  choices:
+    - {text: Оформить, effects: {money_m: -1, close: 1}}
+    - {text: Не связываться, effects: {}}
+- id: DAY-14
+  type: scene
+  repeat: true
+  when: {from: 1992, to: 1998}
+  where: [UA, GE, TJ, KG, MD, AZ]
+  weight: 2
+  text: "Свет и отопление отключают по графику. Готовят на буржуйке, спят в куртках."
+  effects: {health: -2}
+- id: DAY-15
+  type: choice
+  when: {from: 1992, to: 1999}
+  who: {role: [adult, pension]}
+  text: "В подъезде обокрали квартиру. Все ставят железные двери."
+  choices:
+    - {text: Поставить дверь, effects: {money_m: -1}}
+    - {text: Обойтись, effects: {}}
+- id: DAY-16
+  type: scene
+  when: {from: 1988, to: 1999}
+  text: "Вся семья у экрана: «Рабыня Изаура», «Просто Мария», «Санта-Барбара»."
+  effects: {close: 1}
+- id: DAY-17
+  type: choice
+  when: {from: 1993, to: 1999}
+  who: {role: [adult]}
+  text: "Евроремонт: турецкий кафель, подвесной потолок, пластиковые окна."
+  choices:
+    - {text: Сделать, effects: {money_m: -15, close: 1}}
+    - {text: Нет, effects: {}}
+- id: DAY-18
+  type: scene
+  when: {from: 1993, to: 1995}
+  text: "По телевизору Лёня Голубков покупает жене сапоги на доходы от пирамиды."
+- id: DAY-19
+  type: choice
+  when: {from: 1994, to: 1999}
+  who: {role: [adult]}
+  text: "Сосед купил подержанную иномарку из Германии."
+  choices:
+    - {text: Купить себе, effects: {money_m: -40, ties: 2, close: 1}, item: {add: car}}
+    - {text: Нет, effects: {}}
+- id: DAY-20
+  type: choice
+  when: {from: 1995, to: 1999}
+  who: {flags: [business]}
+  text: "Пейджер, потом мобильный размером с кирпич."
+  choices:
+    - {text: Купить, effects: {money_m: -8, ties: 2}}
+    - {text: Нет, effects: {}}
+- id: DAY-21
+  type: scene
+  repeat: true
+  when: {from: 1986, to: 1999, month: 12}
+  text: "Новогодний стол: оливье, мандарины, «Голубой огонёк». Дальше газета года."
+  effects: {close: 1}
+- id: DAY-22
+  type: choice
+  repeat: true
+  when: {from: 1986, to: 1999}
+  who: {role: [young, adult]}
+  text: "Сломался телевизор или холодильник."
+  choices:
+    - {text: Чинить у мастера, effects: {money_m: -0.5}}
+    - {text: Купить новый, effects: {money_m: -3, close: 1}}
+    - {text: Жить без него, effects: {close: -2}}
+- id: DAY-23
+  type: choice
+  when: {from: 1986, to: 1999}
+  who: {role: [young, adult]}
+  text: "Сосед затопил квартиру. Потолок в разводах."
+  choices:
+    - {text: Требовать ремонт за его счёт, check: {base: 50, charm: 10, ties: 0.3}, success: {text: "Сделал ремонт.", effects: {}}, fail: {text: "Разругались на годы.", effects: {money_m: -1, close: -2}}}
+    - {text: Сделать самому, effects: {money_m: -1}}
+- id: DAY-24
+  type: scene
+  when: {from: 1991, to: 1999}
+  who: {flags: [helped_neighbors]}
+  text: "Соседи, которых ты когда-то укрыл, нашли тебя: зовут в гости, помогают деньгами и работой."
+  effects: {close: 3, ties: 3, money_m: 1}

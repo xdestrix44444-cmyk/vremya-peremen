@@ -1,0 +1,124 @@
+title: "8. Семья: родители, дети, родня (FAM)"
+note: "Всё про партнёра — в разделе REL. Дети упрощённые: траты и 5–6 событий без своих шкал."
+events:
+# --- родители и родня ---
+- id: FAM-01
+  type: choice
+  who: {age: [25, 70], flags: [parents_alive]}
+  text: "Мама или папа тяжело заболели."
+  choices:
+    - {text: Лечить за деньги, effects: {money_m: -3, close: 1}}
+    - {text: Ухаживать самому, effects: {close: 3, money_m: -1, health: -2}}
+    - {text: Отдать в больницу как есть, effects: {close: -3}}
+- id: FAM-02
+  type: scene
+  repeat: true
+  chance: 0.05
+  who: {age: [20, 99], flags: [parents_alive]}
+  text: "Похороны отца или матери. С 1992 года — в долг."
+  effects: {close: -6, money_m: -2}
+  clears: [parents_alive]
+- id: FAM-03
+  type: choice
+  who: {age: [20, 99]}
+  text: "Наследство: квартира или дача. Родня спорит."
+  choices:
+    - {text: Поделить мирно, effects: {close: 2, money_m: 3}}
+    - {text: Судиться, outcomes: [{w: 50, mods: {ties: 0.4}, text: "Отсудил своё.", effects: {money_m: 8, close: -8}}, {w: 50, text: "Проиграл и разругался со всеми.", effects: {money_m: -2, close: -10}}]}
+    - {text: Отказаться в пользу родни, effects: {close: 4}}
+- id: FAM-04
+  type: choice
+  when: {from: 1989, to: 1999}
+  who: {age: [16, 99]}
+  text: "Брат или сестра уезжает: за границу или в другую республику."
+  choices:
+    - {text: Проводить, effects: {close: -3}}
+    - {text: Уехать с ними, outcomes: [{w: 100, text: "Пакуете чемоданы вместе.", ref: "EMI", effects: {close: 1}}]}
+- id: FAM-05
+  type: choice
+  who: {age: [20, 60]}
+  text: "Квартирный обмен: съехаться с родителями или разменять их квартиру."
+  choices:
+    - {text: Съехаться, effects: {close: 1, money_m: 1}}
+    - {text: Разменяться, effects: {close: -1, money_m: -1}}
+    - {text: Оставить как есть, effects: {}}
+- id: FAM-06
+  type: choice
+  when: {from: 1992, to: 1999}
+  who: {age: [25, 55], flags: [parents_alive]}
+  text: "Родители-пенсионеры не сводят концы с концами."
+  choices:
+    - {text: Помогать каждый месяц, effects: {money_m: -1, close: 2}}
+    - {text: Забрать к себе, effects: {close: 1, money_m: -1}}
+    - {text: Самим тяжело, effects: {close: -3}}
+- id: FAM-07
+  type: choice
+  repeat: true
+  who: {age: [18, 99]}
+  text: "Родня просит пожить у тебя: приехали поступать, лечиться или бегут от войны."
+  choices:
+    - {text: Принять, effects: {close: 2, money_m: -1}}
+    - {text: Отказать, effects: {close: -4}}
+# --- дети (упрощённо) ---
+- id: FAM-10
+  type: scene
+  who: {flags: [has_kids]}
+  text: "Ребёнок пошёл в детский сад. С 1992-го за сад платят."
+  effects: {money_m: -0.5, close: 1}
+- id: FAM-11
+  type: choice
+  repeat: true
+  who: {flags: [has_kids]}
+  text: "Ребёнок тяжело заболел."
+  choices:
+    - {text: Лечить в платной клинике, effects: {money_m: -3, close: 1}}
+    - {text: В районной больнице, outcomes: [{w: 80, text: "Выходили.", effects: {close: 1}}, {w: 20, text: "Лечение затянулось на месяцы.", effects: {close: -3, health: -2}}]}
+- id: FAM-12
+  type: choice
+  who: {flags: [has_kids]}
+  text: "Школа: собирают на ремонт класса, нужен репетитор, кружки платные."
+  choices:
+    - {text: Платить за всё, effects: {money_m: -2, close: 1}}
+    - {text: Только самое нужное, effects: {money_m: -0.5}}
+- id: FAM-13
+  type: choice
+  who: {flags: [has_kids], age: [30, 70]}
+  text: "Сын или дочь связались с плохой компанией."
+  choices:
+    - {text: Поговорить по душам, check: {base: 55, close: 0.5, charm: 5}, success: {text: "Услышал. Ушёл из той компании.", effects: {close: 2}}, fail: {text: "Не услышал. Ночует неизвестно где.", effects: {close: -4}}}
+    - {text: Наказать, outcomes: [{w: 50, text: "Помогло.", effects: {close: -2}}, {w: 50, text: "Ушёл из дома на неделю.", effects: {close: -6}}]}
+    - {text: Отпустить, outcomes: [{w: 60, text: "Перебесился."}, {w: 40, text: "Детская комната милиции.", effects: {close: -5, law: 3}}]}
+- id: FAM-14
+  type: choice
+  who: {flags: [has_kids], age: [35, 70]}
+  text: "Ребёнок поступает в вуз. С 1992-го есть платные места."
+  choices:
+    - {text: Платить за учёбу, effects: {money_m: -6, close: 2}}
+    - {text: Пусть пробует на бюджет, outcomes: [{w: 50, text: "Поступил сам.", effects: {close: 2}}, {w: 50, text: "Не прошёл. Армия или работа.", effects: {close: -2}}]}
+    - {text: Дать взятку в приёмной комиссии, check: {base: 60, ties: 0.4}, success: {text: "Зачислен.", effects: {money_m: -3, close: 1}}, fail: {text: "Деньги взяли, не зачислили.", effects: {money_m: -3}}}
+- id: FAM-15
+  type: choice
+  who: {flags: [has_kids], age: [36, 70]}
+  text: "Сын получил повестку."
+  choices:
+    - {text: Пусть служит, outcomes: [{w: 85, text: "Вернулся через два года.", effects: {close: 1}}, {w: 12, mods: {year: {1995: 10, 1996: 5}}, text: "Попал на войну. Вернулся другим.", effects: {close: -6}}, {w: 3, text: "Сын погиб в армии.", effects: {close: -30, health: -10}}]}
+    - {text: «Отмазать», check: {base: 40, ties: 0.6}, success: {text: "Белый билет.", effects: {money_m: -4}}, fail: {text: "Деньги ушли, сын в армии.", effects: {money_m: -4}}}
+- id: FAM-16
+  type: choice
+  who: {flags: [has_kids], age: [38, 99]}
+  text: "Свадьба сына или дочери. Нужны деньги на банкет."
+  choices:
+    - {text: Помочь с размахом, effects: {money_m: -5, close: 4, ties: 1}}
+    - {text: Скромно, effects: {money_m: -1, close: 1}}
+- id: FAM-17
+  type: scene
+  when: {from: 1990, to: 1999}
+  who: {flags: [has_kids], age: [40, 99]}
+  text: "Сын или дочь уехали: в Москву, за границу, на заработки. Звонят по воскресеньям."
+  effects: {close: -5}
+- id: FAM-18
+  type: scene
+  repeat: true
+  who: {flags: [has_kids], age: [45, 99]}
+  text: "Внуки на всё лето."
+  effects: {close: 3, health: -1}

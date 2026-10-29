@@ -1,0 +1,505 @@
+title: 4. Бизнес и своё дело (BIZ)
+note: 'Ступени: Фарца → Кооператив или челнок → Ларёк или точка → Магазин или фирма → Торговый дом, банк, завод. Механика своего дела — CONCEPT §3.11.'
+events:
+- id: BIZ-01
+  type: choice
+  when: {from: 1986, to: 1989}
+  who:
+    age: [15, 35]
+    flags: [capital]
+  text: У гостиницы «Интурист» иностранцы меняют джинсы на значки, икру и матрёшки.
+  choices:
+  - text: Фарцевать
+    check:
+      base: 70
+      grit: 10
+      charm: 5
+      year: {1986: -10}
+    success:
+      text: Первые «настоящие» деньги и джинсы Levi's.
+      effects: {money_m: 2, ties: 1, law: 5}
+      sets: [entrepreneur]
+    fail:
+      text: Взяли с поличным. Статья за спекуляцию.
+      effects: {law: 25, close: -5}
+  - text: Нет
+    effects: {}
+- id: BIZ-02
+  type: choice
+  when: {from: 1987, to: 1991}
+  who:
+    role: [young, adult]
+  weight: 0.4
+  text: 'Знакомый открывает кооператив: шьют «варёнки» в подвале. Зовёт к себе.'
+  choices:
+  - text: Уйти в кооператив
+    outcomes:
+    - w: 65
+      mods: {grit: 1}
+      text: Платят втрое, на старой работе косятся.
+      effects: {money_m: 4, ties: 1}
+      sets: [entrepreneur]
+      job: coop
+    - w: 20
+      text: Пришли рэкетиры. Деньги есть, но страшно.
+      effects: {money_m: 2}
+      sets: [entrepreneur]
+      job: coop
+    - w: 15
+      text: Кооператив закрыли через полгода.
+      effects: {money_m: -1}
+      job: unemployed
+  - text: Остаться
+    effects: {}
+  variants: ['Знакомый открывает кооператив: шьют «варёнки» в подвале. Зовёт к себе.']
+- id: BIZ-03
+  type: choice
+  repeat: true
+  when: {from: 1988, to: 1991}
+  who:
+    job: [coop]
+  text: 'В цех заходят трое в спортивных костюмах: «Хорошо работаете. Защита нужна?»'
+  choices:
+  - text: Платить
+    effects: {money_m: -2}
+  - text: Отказать
+    outcomes:
+    - w: 40
+      mods: {ties: 0.3, strength: 5}
+      text: Отстали.
+      effects: {ties: 1}
+    - w: 35
+      text: Разгромили цех.
+      effects: {money_m: -6}
+      sets: [stubborn]
+    - w: 25
+      text: Избили во дворе.
+      effects: {health: -10}
+      sets: [stubborn]
+  - text: Найти своих
+    check: {base: 35, ties: 0.6, served: 10, afghan: 15}
+    success:
+      text: Ребята из союза ветеранов прикрывают.
+      effects: {money_m: -1}
+      sets: [own_roof]
+    fail:
+      text: Свои оказались хуже чужих.
+      effects: {money_m: -3}
+- id: BIZ-04
+  type: choice
+  when: {from: 1987, to: 1991}
+  who:
+    flags: [komsomol_active]
+  text: 'Центр НТТМ при райкоме комсомола: через него можно превращать безналичные деньги в наличные.'
+  choices:
+  - text: Войти в дело
+    effects: {money_m: 5, ties: 4, law: 5}
+    sets: [nttm, entrepreneur]
+  - text: Нет
+    effects: {}
+- id: BIZ-05
+  type: choice
+  when: {from: 1990, to: 1992}
+  where: [RU]
+  who:
+    age: [20, 45]
+    stats: {ties: '>50'}
+  text: Брокерское место на товарной бирже. Все что-то продают, никто ничего не видел.
+  choices:
+  - text: Купить место
+    outcomes:
+    - w: 50
+      mods: {know: 0.4, grit: 10}
+      text: Сделки каждый день, проценты рекой.
+      effects: {money_m: 15, ties: 4}
+      sets: [entrepreneur]
+      job: broker
+    - w: 50
+      text: Биржевой пузырь лопнул.
+      effects: {money_m: -5}
+      job: unemployed
+  - text: Нет
+    effects: {}
+- id: BIZ-06
+  type: choice
+  when: {from: 1990, to: 1998}
+  who:
+    role: [young, adult]
+    not_flags: [business]
+  weight: 0.4
+  text: Знакомые едут в Стамбул, Варшаву, Пекин за товаром. Зовут с собой.
+  choices:
+  - text: Ехать челноком
+    effects: {health: -2}
+    job: shuttle
+    sets: [entrepreneur]
+  - text: Нет
+    effects: {}
+- id: BIZ-07
+  type: choice
+  repeat: true
+  when: {from: 1990, to: 1998}
+  who:
+    job: [shuttle]
+  weight: 3
+  text: 'Поездка за товаром: Стамбул, клетчатые сумки по сорок кило. На границе таможенник намекает на «подарок».'
+  choices:
+  - text: Дать таможне «на лапу»
+    outcomes:
+    - w: 75
+      text: Таможенник отвернулся. Товар распродал за неделю.
+      effects: {money_m: 3.5, fit: -1}
+    - w: 15
+      text: Взятку взяли, а половину товара всё равно отобрали.
+      effects: {money_m: -0.5}
+    - w: 10
+      text: Ограбили в поезде на обратном пути.
+      effects: {money_m: -3, health: -3}
+    effects: {money_m: -0.5}
+  - text: Везти без взятки
+    outcomes:
+    - w: 50
+      mods: {grit: 10, fit: 0.2}
+      text: Проскочил, вся прибыль твоя.
+      effects: {money_m: 5}
+    - w: 40
+      text: Товар конфисковали.
+      effects: {money_m: -5}
+    - w: 10
+      text: Протокол и штраф.
+      effects: {money_m: -3, law: 10}
+- id: BIZ-08
+  type: choice
+  when: {from: 1991, to: 1998}
+  who:
+    role: [young, adult]
+    not_flags: [business]
+  weight: 0.4
+  text: 'Сосед продаёт ларёк у остановки: пиво, сигареты и «Сникерсы».'
+  choices:
+  - text: Открыть
+    effects: {money_m: -3}
+    sets: [business, entrepreneur]
+    job: kiosk
+  - text: Нет
+    effects: {}
+  variants: ['Сосед продаёт ларёк у остановки: пиво, сигареты и «Сникерсы».']
+- id: BIZ-09
+  type: choice
+  repeat: true
+  when: {from: 1992, to: 1998}
+  who:
+    job: [kiosk, firm]
+    not_flags: [own_roof]
+  weight: 2
+  text: Приехали «пацаны». Двадцать процентов за крышу.
+  choices:
+  - text: Платить
+    effects: {money_m: -2}
+  - text: Отказать
+    outcomes:
+    - w: 40
+      mods:
+        ties: 0.3
+        strength: 5
+        served: 10
+        afghan: 15
+        stubborn: -20
+        year: {1993: -10, 1994: -10}
+      text: Отстали.
+      effects: {ties: 3}
+    - w: 35
+      text: Ночью ларёк сгорел.
+      effects: {money_m: -8}
+      sets: [stubborn]
+      clears: [business]
+      job: unemployed
+    - w: 25
+      text: Встретили у подъезда. Неделю в больнице.
+      effects: {health: -12}
+      sets: [stubborn]
+  - text: Найти свою крышу
+    outcomes:
+    - w: 50
+      mods: {ties: 0.5}
+      text: Знакомый в милиции взял под защиту.
+      effects: {money_m: -1}
+      sets: [own_roof]
+    - w: 30
+      text: Стало хуже.
+      effects: {money_m: -4}
+    - w: 20
+      text: Новая крыша хочет долю побольше.
+      effects: {money_m: -3}
+      sets: [own_roof]
+- id: BIZ-10
+  type: choice
+  when: {from: 1992, to: 1998}
+  who:
+    job: [kiosk, firm]
+  text: Предлагают «левую» водку и сигареты без акцизов.
+  choices:
+  - text: Торговать
+    effects: {money_m: 3, law: 10}
+    sets: [shadow_trade]
+  - text: Только «белое»
+    effects: {}
+- id: BIZ-11
+  type: choice
+  when: {from: 1992, to: 1998}
+  who:
+    job: [kiosk, shuttle, coop]
+  text: Есть деньги, чтобы открыть магазин или оптовую фирму.
+  choices:
+  - text: Открыть фирму
+    effects: {money_m: -8, ties: 2}
+    sets: [business]
+    job: firm
+  - text: Не рисковать
+    effects: {}
+- id: BIZ-12
+  type: choice
+  when: {from: 1988, to: 1999}
+  who:
+    role: [young, adult, pension]
+  text: Знакомый просит вложиться в его дело за долю.
+  choices:
+  - text: Вложить
+    outcomes:
+    - w: 40
+      mods: {grit: 10, entrepreneur: 10}
+      text: Дело пошло, доля приносит доход.
+      effects: {money_m: 4}
+    - w: 35
+      text: Деньги «в обороте». Ни прибыли, ни возврата.
+      effects: {money_m: -2}
+    - w: 25
+      text: Партнёр исчез вместе с деньгами.
+      effects: {money_m: -4, ties: -2}
+      sets: [lent_unpaid]
+  - text: Отказать
+    effects: {ties: -1}
+  third_person: true
+- id: BIZ-13
+  type: choice
+  repeat: true
+  when: {from: 1993, to: 1998}
+  who:
+    flags: [business]
+  text: Налоговая полиция, «маски-шоу». Изымают бухгалтерию.
+  choices:
+  - text: Платить всё по закону
+    effects: {money_m: -6, law: -5}
+  - text: Договориться
+    check: {base: 55, ties: 0.6, charm: 5, shadow_trade: -15}
+    success:
+      text: Конверт решил вопрос.
+      effects: {money_m: -3, law: 5}
+    fail:
+      text: Возбудили дело.
+      effects: {law: 25, money_m: -4}
+  - text: Закрыть фирму и открыть новую
+    effects: {money_m: -5, law: 5, ties: -3, happy: -3}
+- id: BIZ-14
+  type: choice
+  when: {from: 1992, to: 1994}
+  where: [RU]
+  who:
+    job: [firm, banker]
+    stats: {ties: '>60'}
+  text: Рабочие завода продают акции за бутылку. Можно скупить пакет, пока не опомнились.
+  choices:
+  - text: Скупать
+    outcomes:
+    - w: 60
+      mods: {grit: 10}
+      text: Контрольный пакет у тебя.
+      effects: {money_m: 20, law: 5, fame: 5}
+    - w: 40
+      text: Директор завода оказался сильнее.
+      effects: {money_m: -5}
+  - text: Нет
+    effects: {}
+- id: BIZ-15
+  type: choice
+  when: {from: 1990, to: 1998}
+  who:
+    age: [22, 55]
+  text: 'Знакомый из министерства шепчет: лицензию на банк можно получить за месяц — если знать, кому платить.'
+  choices:
+  - text: Открыть
+    check: {base: 20, know: 0.4, ties: 0.5, nttm: 30, grit: 10}
+    success:
+      text: Лицензия, особняк, охрана.
+      effects: {money_m: 30, ties: 10, fame: 8}
+      sets: [business]
+      job: banker
+    fail:
+      text: Деньги ушли на взятки, лицензию не дали.
+      effects: {money_m: -10}
+  - text: Нет
+    effects: {}
+- id: BIZ-16
+  type: choice
+  when: {from: 1994, to: 1998}
+  who:
+    job: [banker]
+  repeat: true
+  text: ЦБ отзывает лицензии, рынок ГКО, кредиторы требуют своё.
+  choices:
+  - text: Играть на ГКО
+    outcomes:
+    - w: 70
+      mods:
+        year: {1998: -60}
+      text: Доходность огромная.
+      effects: {money_m: 15}
+    - w: 30
+      text: Банк лопнул.
+      effects: {money_m: -30, law: 15}
+      clears: [business]
+      job: unemployed
+  - text: Осторожничать
+    effects: {money_m: 3}
+- id: BIZ-17
+  type: choice
+  when: {from: 1995, to: 1995, month: 11}
+  where: [RU]
+  who:
+    job: [banker]
+    stats: {ties: '>80'}
+  text: 'В Москве готовят залоговые аукционы: нефтяные компании уходят за долги государству.'
+  choices:
+  - text: Участвовать
+    outcomes:
+    - w: 40
+      mods: {ties: 0.5}
+      text: Ты олигарх.
+      effects: {money_m: 100, fame: 20, law: 10}
+    - w: 60
+      text: Не пустили к столу.
+      effects: {ties: -5}
+  - text: Нет
+    effects: {}
+- id: BIZ-18
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    flags: [business]
+  weight: 0.5
+  text: Конкурент заказал тебя. Об этом шепчет знакомый.
+  choices:
+  - text: Нанять охрану
+    effects: {money_m: -6}
+  - text: Уехать на время
+    effects: {close: -4, money_m: -3}
+  - text: Договориться
+    check: {base: 45, ties: 0.5, charm: 10, cheated_partner: -20}
+    success:
+      text: Поделили рынок.
+      effects: {money_m: -3}
+    fail:
+      text: Не договорились.
+      effects: {health: -15}
+      sets: [injury]
+- id: BIZ-19
+  type: choice
+  repeat: true
+  when: {from: 1991, to: 1999}
+  who:
+    role: [young, adult]
+    stats: {ties: '>40'}
+  text: Перегнать «бэху» из Германии или «японку» из Владивостока.
+  choices:
+  - text: Ехать
+    outcomes:
+    - w: 70
+      text: Довёз и продал.
+      effects: {money_m: 4}
+    - w: 20
+      text: Отобрали на трассе.
+      effects: {money_m: -5}
+    - w: 10
+      text: Авария на трассе.
+      effects: {health: -12, money_m: -3}
+  - text: Нет
+    effects: {}
+- id: BIZ-20
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    role: [young, adult]
+    stats: {ties: '>40'}
+  text: Одинокий пенсионер хочет продать квартиру. Ты посредник.
+  choices:
+  - text: Честная сделка
+    effects: {money_m: 2, ties: 1}
+  - text: Нечестная
+    outcomes:
+    - w: 70
+      text: Заработал втрое.
+      effects: {money_m: 6, law: 10}
+    - w: 30
+      text: Дело в прокуратуре.
+      effects: {law: 30}
+- id: BIZ-21
+  type: offer
+  when: {from: 1987, to: 1999}
+  who:
+    role: [young, adult]
+    not_flags: [business]
+  weight: 0.3
+  text: 'Можно открыть своё дело: снять помещение под кафе или автомастерскую.'
+  choices:
+  - text: Открыть
+    effects: {money_m: -6}
+    sets: [business, entrepreneur]
+    job: firm
+  - text: Не сейчас
+    effects: {}
+  variants: ['Можно открыть своё дело: снять помещение под кафе или автомастерскую.']
+- id: BIZ-22
+  type: offer
+  when: {from: 1988, to: 1999}
+  who:
+    flags: [business]
+  text: Дело идёт. Можно вложить ещё и расшириться.
+  choices:
+  - text: Расширить
+    outcomes:
+    - w: 60
+      mods: {grit: 10}
+      text: Вторая точка работает.
+      effects: {money_m: 6}
+    - w: 40
+      text: Не окупилось.
+      effects: {money_m: -4}
+    effects: {happy: -2, close: -2}
+  - text: Не трогать
+    effects: {}
+- id: BIZ-23
+  type: offer
+  when: {from: 1988, to: 1999}
+  who:
+    flags: [business]
+  text: 'К тебе приходит человек в дорогом пальто: «Продайте дело. Цену назовите сами».'
+  choices:
+  - text: Продать
+    effects: {money_m: 10}
+    clears: [business]
+    job: unemployed
+  - text: Отказаться
+    effects: {}
+- id: BIZ-24
+  type: choice
+  when: {from: 1990, to: 1999}
+  who:
+    flags: [business]
+  text: Партнёр предлагает «увести» общие деньги у третьего компаньона.
+  choices:
+  - text: Согласиться
+    effects: {money_m: 8}
+    sets: [cheated_partner]
+  - text: Отказаться
+    effects: {ties: 1}
+  third_person: true

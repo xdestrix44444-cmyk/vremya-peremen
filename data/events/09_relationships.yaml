@@ -1,0 +1,456 @@
+title: 9. Отношения (REL)
+note: Механика — CONCEPT §3.12. Партнёр — персонаж с характером, у пары своя шкала Отношения.
+events:
+- id: REL-01
+  type: choice
+  repeat: true
+  who:
+    age: [16, 70]
+    not_flags: [partner]
+  weight: 2
+  text: На танцах в ДК кто-то смотрит на тебя весь вечер.
+  choices:
+  - text: Познакомиться
+    check: {base: 50, charm: 15, close: 0.2}
+    success:
+      text: Обменялись телефонами.
+      effects: {rel: 30, close: 1}
+      sets: [partner]
+    fail:
+      text: Не сложилось.
+      effects: {}
+  - text: Пройти мимо
+    effects: {}
+  variants: [На танцах в ДК кто-то смотрит на тебя весь вечер., В очереди за колбасой разговорились — и простояли ещё час., 'Друзья позвали на день рождения, там был человек, с которым легко.']
+- id: REL-02
+  type: scene
+  repeat: true
+  who:
+    flags: [partner]
+    not_flags: [married]
+  text: Кино в «Октябре», потом мороженое на лавочке.
+  variants: ['Кино в «Октябре», потом мороженое на лавочке.', Прогулка по набережной до последнего трамвая., 'Дача друзей: шашлык, гитара, разговоры до утра.']
+  focus: family
+  chance: 0.7
+  effects: {rel: 6, happy: 2, money_m: -0.3}
+- id: REL-03
+  type: choice
+  who:
+    flags: [partner]
+    not_flags: [married]
+  text: 'Знакомство с будущей роднёй: стол накрыт, на тебя смотрят оценивающе.'
+  choices:
+  - text: Постараться понравиться
+    check: {base: 55, charm: 15, ties: 0.2}
+    success:
+      text: Родители в восторге.
+      effects: {rel: 6}
+    fail:
+      text: Будущая тёща или свёкор поджали губы.
+      effects: {rel: -3}
+    effects: {happy: -1}
+  - text: Быть собой
+    effects: {rel: 1, happy: 1}
+- id: REL-04
+  type: choice
+  who:
+    flags: [partner]
+    not_flags: [married]
+    age: [18, 70]
+  text: Кольцо куплено. Осталось решиться.
+  choices:
+  - text: Сделать
+    check: {base: 50, rel: 0.8, charm: 10}
+    success:
+      text: Согласие. Подаёте заявление в ЗАГС.
+      effects: {rel: 10}
+      sets: [married]
+    fail:
+      text: Отказ. «Давай пока так».
+      effects: {rel: -10}
+    memo: Подали заявление в ЗАГС.
+  - text: Подождать
+    effects: {}
+- id: REL-05
+  type: choice
+  who:
+    flags: [partner]
+    not_flags: [married]
+    age: [18, 70]
+  text: Вечером, за чаем, тебе делают предложение.
+  choices:
+  - text: Да
+    effects: {rel: 10}
+    sets: [married]
+    memo: Подали заявление в ЗАГС.
+  - text: Нет
+    effects: {rel: -25}
+    clears: [partner]
+  - text: Подумать
+    effects: {rel: -5}
+  third_person: true
+- id: REL-06
+  type: choice
+  who:
+    flags: [married]
+  text: 'Свадьба в столовой завода: родня с двух сторон, салат «Мимоза», баян.'
+  choices:
+  - text: Гулять с размахом
+    effects: {money_m: -4, close: 4, ties: 2}
+  - text: Скромно
+    effects: {money_m: -1, close: 1}
+  variants: ['Свадьба в столовой завода: родня с двух сторон, салат «Мимоза», баян.', 'Свадьба: «Волга» с куклой на капоте, фото у Вечного огня.']
+- id: REL-07
+  type: choice
+  who:
+    flags: [married]
+  text: Первая общая зарплата. Как будете жить — в один кошелёк или каждый свой?
+  choices:
+  - text: Общий
+    effects: {rel: 3}
+    sets: [shared_budget]
+  - text: Раздельный
+    effects: {}
+- id: REL-08
+  type: choice
+  who:
+    flags: [married]
+  text: Молодые, а жить негде. Нужно решать, где начинать семейную жизнь.
+  choices:
+  - text: С родителями
+    effects: {money_m: 1, rel: -3, close: 1}
+  - text: Снимать
+    effects: {rel: 3}
+    item: {add: rent_flat}
+  - text: Коммуналка или общежитие
+    effects: {rel: -1}
+    item: {add: kommunalka}
+  - text: Встать в очередь на квартиру
+    who:
+      years: [1986, 1991]
+    effects: {}
+    item: {add: kommunalka}
+- id: REL-09
+  type: choice
+  repeat: true
+  who:
+    flags: [married]
+  text: 'Ссора из-за денег: опять не хватило до зарплаты.'
+  choices:
+  - text: Уступить
+    effects: {rel: 3, happy: -3}
+  - text: Стоять на своём
+    outcomes:
+    - w: 60
+      text: Помирились через неделю.
+      effects: {rel: -2}
+    - w: 40
+      mods: {shared_budget: 15}
+      text: Неделю не разговариваете.
+      effects: {rel: -8}
+    effects: {happy: 2}
+  chance: 0.3
+  variants: ['Ссора из-за денег: опять не хватило до зарплаты.', 'Партнёр купил себе куртку, а на квартплату не осталось.']
+- id: REL-10
+  type: choice
+  repeat: true
+  who:
+    flags: [married]
+  text: Свекровь опять всё переставила на кухне.
+  choices:
+  - text: На стороне партнёра
+    effects: {rel: 5, close: -3}
+  - text: На стороне своей родни
+    effects: {rel: -6, close: 1}
+  chance: 0.2
+  variants: [Свекровь опять всё переставила на кухне., Тёща звонит каждый вечер и даёт советы.]
+- id: REL-11
+  type: choice
+  repeat: true
+  who:
+    flags: [married]
+    age: [18, 45]
+  text: Заводить ли ребёнка? Карточка показывает, чего хочет партнёр.
+  choices:
+  - text: Да
+    check:
+      base: 70
+      health: 0.3
+      year: {1993: -10, 1994: -10}
+    success:
+      text: Родился ребёнок.
+      effects: {rel: 6, close: 8, money_m: -2}
+      sets: [has_kids]
+    fail:
+      text: Пока не получается.
+      effects: {rel: -2}
+  - text: Позже
+    effects: {rel: -2}
+  - text: Нет
+    effects: {rel: -6, happy: 1}
+- id: REL-12
+  type: scene
+  repeat: true
+  who:
+    flags: [married]
+  text: 'Отпуск вдвоём: море, поезд, чай в подстаканниках.'
+  focus: family
+  chance: 0.5
+  effects: {rel: 8, health: 2, happy: 4, money_m: -2}
+  variants: ['Отпуск вдвоём: море, поезд, чай в подстаканниках.', Неделя вдвоём в доме отдыха под Звенигородом.]
+- id: REL-13
+  type: choice
+  who:
+    flags: [married]
+  text: 'Партнёр пришёл домой днём и сел, не раздеваясь: «Сократили».'
+  choices:
+  - text: Поддержать
+    effects: {rel: 6, money_m: -1}
+  - text: Упрекать
+    effects: {rel: -10}
+- id: REL-14
+  type: scene
+  repeat: true
+  who:
+    flags: [married]
+    job: [shift, army, shuttle, migrant]
+  text: Ты месяц на вахте. Звонишь домой с переговорного пункта раз в неделю.
+  effects: {rel: -5}
+  variants: [Ты месяц на вахте. Звонишь домой с переговорного пункта раз в неделю., Командировка на полгода. Письма идут по три недели.]
+- id: REL-15
+  type: choice
+  who:
+    flags: [married]
+    age: [18, 60]
+  text: Коллега всё чаще задерживается возле твоего стола и зовёт пить кофе.
+  choices:
+  - text: Отказать
+    effects: {rel: 1}
+  - text: Роман
+    outcomes:
+    - w: 60
+      text: Никто не узнал. Пока.
+      effects: {close: 1}
+      sets: [affair]
+    - w: 40
+      text: Партнёр узнал.
+      effects: {rel: -30}
+      sets: [affair]
+- id: REL-16
+  type: choice
+  who:
+    flags: [married]
+  text: В кармане пиджака — чужая записка. Почерк знакомый.
+  choices:
+  - text: Простить
+    memo: Узнал об измене и простил.
+    outcomes:
+    - w: 60
+      text: Помирились, но осадок остался надолго.
+      effects: {rel: -8, happy: -6, close: -1}
+    - w: 40
+      text: Через год всё повторилось.
+      effects: {rel: -20, happy: -10}
+  - text: Развестись
+    memo: Узнал об измене и подал на развод.
+    effects: {happy: -4, close: -2, money_m: -1}
+    clears: [married, partner, shared_budget]
+    sets: [divorced]
+    outcomes:
+    - w: 100
+      text: Заявление в ЗАГС, раздел вещей. Тяжело, но дышать стало легче.
+      effects: {happy: 3}
+  - text: Сделать вид, что не знаешь
+    memo: Узнал об измене и промолчал.
+    effects: {rel: -4, happy: -8, health: -1}
+- id: REL-17
+  type: choice
+  repeat: true
+  who:
+    flags: [married, partner_drinks]
+  text: Партнёр третий день не трезвеет.
+  choices:
+  - text: Терпеть
+    effects: {rel: -4, health: -2}
+  - text: Закодировать
+    check: {base: 50, rel: 0.3}
+    success:
+      text: Держится уже полгода.
+      effects: {money_m: -1, rel: 5}
+      clears: [partner_drinks]
+    fail:
+      text: Сорвался через месяц.
+      effects: {money_m: -1, rel: -5}
+  - text: Уйти
+    effects: {rel: -50}
+    clears: [married, partner, partner_drinks, shared_budget]
+    sets: [divorced]
+  third_person: true
+  variants: [Партнёр третий день не трезвеет., Ночью звонят из вытрезвителя.]
+- id: REL-18
+  type: scene
+  who:
+    flags: [married]
+  chance: 0.03
+  text: Партнёр всё чаще приходит домой навеселе.
+  sets: [partner_drinks]
+  effects: {rel: -5}
+  third_person: true
+- id: REL-19
+  type: choice
+  who:
+    flags: [married]
+    stats: {rel: <30}
+  text: Ужинаете молча. Всё чаще думаешь, что пора разводиться.
+  choices:
+  - text: Подать на развод
+    effects: {rel: -20}
+    clears: [married, partner, shared_budget]
+    sets: [divorced]
+  - text: Попробовать спасти брак
+    check: {base: 40, will: 10, close: 0.3}
+    success:
+      text: Отпуск, разговор, всё налаживается.
+      effects: {rel: 20}
+    fail:
+      text: Стало только хуже.
+      effects: {rel: -5}
+- id: REL-20
+  type: choice
+  who:
+    flags: [married]
+    stats: {rel: <20}
+  text: На столе заявление о разводе. Подпись партнёра уже стоит.
+  choices:
+  - text: Согласиться
+    clears: [married, partner, shared_budget]
+    sets: [divorced]
+  - text: Бороться за брак
+    check: {base: 25, charm: 10}
+    success:
+      text: Заявление забрали.
+      effects: {rel: 15}
+    fail:
+      text: Развели через суд.
+      clears: [married, partner, shared_budget]
+      sets: [divorced]
+  third_person: true
+- id: REL-21
+  type: choice
+  who:
+    flags: [divorced, has_kids]
+  text: С кем останутся дети? В те годы суд почти всегда оставлял их с матерью.
+  choices:
+  - text: Оставить с бывшим партнёром
+    effects: {close: -10}
+    sets: [alimony]
+  - text: Бороться
+    check: {base: 10, ties: 0.4, partner_drinks: 30}
+    success:
+      text: Суд оставил детей с тобой.
+      effects: {close: 2, money_m: -2}
+    fail:
+      text: Детей оставили с бывшим партнёром.
+      effects: {close: -12, money_m: -2}
+      sets: [alimony]
+- id: REL-22
+  type: choice
+  who:
+    flags: [divorced]
+  text: 'В суде делят то, что нажили: квартиру, машину, дачу.'
+  choices:
+  - text: Пополам
+    effects: {money_m: -6}
+  - text: Уступить всё
+    effects: {money_m: -12, close: 1}
+  - text: Судиться
+    outcomes:
+    - w: 50
+      mods: {ties: 0.4}
+      text: Отсудил больше половины.
+      effects: {money_m: -2}
+    - w: 50
+      text: Суды на год, адвокаты съели всё.
+      effects: {money_m: -9, health: -3}
+- id: REL-23
+  type: choice
+  repeat: true
+  who:
+    flags: [alimony]
+  text: 'Пришёл исполнительный лист: алименты, четверть дохода на каждого ребёнка.'
+  choices:
+  - text: Платить
+    effects: {money_m: -2}
+  - text: Скрывать доход
+    effects: {law: 10, close: -4}
+- id: REL-24
+  type: choice
+  repeat: true
+  who:
+    flags: [divorced, has_kids]
+  text: Бывший партнёр разрешил видеться с детьми по выходным.
+  choices:
+  - text: Каждые выходные
+    effects: {close: 4, money_m: -0.5, happy: 2}
+  - text: Редко
+    effects: {close: -3, happy: -1}
+- id: REL-25
+  type: scene
+  who:
+    flags: [married]
+    age: [40, 99]
+  chance: 0.015
+  text: Утром партнёр не проснулся.
+  effects: {close: -20, health: -5}
+  clears: [married, partner, shared_budget, partner_drinks]
+  sets: [widowed]
+  third_person: true
+- id: REL-26
+  type: choice
+  who:
+    flags: [married]
+  text: Партнёр нашёл работу в другом городе или стране.
+  choices:
+  - text: Переехать вместе
+    effects: {rel: 6, ties: -6}
+  - text: Жить на два города
+    effects: {rel: -8, money_m: 2, happy: -2}
+  - text: Отговорить
+    effects: {rel: -5, money_m: -2}
+- id: REL-27
+  type: choice
+  who:
+    flags: [widowed]
+  text: На поминках подруги к тебе подсел человек, с которым легко молчать.
+  choices:
+  - text: Дать себе шанс
+    effects: {close: 1, rel: 25}
+    sets: [partner]
+    clears: [widowed]
+  - text: Рано
+    effects: {}
+- id: REL-28
+  type: choice
+  who:
+    flags: [affair, married]
+  weight: 0.5
+  text: Общий знакомый проболтался на дне рождения о твоём старом романе.
+  choices:
+  - text: Признаться
+    outcomes:
+    - w: 50
+      text: Тяжёлый разговор, но вы вместе.
+      effects: {rel: -15}
+    - w: 50
+      text: Партнёр ушёл.
+      effects: {rel: -40}
+      clears: [married, partner, shared_budget]
+      sets: [divorced]
+  - text: Отпираться
+    outcomes:
+    - w: 60
+      text: Поверили.
+      effects: {rel: -5}
+    - w: 40
+      text: Не поверили.
+      effects: {rel: -25}

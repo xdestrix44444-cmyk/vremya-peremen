@@ -1,0 +1,181 @@
+title: "13. Предложения о работе (JOB)"
+note: "Карточка: должность, место, зарплата в месяц, условия, требования. Принять / Отказаться / Торговаться. Зарплаты — ориентиры, сверить с данными."
+events:
+- id: JOB-01
+  type: offer
+  repeat: true
+  when: {from: 1986, to: 1991}
+  who: {role: [young, adult], stats: {fit: ">40"}, job: [unemployed, student, worker]}
+  text: "Рабочий на завод, общежитие. 180–250 ₽ в месяц."
+  choices:
+    - {text: Принять, job: worker}
+    - {text: Торговаться, check: {base: 35, ties: 0.3, charm: 10}, success: {text: "Дали разряд повыше.", job: worker, effects: {money_m: 1}}, fail: {text: "«Не нравится — не держим».", effects: {}}}
+    - {text: Отказаться, effects: {}}
+- id: JOB-02
+  type: offer
+  when: {from: 1986, to: 1991}
+  who: {sex: m, role: [young, adult], stats: {fit: ">60"}}
+  text: "Шахта или Север, «длинный рубль». 400–700 ₽ в месяц."
+  choices:
+    - {text: Принять, job: miner, effects: {close: -3}}
+    - {text: Отказаться, effects: {}}
+- id: JOB-03
+  type: offer
+  when: {from: 1986, to: 1991}
+  who: {edu: [university], job: [unemployed, student, worker]}
+  text: "Инженер в НИИ. 140–180 ₽ в месяц."
+  choices:
+    - {text: Принять, job: engineer}
+    - {text: Отказаться, effects: {}}
+- id: JOB-04
+  type: offer
+  when: {from: 1986, to: 1991}
+  who: {role: [young, adult], stats: {ties: ">50"}}
+  text: "Продавец или товаровед в гастрономе. Зарплата 120 ₽, зато «дефицит» и блат."
+  choices:
+    - {text: Принять, effects: {ties: 4}, job: shop}
+    - {text: Отказаться, effects: {}}
+- id: JOB-05
+  type: offer
+  when: {from: 1988, to: 1991}
+  who: {stats: {know: ">60"}, role: [young, adult]}
+  text: "Переводчик в совместном предприятии. 500–800 ₽ в месяц."
+  choices:
+    - {text: Принять, job: translator}
+    - {text: Торговаться, check: {base: 35, charm: 10, ties: 0.3}, success: {text: "Плюс валютные премии.", job: translator, effects: {money_m: 1}}, fail: {text: "Взяли другого.", effects: {}}}
+    - {text: Отказаться, effects: {}}
+- id: JOB-06
+  type: offer
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who: {role: [young, adult], stats: {fit: ">50"}}
+  text: "Охранник в ЧОПе или банке. 100–300 у.е. в месяц."
+  choices:
+    - {text: Принять, job: guard}
+    - {text: Торговаться, check: {base: 35, served: 15, afghan: 15, chechen: 15, fighter: 10, injury: -15}, success: {text: "Старшим смены.", job: guard, effects: {money_m: 1}}, fail: {text: "Взяли другого.", effects: {}}}
+    - {text: Отказаться, effects: {}}
+- id: JOB-07
+  type: offer
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who: {role: [young, adult, pension]}
+  weight: 2
+  text: "Продавец на рынке или в ларьке. 80–200 у.е. в месяц."
+  choices:
+    - {text: Принять, job: shop}
+    - {text: Отказаться, effects: {}}
+- id: JOB-08
+  type: offer
+  when: {from: 1992, to: 1999}
+  who: {stats: {know: ">60"}, edu: [university, technikum]}
+  text: "Менеджер или бухгалтер в коммерческой фирме. 200–500 у.е., зарплата «в конверте»."
+  choices:
+    - {text: Принять, job: firm}
+    - {text: Торговаться, check: {base: 35, charm: 10, ties: 0.3, grit: 10}, success: {text: "Договорились на верхнюю планку.", job: firm, effects: {money_m: 1}}, fail: {text: "Место ушло.", effects: {}}}
+    - {text: Отказаться, effects: {}}
+- id: JOB-09
+  type: offer
+  when: {from: 1993, to: 1999}
+  who: {sex: m, stats: {fit: ">50"}, role: [young, adult], not_flags: [injury]}
+  text: "Вахта на Севере: месяц через месяц. 300–700 у.е. в месяц."
+  choices:
+    - {text: Принять, job: shift, effects: {close: -3}}
+    - {text: Отказаться, effects: {}}
+- id: JOB-10
+  type: offer
+  when: {from: 1992, to: 1999}
+  who: {edu: [university, technikum], not_flags: [noncitizen]}
+  text: "Учитель, врач или инженер на госпредприятии. 30–100 у.е., могут задерживать."
+  choices:
+    - {text: Принять, job: teacher}
+    - {text: Отказаться, effects: {}}
+- id: JOB-11
+  type: offer
+  when: {from: 1994, to: 1999}
+  who: {stats: {know: ">70"}}
+  text: "Иностранная компания: нефть, табак, аудит. 800–2000 у.е. в месяц."
+  choices:
+    - {text: Пройти собеседование, check: {base: 25, know: 0.6, charm: 10, ties: 0.3}, success: {text: "Взяли. Пропуск, офис, зарплата в долларах.", job: firm, effects: {money_m: 3, ties: 3}}, fail: {text: "Не прошёл.", effects: {}}}
+    - {text: Отказаться, effects: {}}
+- id: JOB-12
+  type: offer
+  when: {from: 1995, to: 1999}
+  who: {stats: {know: ">55"}, edu: [university, technikum]}
+  weight: 0.5
+  text: "Программист или сисадмин. 200–800 у.е. в месяц."
+  choices:
+    - {text: Принять, job: programmer}
+    - {text: Отказаться, effects: {}}
+- id: JOB-13
+  type: offer
+  when: {from: 1992, to: 1999}
+  who: {age: [18, 35]}
+  text: "Объявление: «Работа за границей. Официанты, строители. 1000+ у.е.»."
+  choices:
+    - {text: Поехать, outcomes: [{w: 50, text: "Работа настоящая, хоть и тяжёлая.", effects: {money_m: 5, close: -5}}, {w: 50, text: "Обман: забрали паспорт и деньги.", effects: {money_m: -3, health: -5, close: -5}}]}
+    - {text: Не верить, effects: {}}
+- id: JOB-14
+  type: offer
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who: {job: [unemployed]}
+  weight: 2
+  text: "Шабашка: ремонт, стройка, частный извоз. Разово 20–100 у.е."
+  choices:
+    - {text: Взяться, effects: {money_m: 1, fit: 1}}
+    - {text: Нет, effects: {}}
+- id: JOB-15
+  type: offer
+  repeat: true
+  when: {from: 1986, to: 1999}
+  who: {job: [unemployed]}
+  weight: 3
+  text: "Ищешь работу. Звонок от знакомого: есть место."
+  choices:
+    - {text: Принять что дают, job: worker}
+    - {text: Ждать лучшего, effects: {close: -1}}
+- id: JOB-16
+  type: offer
+  repeat: true
+  who: {role: [young, adult], not_flags: [brigade], exp: ">2"}
+  text: "Повышение на работе: новая должность, зарплата выше."
+  choices:
+    - {text: Принять, effects: {ties: 1, close: -1}, promote: true}
+    - {text: Торговаться, check: {base: 40, charm: 10, ties: 0.3}, success: {text: "Ещё и кабинет отдельный.", effects: {money_m: 1, ties: 1}, promote: true}, fail: {text: "Повышение отдали другому.", effects: {}}}
+    - {text: Отказаться, effects: {}}
+- id: JOB-17
+  type: offer
+  when: {from: 1986, to: 1999}
+  who: {role: [young, adult], stats: {know: ">50"}, edu: [university, technikum]}
+  weight: 0.5
+  text: "Районная газета ищет корреспондента. 150 ₽ или 50–100 у.е."
+  choices:
+    - {text: Принять, job: journalist}
+    - {text: Отказаться, effects: {}}
+- id: JOB-18
+  type: offer
+  when: {from: 1986, to: 1999}
+  who: {role: [young, adult], flags: [talent_found]}
+  text: "Ресторанный ансамбль, Дом культуры или студия зовут музыкантов."
+  choices:
+    - {text: Принять, job: artist, effects: {fame: 2}}
+    - {text: Отказаться, effects: {}}
+- id: JOB-19
+  type: offer
+  when: {from: 1986, to: 1999}
+  who: {role: [young, adult], flags: [served], stats: {fit: ">40"}, not_flags: [record]}
+  weight: 0.5
+  text: "В милицию набирают отслуживших. Форма, общежитие, 200 ₽ или 50–150 у.е."
+  choices:
+    - {text: Принять, job: police, sets: [official]}
+    - {text: Отказаться, effects: {}}
+- id: JOB-20
+  type: offer
+  when: {from: 1986, to: 1999}
+  who: {role: [young, adult], edu: [university], not_flags: [record]}
+  weight: 0.5
+  text: "Исполком, министерство или администрация ищут специалиста. Скромная зарплата, зато госслужба."
+  choices:
+    - {text: Принять, job: official, sets: [official]}
+    - {text: Торговаться, check: {base: 35, ties: 0.4, charm: 10}, success: {text: "Взяли на должность повыше.", job: official, sets: [official], effects: {ties: 1}}, fail: {text: "Место отдали другому.", effects: {}}}
+    - {text: Отказаться, effects: {}}

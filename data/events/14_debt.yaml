@@ -1,0 +1,397 @@
+title: 14. Долги (DEBT)
+note: Механика — CONCEPT §3.14. Шанс любого исхода — по проверке §6.2.
+events:
+- id: DEBT-01
+  type: choice
+  repeat: true
+  who:
+    age: [18, 99]
+    money: <0
+  text: До зарплаты неделя, а в кошельке мелочь.
+  choices:
+  - text: Занять у родни
+    effects: {money_m: 1, close: -3, happy: -1}
+  - text: Занять у друзей
+    effects: {money_m: 1, ties: -2, happy: -1}
+  - text: Продать вещь
+    effects: {money_m: 0.7, happy: -2, close: -1}
+  - text: Ужаться
+    effects: {health: -1, happy: -1}
+  chance: 0.4
+  variants: ['До зарплаты неделя, а в кошельке мелочь.', 'Холодильник пустой, а получка только через десять дней.']
+- id: DEBT-02
+  type: offer
+  when: {from: 1986, to: 1991}
+  who:
+    role: [young, adult]
+  text: В сберкассе можно взять мебель или телевизор в кредит под 1–3% годовых.
+  choices:
+  - text: Взять
+    effects: {close: 1}
+    sets: [debt_bank]
+  - text: Нет
+    effects: {}
+- id: DEBT-03
+  type: offer
+  when: {from: 1986, to: 1991}
+  who:
+    role: [adult]
+    flags: [married]
+  text: 'На работе формируют жилищный кооператив: первый взнос — и через три года своя квартира.'
+  choices:
+  - text: Вступить
+    effects: {money_m: -6, close: 4}
+    sets: [debt_bank]
+    item: {add: own_flat}
+  - text: Ждать государственную
+    effects: {}
+- id: DEBT-04
+  type: offer
+  when: {from: 1992, to: 1999}
+  who:
+    flags: [business]
+  text: Банк даёт кредит под залог. В рублях или в у.е.
+  choices:
+  - text: В рублях
+    effects: {money_m: 10}
+    sets: [debt_bank]
+  - text: В у.е.
+    effects: {money_m: 10}
+    sets: [debt_bank]
+  - text: Нет
+    effects: {}
+- id: DEBT-05
+  type: choice
+  repeat: true
+  who:
+    age: [18, 99]
+  text: 'Ломбард на углу: под залог золота и техники дают деньги сразу.'
+  choices:
+  - text: Заложить
+    effects: {money_m: 1}
+    outcomes:
+    - w: 70
+      text: Выкупил через месяц.
+      effects: {money_m: 1, happy: -1}
+    - w: 30
+      text: Выкупить не смог, вещь ушла.
+      effects: {money_m: 1, happy: -4}
+  - text: Нет
+    effects: {}
+- id: DEBT-06
+  type: offer
+  when: {from: 1990, to: 1999}
+  who:
+    age: [18, 70]
+  text: 'Знакомый сводит с человеком, который «даёт под процент»: 10–20% в месяц.'
+  choices:
+  - text: Взять
+    effects: {money_m: 4}
+    sets: [debt_private]
+  - text: Нет
+    effects: {}
+- id: DEBT-07
+  type: offer
+  when: {from: 1990, to: 1999}
+  who:
+    flags: [business]
+  text: 'Бригада предлагает «помочь деньгами»: 10–30% в месяц.'
+  choices:
+  - text: Взять
+    effects: {money_m: 8}
+    sets: [debt_bandits]
+  - text: Нет
+    effects: {}
+- id: DEBT-08
+  type: choice
+  repeat: true
+  who:
+    age: [18, 99]
+  text: 'Тётка звонит уже третий раз: «Когда отдашь?»'
+  choices:
+  - text: Отдать частями
+    effects: {money_m: -1}
+  - text: Обещать
+    effects: {close: -2}
+  - text: Избегать
+    effects: {close: -4, money_m: 1}
+- id: DEBT-09
+  type: choice
+  repeat: true
+  who:
+    flags: [debt_bank]
+    money: <0
+  chance: 0.35
+  text: 'Пришло письмо из банка: пени за три месяца. Ниже — повестка в суд.'
+  choices:
+  - text: Платить
+    effects: {money_m: -2}
+  - text: Договориться об отсрочке
+    check: {base: 40, ties: 0.4, charm: 10, defaulter: -20}
+    success:
+      text: Отсрочка на полгода.
+      effects: {}
+    fail:
+      text: Банк подал в суд.
+      effects: {law: 5}
+  - text: Игнорировать
+    effects: {law: 10}
+    sets: [defaulter]
+  variants: ['Пришло письмо из банка: пени за три месяца. Ниже — повестка в суд.']
+- id: DEBT-10
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    flags: [debt_bank, defaulter]
+  text: Пришли приставы описывать имущество. На шкаф уже клеят бирку.
+  choices:
+  - text: Отдать
+    effects: {money_m: -6, close: -3}
+    clears: [debt_bank]
+  - text: Спрятать заранее
+    check: {base: 40, grit: 15}
+    success:
+      text: Опись пустой квартиры.
+      effects: {law: 5}
+    fail:
+      text: Нашли и забрали больше.
+      effects: {money_m: -8, law: 10}
+- id: DEBT-11
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    flags: [debt_bank, defaulter]
+  weight: 0.5
+  text: Банк продал долг. Тебя навещают «коллекторы» в кожаных куртках.
+  sets: [debt_bandits]
+  clears: [debt_bank]
+  choices:
+  - text: Платить
+    effects: {money_m: -4}
+  - text: Договориться
+    check: {base: 35, ties: 0.4, charm: 10}
+    success:
+      text: Скинули проценты.
+      effects: {money_m: -2}
+    fail:
+      text: Включили счётчик.
+      effects: {close: -4}
+  - text: Искать защиту
+    check: {base: 30, ties: 0.6, own_roof: 25}
+    success:
+      text: От тебя отстали.
+      effects: {money_m: -1}
+      clears: [debt_bandits]
+    fail:
+      text: Защитники сами потребовали долю.
+      effects: {money_m: -3}
+- id: DEBT-12
+  type: choice
+  repeat: true
+  who:
+    flags: [debt_bandits]
+  chance: 0.6
+  text: 'Тебя «поставили на счётчик»: 1–5% в день.'
+  choices:
+  - text: Платить
+    effects: {money_m: -5}
+    clears: [debt_bandits]
+  - text: Договориться
+    check: {base: 30, ties: 0.5, charm: 10, defaulter: -20}
+    success:
+      text: Дали месяц.
+      effects: {}
+    fail:
+      text: Счётчик тикает.
+      effects: {close: -4}
+  - text: Искать защиту
+    check: {base: 25, ties: 0.6, own_roof: 25, served: 5}
+    success:
+      text: «Вопрос закрыт».
+      effects: {money_m: -2}
+      clears: [debt_bandits]
+    fail:
+      text: Стало хуже.
+      effects: {money_m: -2}
+      sets: [defaulter]
+  - text: Бежать в другой город
+    outcomes:
+    - w: 60
+      text: Затерялся.
+      effects: {close: -8, ties: -15}
+      clears: [debt_bandits]
+    - w: 40
+      text: Нашли.
+      effects: {health: -10}
+      sets: [defaulter]
+- id: DEBT-13
+  type: scene
+  who:
+    flags: [debt_bandits, defaulter]
+  text: Ночью увезли машину. Утром передали ключи от ларька «в счёт долга».
+  effects: {money_m: -4}
+  item: {remove_group: car}
+- id: DEBT-14
+  type: choice
+  who:
+    flags: [debt_bandits, defaulter]
+  text: Вежливые люди предлагают «решить вопрос» квартирой. Нотариус уже ждёт в машине.
+  choices:
+  - text: Переписать квартиру
+    effects: {close: -10}
+    clears: [debt_bandits]
+    item: {remove_group: housing, add: kommunalka}
+  - text: Отказаться
+    outcomes:
+    - w: 60
+      text: Встретили у подъезда. Неделю в больнице. Семья всё поняла без слов.
+      effects: {health: -15, close: -5}
+    - w: 30
+      text: Дали ещё месяц.
+      effects: {close: -3}
+    - w: 10
+      mods: {defaulter: 10}
+      text: Крайняя мера.
+      end: death
+- id: DEBT-15
+  type: scene
+  when: {from: 1992, to: 1993}
+  who:
+    flags: [debt_bank]
+  text: 'Инфляция съела рублёвый долг: отдаёшь одной зарплатой то, что занимал на машину.'
+  effects: {money_m: 3}
+  clears: [debt_bank]
+- id: DEBT-16
+  type: choice
+  when: {from: 1998, to: 1998, month: 9}
+  who:
+    flags: [debt_bank]
+  text: Платёж по долларовому кредиту вырос втрое.
+  choices:
+  - text: Продать имущество
+    effects: {money_m: -8}
+    clears: [debt_bank]
+  - text: Просить отсрочку
+    check: {base: 35, ties: 0.4}
+    success:
+      text: Реструктуризировали.
+      effects: {money_m: -2}
+    fail:
+      text: Пени растут.
+      effects: {money_m: -3}
+      sets: [defaulter]
+  - text: Новый долг
+    effects: {money_m: 4}
+    sets: [debt_private]
+- id: DEBT-17
+  type: choice
+  repeat: true
+  who:
+    age: [18, 99]
+  text: 'Друг детства просит в долг: «До получки, честное слово».'
+  choices:
+  - text: Дать
+    outcomes:
+    - w: 65
+      text: Вернул в срок и с благодарностью.
+      effects: {money_m: 2, ties: 3, happy: 1}
+    - w: 35
+      text: Не вернул.
+      effects: {ties: -1, happy: -2}
+      sets: [lent_unpaid]
+    effects: {money_m: -2}
+    memo: Дал другу в долг.
+  - text: Отказать
+    effects: {ties: -3, happy: -1}
+  - text: Дать меньше
+    effects: {money_m: -0.5}
+    outcomes:
+    - w: 80
+      text: Вернул.
+      effects: {money_m: 0.5, ties: 1}
+    - w: 20
+      text: Не вернул, но сумма небольшая.
+      effects: {happy: -1}
+  third_person: true
+  chance: 0.15
+  variants: ['Друг детства просит в долг: «До получки, честное слово».', Сосед просит занять на лекарства для матери.]
+- id: DEBT-18
+  type: choice
+  who:
+    flags: [lent_unpaid]
+  text: Должник съехал с квартиры и не берёт трубку.
+  choices:
+  - text: Простить
+    effects: {close: 1}
+    clears: [lent_unpaid]
+  - text: Давить
+    check: {base: 40, ties: 0.4, strength: 10}
+    success:
+      text: Вернул половину.
+      effects: {money_m: 1}
+    fail:
+      text: Поссорились навсегда.
+      effects: {ties: -4}
+  - text: Передать долг бригаде
+    effects: {money_m: 1, law: 5, ties: -5}
+    clears: [lent_unpaid]
+  third_person: true
+- id: DEBT-19
+  type: choice
+  repeat: true
+  who:
+    flags: [debt_private]
+  chance: 0.5
+  text: 'Ростовщик позвонил сам: «Проценты капают, ты помнишь?»'
+  choices:
+  - text: Платить
+    effects: {money_m: -2}
+    clears: [debt_private]
+  - text: Тянуть
+    outcomes:
+    - w: 60
+      text: Пока терпит.
+      effects: {close: -2}
+    - w: 40
+      text: Передал долг бригаде.
+      sets: [debt_bandits]
+      clears: [debt_private]
+- id: DEBT-20
+  type: choice
+  when: {from: 1993, to: 1995}
+  where: [RU, UA, BY, KZ, LV]
+  who:
+    age: [18, 99]
+    not_flags: [mmm_investor]
+  chance: 0.12
+  text: Пирамида обещает 30% в месяц. Соседи уже вложились.
+  choices:
+  - text: Вложить
+    effects: {money_m: -3}
+    sets: [mmm_investor]
+  - text: Не верить
+    effects: {}
+- id: DEBT-21
+  type: choice
+  when: {from: 1994, to: 1995}
+  where: [RU, UA, BY, KZ, LV]
+  who:
+    flags: [mmm_investor]
+  text: 'У офиса пирамиды очередь: говорят, сейчас самая высокая цена.'
+  choices:
+  - text: Продать
+    check: {base: 55, grit: 10}
+    success:
+      text: Выстоял очередь и забрал втрое.
+      effects: {money_m: 9}
+      clears: [mmm_investor]
+    fail:
+      text: Касса закрылась перед тобой.
+      effects: {close: -5}
+      clears: [mmm_investor]
+  - text: Подождать ещё
+    outcomes:
+    - w: 100
+      text: Пирамида рухнула. Деньги пропали.
+      effects: {close: -6, views_reform: -10}
+      clears: [mmm_investor]

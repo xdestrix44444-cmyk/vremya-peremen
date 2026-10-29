@@ -1,0 +1,321 @@
+title: 7. Детство и школа (KID)
+note: 'До 7 лет решают родители: событие идёт строкой без выбора. Задатки открываются в разделе TAL.'
+events:
+- id: KID-01
+  type: scene
+  who:
+    age: [0, 2]
+  text: 'Тебя отдали в ясли: мама выходит на работу.'
+  effects: {close: 1}
+- id: KID-02
+  type: scene
+  who:
+    age: [3, 6]
+  text: 'Детский сад: на завтрак манная каша с комками.'
+  effects: {ties: 1}
+  variants: ['Детский сад: на завтрак манная каша с комками.', 'Утренник: ты снежинка, мама шила костюм всю ночь.', 'Тихий час. Никто не спит, все шепчутся.']
+- id: KID-03
+  type: scene
+  who:
+    age: [0, 6]
+  repeat: true
+  text: Ветрянка. Неделю ходишь весь в зелёнке.
+  effects: {health: -1, close: 1}
+  variants: [Ветрянка. Неделю ходишь весь в зелёнке., 'Свинка: щёки как у хомяка, мама сидит рядом с книжкой.', 'Корь. В комнате задёрнуты шторы, свет режет глаза.']
+  chance: 0.4
+- id: KID-04
+  type: scene
+  who:
+    age: [0, 6]
+  text: 'Первое воспоминание: мама держит тебя за руку в очереди за молоком, на её ладони — номер ручкой.'
+  when: {from: 1989, to: 1992}
+  effects: {close: 1}
+- id: KID-05
+  type: scene
+  who:
+    age: [3, 6]
+  text: 'Лето у бабушки: с утра на речку, вечером парное молоко прямо из ведра.'
+  effects: {health: 3, close: 1}
+  variants: ['Лето у бабушки: с утра на речку, вечером парное молоко прямо из ведра.']
+- id: KID-06
+  trigger: engine
+  type: scene
+  who:
+    age: [7, 7]
+  text: 1 сентября. Гладиолусы, ранец, первый класс.
+  effects: {ties: 1}
+  job: school
+- id: KID-07
+  type: scene
+  when: {from: 1986, to: 1990}
+  who:
+    age: [7, 9]
+  text: Приняли в октябрята. Звёздочка с маленьким Лениным.
+- id: KID-08
+  type: scene
+  when: {from: 1986, to: 1990}
+  who:
+    age: [9, 10]
+  text: Приём в пионеры. Галстук гладишь каждое утро.
+  effects: {ties: 1}
+- id: KID-09
+  type: scene
+  repeat: true
+  when: {from: 1986, to: 1999, month: 6}
+  who:
+    age: [7, 15]
+  text: Путёвка в пионерлагерь на смену. Мама уже пришила бирки на всю одежду.
+  variants: [Путёвка в пионерлагерь на смену. Мама уже пришила бирки на всю одежду.]
+  chance: 0.5
+  effects: {fit: 1, ties: 1, happy: 3, close: -1}
+- id: KID-10
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    age: [10, 14]
+  text: 'В Доме пионеров объявление: набирают в секции и кружки. Мама спрашивает, куда хочешь.'
+  choices:
+  - text: Бокс или борьба
+    effects: {fit: 6, happy: 1}
+    sets: [fighter, hobby_sport]
+  - text: Футбол или хоккей
+    effects: {fit: 5, ties: 1, happy: 2}
+    sets: [hobby_sport]
+  - text: Музыкалка или гитара
+    effects: {know: 2, ties: 1, happy: 1}
+    sets: [hobby_music]
+  - text: Радиокружок или компьютеры
+    effects: {know: 5}
+    sets: [hobby_tech]
+  - text: Шахматы или олимпиады
+    effects: {know: 5, happy: -1}
+    sets: [hobby_books]
+  - text: Комсомол и общественная работа
+    who:
+      age: [14, 14]
+    effects: {ties: 2}
+    sets: [komsomol_active]
+  - text: Ничего, только двор
+    effects: {ties: 2, happy: 3}
+- id: KID-11
+  type: scene
+  repeat: true
+  when: {from: 1986, to: 1999}
+  who:
+    age: [8, 14]
+  text: Во дворе играют в казаков-разбойников до темноты.
+  variants: [Во дворе играют в казаков-разбойников до темноты., Пацаны лезут на недостроенную девятиэтажку за гаражами., Нашли в гаражах старый мопед без мотора и катали его по очереди.]
+  focus: hobby
+  chance: 0.6
+  effects: {ties: 2, happy: 3}
+- id: KID-12
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    age: [10, 16]
+  text: 'После уроков старшаки ждут за гаражами: «Деньги есть?»'
+  choices:
+  - text: Дать сдачи
+    check: {base: 50, fit: 0.5, strength: 10}
+    success:
+      text: Отстали. Тебя зауважали.
+      effects: {ties: 2}
+      sets: [fighter]
+    fail:
+      text: Побили. Синяки, но ты не сбежал.
+      effects: {health: -3, ties: 1}
+      sets: [fighter]
+  - text: Убежать
+    effects: {ties: -3}
+    sets: [quiet]
+- id: KID-13
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    age: [12, 16]
+    not_flags: [smoker]
+  text: За школой пацаны курят «Яву» и протягивают тебе сигарету.
+  choices:
+  - text: Попробовать
+    check: {base: 40, will: 15}
+    success:
+      text: Закашлялся и решил, что не твоё.
+      effects: {ties: 1}
+    fail:
+      text: Теперь куришь на переменах.
+      effects: {ties: 1}
+      sets: [smoker]
+  - text: Отказаться
+    effects: {ties: -1}
+- id: KID-14
+  type: choice
+  when: {from: 1986, to: 1989}
+  where: [RU]
+  who:
+    age: [12, 17]
+    not_flags: [village]
+  text: «Ты с какого района?» Подростковые группировки делят улицы.
+  choices:
+  - text: Вступить
+    effects: {fit: 4, ties: 3, law: 10}
+    sets: [district_gang]
+  - text: Держаться в стороне
+    outcomes:
+    - {w: 70, text: Обходишь чужие районы.}
+    - w: 30
+      text: Побили «чужие».
+      effects: {health: -4}
+- id: KID-15
+  type: scene
+  when: {from: 1986, to: 1991}
+  who:
+    age: [10, 17]
+  text: Друг переписал тебе кассету «Кино». Слушаешь «Звезду по имени Солнце» до хрипа плёнки.
+  effects: {ties: 1}
+  variants: [Друг переписал тебе кассету «Кино». Слушаешь «Звезду по имени Солнце» до хрипа плёнки., 'Август 1990-го. По радио сказали: разбился Цой. Во дворе весь вечер играют его песни.']
+- id: KID-16
+  type: choice
+  when: {from: 1988, to: 1995}
+  who:
+    age: [10, 17]
+  text: 'В Доме пионеров открыли компьютерный кружок: БК-0010 и игры, которые грузятся с магнитофона.'
+  choices:
+  - text: Ходить
+    effects: {know: 5, ties: -1}
+    sets: [hobby_tech]
+  - text: Нет
+    effects: {ties: 1, happy: 1}
+- id: KID-17
+  type: scene
+  when: {from: 1990, to: 1996}
+  who:
+    age: [8, 14]
+  text: На перемене меняешься вкладышами от «Турбо». У тебя редкий — с «Феррари».
+  effects: {ties: 1}
+  variants: [На перемене меняешься вкладышами от «Турбо». У тебя редкий — с «Феррари».]
+- id: KID-18
+  type: choice
+  when: {from: 1993, to: 1999}
+  who:
+    age: [8, 15]
+  text: У друга появилась «Денди». После уроков полкласса сидит у него на ковре.
+  choices:
+  - text: Выпросить свою
+    effects: {money_m: -1, close: -1, ties: 2}
+  - text: Ходить к другу
+    effects: {ties: 1}
+- id: KID-19
+  type: scene
+  when: {from: 1993, to: 1999}
+  who:
+    age: [6, 12]
+  text: Коллекция игрушек из киндер-сюрпризов на полке.
+- id: KID-20
+  type: scene
+  when: {from: 1997, to: 1999}
+  who:
+    age: [8, 14]
+  text: Весь класс носит тамагочи. На контрольной у кого-то пищит голодный зверёк.
+- id: KID-21
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    age: [10, 17]
+    stats: {know: '>60'}
+  text: Олимпиада по математике, физике или литературе.
+  choices:
+  - text: Готовиться
+    check: {base: 30, know: 0.6, mind: 15}
+    success:
+      text: Победа на областной. Грамота, о тебе говорят в школе.
+      effects: {know: 5}
+      sets: [olympiad]
+    fail:
+      text: Не прошёл дальше района.
+      effects: {know: 2}
+  - text: Не тратить время
+    effects: {}
+- id: KID-22
+  type: scene
+  repeat: true
+  who:
+    age: [7, 17]
+  text: Двойка в четверти по алгебре. Отец молча расписывается в дневнике.
+  effects: {close: -2}
+  chance: 0.2
+  variants: [Двойка в четверти по алгебре. Отец молча расписывается в дневнике., Учительница вызвала родителей. Вечером дома тихо.]
+- id: KID-23
+  type: scene
+  when: {from: 1992, to: 1997}
+  who:
+    age: [7, 17]
+  text: Учительница ушла торговать на рынок, уроков физики нет. Зимой в классе не топят.
+  effects: {know: -2, health: -1}
+- id: KID-24
+  type: choice
+  repeat: true
+  who:
+    age: [13, 17]
+  text: Пришёл домой в час ночи. Отец ждёт на кухне и молчит.
+  choices:
+  - text: Уступить
+    effects: {close: 1}
+  - text: Хлопнуть дверью
+    effects: {close: -3, ties: 1}
+  variants: [Пришёл домой в час ночи. Отец ждёт на кухне и молчит., 'Попросил денег на кассету «Кино». Мать сказала, что зарплату опять задержали.', Мать нашла сигареты в куртке.]
+  chance: 0.25
+- id: KID-25
+  type: scene
+  who:
+    age: [14, 17]
+  text: 'Она передала записку на уроке: «Пойдёшь на дискотеку в субботу?»'
+  effects: {close: 2}
+  variants: ['Она передала записку на уроке: «Пойдёшь на дискотеку в субботу?»', 'Первый медляк под «Ласковый май». Руки потные, сердце колотится.', Провожал её до подъезда и боялся сказать хоть слово.]
+- id: KID-26
+  type: scene
+  when: {from: 1986, to: 1991, month: 9}
+  who:
+    age: [14, 17]
+  text: Сентябрь. Всю школу везут в колхоз на картошку. Резиновые сапоги, ведро, борозда до горизонта.
+  effects: {fit: 2, ties: 1}
+  variants: ['Сентябрь. Всю школу везут в колхоз на картошку. Резиновые сапоги, ведро, борозда до горизонта.']
+- id: KID-27
+  type: choice
+  when: {from: 1986, to: 1999, month: 6}
+  who:
+    age: [16, 17]
+    role: [school]
+  text: 'Выпускной: белые банты, вальс, рассвет на набережной. Утром надо решать, куда дальше.'
+  choices:
+  - text: Поступать в вуз
+    check: {base: 15, know: 0.6, ties: 0.3, olympiad: 20, mind: 10}
+    success: {text: Поступил. В сентябре — общежитие на пятерых и первая лекция по матанализу., job: student, edu: university}
+    fail: {text: Не прошёл по конкурсу. Пошёл в техникум., job: student, edu: technikum}
+  - {text: В техникум или ПТУ, job: student, edu: technikum}
+  - {text: Сразу работать, job: worker}
+- id: KID-28
+  type: scene
+  when: {from: 1986, to: 1999}
+  who:
+    age: [7, 13]
+  text: Ключ на шее. Родители до вечера на работе, обед разогреваешь сам.
+  effects: {close: -1}
+- id: KID-29
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    age: [11, 16]
+  text: Над тихим мальчиком из твоего класса смеются все. Сегодня ему порвали портфель.
+  choices:
+  - text: Заступиться
+    check: {base: 50, ties: 0.4, fit: 0.3}
+    success:
+      text: Отстали от него. Друг на всю жизнь.
+      effects: {close: 2}
+    fail:
+      text: Теперь травят и тебя.
+      effects: {ties: -5}
+  - text: Промолчать
+    effects: {}
+  - text: Присоединиться
+    effects: {ties: 1, close: -2}

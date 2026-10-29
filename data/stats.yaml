@@ -1,0 +1,91 @@
+# Справочник: шкалы, задатки, республики, роли, профессии.
+# Ключи на английском (для кода), названия на русском (для игрока).
+
+stats:
+  happy:        {name: Счастье, range: [0, 100], visible: true}
+  health:       {name: Здоровье, range: [0, 100], visible: true}
+  fit:          {name: Физподготовка, range: [0, 100], visible: true}
+  know:         {name: Знания, range: [0, 100], visible: true}
+  close:        {name: Близкие, range: [0, 100], visible: true}
+  ties:         {name: Связи, range: [0, 100], visible: true}
+  rel:          {name: Отношения, range: [0, 100], visible: when_partner}
+  fame:         {name: Известность, range: [0, 100], visible: above_20}
+  law:          {name: Внимание закона, range: [0, 100], visible: true}
+  views_reform: {name: "Реформы ↔ Старый порядок", range: [-100, 100], visible: final}
+  views_union:  {name: "Союз ↔ Независимость", range: [-100, 100], visible: final}
+
+# Деньги в эффектах: money_m — в месячных доходах персонажа (−2 = потерял две зарплаты).
+money_keys: [money_m]
+
+traits:
+  mind:         {name: Ум}
+  strength:     {name: Сила}
+  constitution: {name: Крепкое здоровье}
+  charm:        {name: Обаяние}
+  grit:         {name: Хватка}
+  will:         {name: Воля}
+  talent:       {name: Талант, kinds: [music, sport, hands, tech, lang]}
+trait_levels: [weak, mid, strong]
+
+regions:
+  RU: Россия
+  UA: Украина
+  BY: Беларусь
+  UZ: Узбекистан
+  KZ: Казахстан
+  GE: Грузия
+  AZ: Азербайджан
+  LT: Литва
+  MD: Молдова
+  LV: Латвия
+  KG: Киргизия
+  TJ: Таджикистан
+  AM: Армения
+  TM: Туркмения
+  EE: Эстония
+
+roles:            # выводятся из возраста и занятия
+  kid: 0–6
+  school: 7–16
+  young: 17–24
+  adult: 25 — пенсионный возраст
+  pension: м 60+, ж 55+
+
+jobs: [kid, school, student, cadet, army, worker, miner, engineer, scientist, doctor, teacher,
+       kolkhoz, farmer, shop, coop, shuttle, kiosk, firm, banker, broker, guard, brigade, police,
+       officer, journalist, artist, programmer, translator, official, politician, shift, migrant,
+       unemployed, pension]
+
+edu_levels: [school, ptu, technikum, university, postgrad, military_school, party_school]
+
+event_types:
+  news: только газета года
+  scene: строка в ленте без выбора, может менять шкалы
+  choice: развилка
+  offer: предложение (работа, дело, кредит) — принять / отказаться / торговаться
+
+# Сферы опыта (CONCEPT §3.11a): профессия -> сфера; родственные сферы переносят половину опыта
+spheres:
+  production: {name: Производство, jobs: [worker, miner, shift], related: [engineering, village]}
+  engineering: {name: Инженерия и наука, jobs: [engineer, scientist, programmer], related: [production, care]}
+  care: {name: Образование и медицина, jobs: [teacher, doctor], related: [engineering]}
+  trade: {name: Торговля и бизнес, jobs: [shop, coop, shuttle, kiosk, firm, broker, banker], related: []}
+  state: {name: Госслужба, jobs: [official, police, politician], related: [military]}
+  military: {name: Армия, jobs: [cadet, officer, guard], related: [state]}
+  media: {name: Медиа и искусство, jobs: [journalist, artist, translator], related: []}
+  village: {name: Село, jobs: [kolkhoz, farmer], related: [production]}
+  crime: {name: Криминал, jobs: [brigade], related: []}
+shadow_jobs_after_1992: [kiosk, shuttle, firm, brigade, coop, broker]   # «в конверте», стаж не идёт без official_record
+
+# Активы (CONCEPT §3.5, §3.5a): корзины сбережений, которые ведёт движок
+asset_kinds:
+  shares: Акции (миноритарный пакет)
+  stake: Крупный или контрольный пакет
+  enterprise: Своё предприятие
+  property: Помещение, квартира, дача
+sectors:
+  oil: Нефть и газ
+  metal: Металлы
+  telecom: Связь
+  local: Местная промышленность
+  trade: Торговля и услуги

@@ -1,0 +1,75 @@
+title: "19. Карьера и стаж (CAR)"
+note: "Механика — CONCEPT §3.11a. Условие exp — годы опыта в текущей сфере; promote — повышение на ступень должности."
+events:
+- id: CAR-01
+  type: choice
+  repeat: true
+  who: {role: [young, adult], exp: ">3"}
+  text: "Начальник уходит на повышение. Место освобождается."
+  choices:
+    - text: Претендовать
+      check: {base: 30, exp: 2, know: 0.3, ties: 0.4, charm: 5, party_member: 5}
+      success: {text: "Ты на его месте. Кабинет, подчинённые, зарплата выше.", promote: true, effects: {ties: 2, close: -1}}
+      fail: {text: "Назначили другого.", effects: {close: -1}}
+    - {text: Не высовываться, effects: {}}
+- id: CAR-02
+  type: choice
+  repeat: true
+  who: {role: [young, adult], not_flags: [brigade]}
+  text: "Курсы повышения квалификации. До 1991 — за счёт предприятия, потом за свои."
+  choices:
+    - {text: Пойти, who: {years: [1986, 1991]}, effects: {know: 4, ties: 1}}
+    - {text: Пойти за свои деньги, who: {years: [1992, 1999]}, effects: {know: 5, money_m: -1}}
+    - {text: Некогда, effects: {}}
+- id: CAR-03
+  type: offer
+  when: {from: 1991, to: 1999}
+  who: {role: [young, adult], job: [unemployed, engineer, scientist, teacher, worker, officer]}
+  text: "Центр занятости и частные курсы: переучиться на бухгалтера, программиста, менеджера, водителя."
+  choices:
+    - text: Переучиться на бухгалтера или менеджера
+      check: {base: 50, know: 0.5, mind: 10}
+      success: {text: "Новая профессия. Опыт с нуля, но спрос есть.", effects: {money_m: -1, know: 3}, job: firm}
+      fail: {text: "Курсы окончил, работы не нашёл.", effects: {money_m: -1}}
+    - text: Переучиться на программиста
+      check: {base: 30, know: 0.6, mind: 15}
+      success: {text: "Первые заказы: бухгалтерские программы и сети.", effects: {money_m: -1, know: 5}, job: programmer}
+      fail: {text: "Не пошло.", effects: {money_m: -1}}
+    - {text: Остаться в своей профессии, effects: {}}
+- id: CAR-04
+  type: scene
+  who: {role: [adult], exp: ">10"}
+  text: "К тебе приводят молодых: «Научи». Ты теперь наставник."
+  effects: {ties: 2, close: 1}
+- id: CAR-05
+  type: offer
+  repeat: true
+  when: {from: 1988, to: 1999}
+  who: {role: [young, adult], exp: ">5", job: [engineer, scientist, teacher, doctor, worker, officer, police, official]}
+  text: "Знакомый зовёт в коммерческую фирму. Денег вдвое больше, но стаж и должность — с нуля."
+  choices:
+    - {text: Перейти, effects: {ties: 1}, job: firm}
+    - {text: Остаться в своей сфере, effects: {close: 1}}
+- id: CAR-06
+  type: choice
+  when: {from: 1993, to: 1999}
+  who: {role: [adult], job: [firm, kiosk, shuttle], age: [35, 60]}
+  text: "Зарплата «в конверте» в стаж не идёт. Пенсия будет копеечной."
+  choices:
+    - {text: Оформиться официально и платить взносы, effects: {money_m: -2}, sets: [official_record]}
+    - {text: Оставить как есть, effects: {}}
+- id: CAR-07
+  type: choice
+  who: {job: [officer, police], exp: ">19"}
+  text: "Двадцать лет выслуги. Можно уйти на военную пенсию в сорок с небольшим."
+  choices:
+    - {text: Уйти на пенсию по выслуге, effects: {close: 3}, job: guard}
+    - {text: Служить дальше, promote: true}
+- id: CAR-08
+  type: choice
+  when: {from: 1992, to: 1999}
+  who: {role: [adult], exp: ">8", job: [engineer, scientist, teacher, doctor]}
+  text: "Сокращение отдела. Тебя, опытного, оставляют, но на полставки."
+  choices:
+    - {text: Согласиться, effects: {money_m: -2}}
+    - {text: Уйти с выходным пособием, effects: {money_m: 2}, job: unemployed}

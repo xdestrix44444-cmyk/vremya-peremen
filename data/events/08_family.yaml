@@ -1,0 +1,265 @@
+title: '8. Семья: родители, дети, родня (FAM)'
+note: 'Всё про партнёра — в разделе REL. Дети упрощённые: траты и 5–6 событий без своих шкал.'
+events:
+- id: FAM-01
+  type: choice
+  who:
+    age: [25, 70]
+    flags: [parents_alive]
+  text: 'Мама слегла: давление, скорая уже дважды за неделю.'
+  choices:
+  - text: Лечить за деньги
+    effects: {money_m: -3, close: 1}
+  - text: Ухаживать самому
+    effects: {close: 3, money_m: -1, health: -2}
+  - text: Отдать в больницу как есть
+    effects: {close: -3}
+  variants: ['Мама слегла: давление, скорая уже дважды за неделю.', 'У отца инфаркт. Врач говорит, нужны лекарства, которых нет в аптеке.']
+- id: FAM-02
+  type: scene
+  repeat: true
+  chance: 0.05
+  who:
+    age: [20, 99]
+    flags: [parents_alive]
+  text: Похороны отца или матери. Гроб, место на кладбище, поминки — всё приходится брать в долг.
+  effects: {close: -6, money_m: -2}
+  clears: [parents_alive]
+  variants:
+  - {t: Похороны отца или матери. Завком помог с автобусом и поминками в заводской столовой., to: 1991}
+  - {t: 'Похороны отца или матери. Гроб, место на кладбище, поминки — всё приходится брать в долг.', from: 1992}
+- id: FAM-03
+  type: choice
+  who:
+    age: [20, 99]
+  text: 'После похорон родня собралась на кухне: квартира одна, наследников трое.'
+  choices:
+  - text: Поделить мирно
+    effects: {close: 4, money_m: 2}
+  - text: Судиться
+    outcomes:
+    - w: 50
+      text: Отсудил своё.
+      effects: {money_m: 8, close: -8}
+    - w: 50
+      text: Суды на год, и разругался со всеми.
+      effects: {money_m: -2, close: -8, happy: -4}
+  - text: Отказаться в пользу родни
+    effects: {close: 6, happy: 2}
+- id: FAM-04
+  type: choice
+  when: {from: 1989, to: 1999}
+  who:
+    age: [16, 99]
+  text: Брат уезжает в Германию насовсем. Проводы на кухне до утра.
+  choices:
+  - text: Проводить
+    effects: {close: -3}
+  - text: Уехать с ними
+    outcomes:
+    - {w: 100, text: 'Уехали вместе: новое место, всё с нуля.', move: RU}
+    effects: {close: 2, happy: -3, money_m: -3}
+    sets: [migrant]
+  variants: [Брат уезжает в Германию насовсем. Проводы на кухне до утра., Сестра с мужем уезжает в другую республику. Зовут с собой.]
+- id: FAM-05
+  type: choice
+  who:
+    age: [20, 60]
+  text: 'Родители предлагают съехаться: им тяжело одним, тебе тесно.'
+  choices:
+  - text: Съехаться
+    effects: {close: 3, money_m: 1, rel: -4, happy: -2}
+  - text: Разменяться
+    effects: {close: -1, money_m: -1, rel: 3, happy: 2}
+  - text: Оставить как есть
+    effects: {}
+- id: FAM-06
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    age: [25, 55]
+    flags: [parents_alive]
+  text: Родители-пенсионеры не сводят концы с концами.
+  choices:
+  - text: Помогать каждый месяц
+    effects: {money_m: -1, close: 3}
+  - text: Забрать к себе
+    effects: {close: 5, money_m: -0.5, rel: -3, happy: -2}
+  - text: Самим тяжело
+    effects: {close: -3}
+- id: FAM-07
+  type: choice
+  repeat: true
+  who:
+    age: [18, 99]
+  text: Племянник приехал поступать в институт. Просит пожить до сентября.
+  choices:
+  - text: Принять
+    effects: {close: 2, money_m: -1}
+  - text: Отказать
+    effects: {close: -4}
+  variants:
+  - {t: Племянник приехал поступать в институт. Просит пожить до сентября.}
+  - {t: Тётя едет лечиться в областную больницу — на два месяца.}
+  - {t: Двоюродный брат с семьёй бежит от войны. С собой два чемодана., from: 1990}
+  - {t: 'Сестра развелась, и с ребёнком ей некуда идти.'}
+- id: FAM-10
+  type: scene
+  who:
+    flags: [has_kids]
+  text: Ребёнок пошёл в детский сад. Теперь за сад платят, и немало.
+  effects: {money_m: -0.5, close: 1}
+  variants:
+  - {t: Ребёнок пошёл в заводской детский сад., to: 1991}
+  - {t: 'Ребёнок пошёл в детский сад. Теперь за сад платят, и немало.', from: 1992}
+- id: FAM-11
+  type: choice
+  repeat: true
+  who:
+    flags: [has_kids]
+  text: У ребёнка температура под сорок третий день. Участковый врач разводит руками.
+  choices:
+  - text: Лечить в платной клинике
+    effects: {money_m: -3, close: 1}
+  - text: В районной больнице
+    outcomes:
+    - w: 80
+      text: Выходили.
+      effects: {close: 1}
+    - w: 20
+      text: Лечение затянулось на месяцы.
+      effects: {close: -3, health: -2}
+  variants: [У ребёнка температура под сорок третий день. Участковый врач разводит руками., Сына увезли в больницу с аппендицитом.]
+- id: FAM-12
+  type: choice
+  who:
+    flags: [has_kids]
+  text: В школе собирают деньги на ремонт класса — по десятке с семьи.
+  choices:
+  - text: Платить за всё
+    effects: {money_m: -2, close: 1}
+  - text: Только самое нужное
+    effects: {money_m: -0.5}
+  variants: [В школе собирают деньги на ремонт класса — по десятке с семьи., 'Учительница намекает, что без репетитора по математике не обойтись.', Секция плавания стала платной.]
+- id: FAM-13
+  type: choice
+  who:
+    flags: [has_kids]
+    age: [30, 70]
+  text: Сын или дочь связались с плохой компанией.
+  choices:
+  - text: Поговорить по душам
+    check: {base: 55, close: 0.5, charm: 5}
+    success:
+      text: Услышал. Ушёл из той компании.
+      effects: {close: 2}
+    fail:
+      text: Не услышал. Ночует неизвестно где.
+      effects: {close: -4}
+    effects: {happy: -1}
+  - text: Наказать
+    outcomes:
+    - w: 50
+      text: Помогло.
+      effects: {close: -1}
+    - w: 50
+      text: Ушёл из дома на неделю.
+      effects: {close: -6, happy: -3}
+  - text: Отпустить
+    outcomes:
+    - {w: 60, text: Перебесился.}
+    - w: 40
+      text: Детская комната милиции.
+      effects: {close: -5, law: 3}
+    effects: {happy: 2}
+  third_person: true
+- id: FAM-14
+  type: choice
+  who:
+    flags: [has_kids]
+    age: [35, 70]
+  text: 'Ребёнок поступает в институт. Появились платные места: за деньги можно без конкурса.'
+  choices:
+  - text: Платить за учёбу
+    effects: {money_m: -6, close: 2}
+    who:
+      years: [1992, 1999]
+  - text: Пусть пробует на бюджет
+    outcomes:
+    - w: 50
+      text: Поступил сам.
+      effects: {close: 2}
+    - w: 50
+      text: Не прошёл. Армия или работа.
+      effects: {close: -2}
+  - text: Дать взятку в приёмной комиссии
+    check: {base: 60, ties: 0.4}
+    success:
+      text: Зачислен.
+      effects: {money_m: -3, close: 1}
+    fail:
+      text: Деньги взяли, не зачислили.
+      effects: {money_m: -3}
+  variants:
+  - {t: 'Ребёнок поступает в институт: конкурс пять человек на место.', to: 1991}
+  - {t: 'Ребёнок поступает в институт. Появились платные места: за деньги можно без конкурса.', from: 1992}
+- id: FAM-15
+  type: choice
+  who:
+    flags: [has_kids]
+    age: [36, 70]
+  text: Сыну пришла повестка. Дома плачут на кухне.
+  choices:
+  - text: Пусть служит
+    outcomes:
+    - w: 85
+      text: Вернулся через два года.
+      effects: {close: 1}
+    - w: 12
+      mods:
+        year: {1995: 10, 1996: 5}
+      text: Попал на войну. Вернулся другим.
+      effects: {close: -6}
+    - w: 3
+      text: Сын погиб в армии.
+      effects: {close: -30, health: -10}
+  - text: «Отмазать»
+    check: {base: 40, ties: 0.6}
+    success:
+      text: Белый билет.
+      effects: {money_m: -4}
+    fail:
+      text: Деньги ушли, сын в армии.
+      effects: {money_m: -4}
+  third_person: true
+- id: FAM-16
+  type: choice
+  who:
+    flags: [has_kids]
+    age: [38, 99]
+  text: Свадьба сына или дочери. Нужны деньги на банкет.
+  choices:
+  - text: Помочь с размахом
+    effects: {money_m: -5, close: 4, ties: 1}
+  - text: Скромно
+    effects: {money_m: -1, close: 1}
+- id: FAM-17
+  type: scene
+  when: {from: 1990, to: 1999}
+  who:
+    flags: [has_kids]
+    age: [40, 99]
+  text: Сын уехал на заработки в Москву. Звонит по воскресеньям.
+  effects: {close: -5}
+  variants: [Сын уехал на заработки в Москву. Звонит по воскресеньям., Дочь вышла замуж и уехала в другой город.]
+  third_person: true
+- id: FAM-18
+  type: scene
+  repeat: true
+  who:
+    flags: [has_kids]
+    age: [45, 99]
+  text: Внуки приехали на всё лето. В квартире снова шумно.
+  effects: {close: 3, health: -1}
+  chance: 0.4
+  variants: [Внуки приехали на всё лето. В квартире снова шумно., Внучка научилась читать и читает тебе вслух.]

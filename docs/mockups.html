@@ -1,0 +1,278 @@
+<title>Время перемен — макеты</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap&subset=cyrillic">
+<style>
+/* «Диафильм + хроника»: плёнка с перфорацией, выцветший холодный кадр, зерно, титры. Подложка страницы следует теме, телефоны — мир игры. */
+:root{
+  --page:#e9eae6;--pagefg:#1d1f1c;--pagemuted:#5c625a;--pageline:#cfd2cb;
+  --film:#0e0e0d;--hole:#262624;--frame:#3a3f37;
+  --ink:#e4dac4;--dim:#a99f8a;--amber:#c99a58;--red:#a33b2c;--green:#9fb58a;--teal:#6f8580;--rule:#3b3a33;
+  --f-title:"Forum","Times New Roman",serif;--f-body:"PT Sans","Helvetica Neue",Arial,sans-serif;--f-mono:"PT Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#141513;--pagefg:#e3e4df;--pagemuted:#9aa096;--pageline:#2c2f2a;color-scheme:dark}}
+:root[data-theme="dark"]{--page:#141513;--pagefg:#e3e4df;--pagemuted:#9aa096;--pageline:#2c2f2a;color-scheme:dark}
+body{background:var(--page);color:var(--pagefg);font:15px/1.5 var(--f-body)}
+.wrap{max-width:1400px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+h1{font:400 34px/1.1 var(--f-title);margin:0 0 6px;text-wrap:balance}
+.lead{color:var(--pagemuted);max-width:64em;margin:0 0 26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:30px 22px;align-items:start}
+.cell{display:grid;gap:8px;min-width:0}
+.cell h2{font:700 13px/1.3 var(--f-body);letter-spacing:.08em;text-transform:uppercase;margin:0;color:var(--pagemuted)}
+.cell p{margin:0;font-size:13px;color:var(--pagemuted)}
+.ph{position:relative;isolation:isolate;max-width:330px;width:100%;box-sizing:border-box;border-radius:22px;overflow:hidden;background:var(--film);color:var(--ink);padding:16px 22px 18px;
+  background-image:radial-gradient(circle at 8px 50%,var(--hole) 0 3.5px,transparent 4.5px),radial-gradient(circle at calc(100% - 8px) 50%,var(--hole) 0 3.5px,transparent 4.5px);background-size:100% 20px;box-shadow:0 12px 32px rgba(0,0,0,.28)}
+.ph::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.16;mix-blend-mode:screen;z-index:3;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.bgmap{position:absolute;left:-30px;right:-30px;top:110px;z-index:-1;opacity:.5;pointer-events:none}
+.bgmap svg{width:100%;height:auto;display:block}
+.dim{color:var(--dim)}.mono{font-family:var(--f-mono)}.pos{color:var(--green)}.neg{color:#d07a63}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px}
+.date{font:400 22px/1 var(--f-title);color:var(--amber)}
+.who{font-size:12px;color:var(--dim);margin-top:3px}
+.btn{font:700 11px var(--f-mono);border:1px solid var(--dim);color:var(--ink);padding:4px 7px;border-radius:3px;white-space:nowrap}
+.frame{background:var(--frame);border-radius:5px;padding:6px;box-shadow:inset 0 0 22px rgba(0,0,0,.55)}
+.room{width:100%;height:auto;display:block;filter:saturate(.55) contrast(.95) sepia(.18);border-radius:2px}
+.capt{font:13px/1.35 var(--f-title);text-align:center;padding:6px 4px 2px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;margin:12px 0 10px}
+.st{font-size:11px;color:var(--dim)}
+.bar{height:4px;background:#2a2924;margin-top:3px;border-radius:2px}
+.bar i{display:block;height:100%;background:var(--amber);border-radius:2px}.bar i.low{background:var(--red)}
+.money{display:grid;gap:2px;font:12px var(--f-mono);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:6px 0;margin-bottom:8px}
+.money div{display:flex;justify-content:space-between;gap:8px}
+.ln{display:grid;grid-template-columns:3.6em 1fr;gap:8px;font-size:13px;padding:2px 0}
+.ln .m{font:11px var(--f-mono);color:var(--dim);padding-top:2px}
+.yr{font:400 20px var(--f-title);color:var(--dim);margin:8px 0 2px;letter-spacing:.04em}
+.card{background:var(--frame);border-radius:6px;padding:10px;margin:8px 0;display:grid;gap:7px}
+.card b{font:400 16px/1.3 var(--f-title)}
+.card.warn{border-left:3px solid var(--red)}
+.opt{background:var(--ink);color:#222;border-radius:4px;padding:7px 9px;font-size:12px;display:flex;justify-content:space-between;gap:8px}
+.opt span:last-child{color:#6a5d45;white-space:nowrap}
+.opt.ghost{background:transparent;color:var(--ink);border:1px solid var(--dim)}.opt.ghost span:last-child{color:var(--dim)}
+.sec{font:700 11px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:12px 0 6px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;padding:5px 0;border-bottom:1px solid var(--rule)}
+.row .mono{white-space:nowrap}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:4px;overflow:hidden;font-size:10px;flex:none}
+.seg span{padding:2px 5px;color:var(--dim)}.seg span.on{background:var(--amber);color:#1b1a16}
+.eff{font:10px var(--f-mono);color:var(--dim);display:block}
+.menu .row{font:400 17px var(--f-title);padding:9px 0}
+.title{min-height:430px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px}
+.title .big{font:400 40px/1.05 var(--f-title)}
+.title .q{font:400 22px/1.3 var(--f-title);max-width:13em}
+.inp{border-bottom:1px solid var(--dim);width:85%;text-align:left;font:14px var(--f-mono);color:var(--dim);padding:6px 0}
+.cta{background:var(--ink);color:#1b1a16;border-radius:4px;padding:10px 16px;font:700 13px var(--f-body);letter-spacing:.06em;text-transform:uppercase}
+.field{display:grid;grid-template-columns:7.5em 1fr;gap:6px;font-size:13px;padding:5px 0;border-bottom:1px solid var(--rule)}
+.field span:first-child{color:var(--dim)}
+.chip{display:inline-block;border:1px solid var(--rule);border-radius:3px;padding:2px 7px;font-size:11px;margin:3px 3px 0 0}
+.chip.on{background:var(--amber);color:#1b1a16;border-color:var(--amber)}
+.news{border-top:3px double var(--ink);border-bottom:1px solid var(--ink);padding:8px 0;text-align:center}
+.news .k{font:400 26px var(--f-title)}
+.hl{font:400 17px/1.25 var(--f-title);padding:7px 0;border-bottom:1px solid var(--rule)}
+.hl small{display:block;font:11px var(--f-mono);color:var(--dim);letter-spacing:.05em}
+.shade{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:1}
+.sheet{position:relative;z-index:2;background:#1b1c19;border-top:1px solid var(--dim);border-radius:14px 14px 0 0;margin:150px -22px -18px;padding:14px 22px 18px}
+.sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--dim);margin:0 auto 10px}
+.sharec{border:1px solid var(--dim);border-radius:8px;padding:14px;display:grid;gap:6px;background:#161613}
+svg text{font-family:"PT Mono",monospace}
+.notes{margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.note{border:1px solid var(--pageline);border-radius:10px;padding:14px 16px;min-width:0}
+.note h3{margin:0 0 6px;font:400 20px var(--f-title)}
+.note ul{margin:0;padding-left:18px;color:var(--pagemuted);font-size:14px;display:grid;gap:3px}
+</style>
+
+<div class="wrap">
+  <h1>Время перемен: макеты, вторая версия</h1>
+  <p class="lead">Стиль «диафильм + хроника». Новое: карта в фоне (до распада — весь Союз, после — только твоя страна), окно жизни по правилам слоёв, шесть фокусов, корзины рубли/доллары с «инфляция съела», покупки, займ одной строкой, быстрые кнопки по поводу и шторки поверх ленты, хроника с заголовками республики, взгляды в финале, архив и карточка. Одна жизнь: Сергей Волков, Свердловск, 1986–1999.</p>
+  <div class="grid" id="grid"></div>
+  <div class="notes">
+    <div class="note"><h3>Карта в фоне</h3><ul>
+      <li>До декабря 1991: все 15 республик одним бледным силуэтом, твоя чуть ярче, точка — твой город.</li>
+      <li>После распада соседние республики гаснут до пунктира, остаётся твоя страна. Переезд переносит точку.</li>
+      <li>Карта лежит под шкалами и лентой, читать не мешает; в паузах эпохи её нет.</li>
+    </ul></div>
+    <div class="note"><h3>Ещё варианты фона на выбор</h3><ul>
+      <li>Царапины и пыль плёнки, которые усиливаются в тяжёлые годы.</li>
+      <li>Бледный номер кадра и год на перфорации, как на настоящей плёнке.</li>
+      <li>Свет «засветки» по краю кадра в переломные месяцы (август 1991, январь 1992, август 1998).</li>
+    </ul></div>
+    <div class="note"><h3>Быстрые кнопки</h3><ul>
+      <li>Появляются по поводу и не больше двух на карточке: «деньги кончаются», «рубль падает», предложение работы.</li>
+      <li>Тап по шкале или строке денег открывает шторку «Как поправить» поверх ленты.</li>
+      <li>Полное управление — в своём экране из меню.</li>
+    </ul></div>
+  </div>
+</div>
+
+<script>
+const MAP={"paths": {"KZ": "M155,131 151,134 150,140 145,139 143,146 138,148 140,155 138,159 136,157 124,155 123,158 117,157 112,165 107,163 106,156 103,153 96,154 88,146 82,148 83,163 78,159 75,161 75,157 72,155 70,150 72,150 72,147 76,147 76,141 72,140 67,142 64,137 61,134 63,126 66,129 66,126 71,121 74,121 82,126 84,124 91,126 95,125 95,123 92,120 96,116 94,113 95,112 104,111 113,106 117,107 117,111 123,112 123,114 131,110 130,111 138,125 139,122 142,125 145,124 155,131Z", "UZ": "M83,163 82,148 88,146 96,154 103,153 106,156 107,163 110,163 111,165 118,159 116,162 122,165 119,167 116,166 116,164 113,165 111,170 109,170 111,175 110,179 107,179 107,176 101,172 96,164 93,163 92,159 89,157 85,161 85,163 83,163Z", "RU": "M364,44 367,42 367,45 364,44ZM67,142 61,150 66,161 64,163 58,158 46,154 38,147 42,143 41,141 44,140 42,140 42,138 45,136 46,130 35,126 32,119 27,120 26,116 29,115 25,109 25,106 19,103 17,98 17,93 21,88 19,86 26,77 23,74 24,71 22,68 23,65 21,60 23,57 19,55 20,52 28,48 38,52 48,58 48,61 42,64 30,61 34,64 34,70 39,73 38,69 39,67 45,70 47,69 45,66 51,62 55,64 56,61 54,54 60,55 62,57 59,58 59,60 60,61 77,53 79,53 77,55 89,52 92,55 94,52 92,50 93,49 100,50 111,56 113,54 108,50 107,44 115,36 121,37 121,39 119,42 121,46 121,52 123,54 118,63 120,63 126,57 125,55 126,52 124,52 123,49 125,45 122,42 126,40 125,37 128,39 127,43 129,43 128,41 132,39 137,39 141,41 139,33 153,32 151,30 154,28 168,24 176,24 185,22 188,19 194,17 197,19 194,19 200,20 200,22 209,21 216,25 215,27 205,31 213,32 215,35 219,33 237,36 237,33 245,34 250,38 249,40 255,45 258,41 261,42 275,42 273,38 276,37 297,39 305,45 319,45 321,46 321,49 323,50 339,50 343,53 346,52 344,49 345,48 357,48 367,52 367,68 361,70 366,76 365,79 361,78 353,81 345,88 342,86 336,89 335,87 329,89 326,95 329,98 328,103 326,104 325,107 326,109 322,111 321,115 318,116 317,120 314,124 311,106 312,101 314,97 317,96 330,83 331,78 329,78 327,81 321,86 320,81 314,82 308,89 310,91 301,93 301,90 298,89 295,91 280,92 264,109 268,110 271,113 273,111 275,111 278,116 278,119 275,134 264,154 260,157 258,155 254,159 255,148 259,147 264,134 255,137 251,130 247,129 243,117 238,114 232,115 230,117 231,120 228,127 225,130 216,127 208,131 203,131 199,127 192,128 189,126 188,123 181,120 177,129 166,125 155,131 145,124 142,125 139,122 138,125 130,111 131,110 123,114 123,112 117,111 117,107 113,106 104,111 95,112 94,113 96,116 92,120 95,123 95,125 91,126 84,124 82,126 74,121 71,121 66,126 66,129 63,126 61,134 64,137 67,142ZM169,4 174,3 184,9 183,12 178,13 168,10 166,7 163,7 169,4ZM190,11 196,13 195,15 182,16 186,11 190,11ZM273,23 287,26 285,29 277,29 273,30 268,27 270,24 273,23ZM294,27 300,28 294,29 289,27 290,26 294,27ZM275,35 280,33 284,35 275,35ZM57,6 65,6 69,4 71,6 63,8 61,7 62,6 57,6ZM6,111 -1,110 3,107 6,109 6,111ZM77,33 82,29 82,28 87,26 110,20 112,22 111,23 95,27 85,35 81,39 82,42 86,45 77,45 77,43 73,42 72,40 79,33 77,33ZM282,113 286,132 283,131 281,137 283,143 282,141 280,144 280,141 279,115 281,113 280,111 282,113ZM379,59 380,63 380,60 386,60 390,64 384,66 383,71 376,68 376,67 371,66 370,64 367,65 367,68 367,52 379,59ZM370,44 367,45 367,42 369,42 373,43 370,44ZM31,144 38,146 37,148 32,151 29,147 31,144Z", "TJ": "M110,179 111,175 109,171 113,165 116,164 117,167 114,168 113,170 123,170 124,174 126,174 126,178 122,178 119,181 117,174 113,179 110,179Z", "KG": "M117,159 119,157 123,158 124,155 136,157 138,160 131,164 130,166 127,166 123,170 113,170 114,168 119,167 122,165 116,162 117,159Z", "TM": "M75,161 78,159 81,163 85,163 85,161 89,157 92,159 92,162 95,163 97,168 107,176 107,179 105,177 102,183 99,185 97,187 95,185 94,182 86,176 81,176 78,179 78,172 75,168 76,164 80,164 77,160 75,163 75,161Z", "AM": "M61,173 54,167 54,164 57,163 59,165 61,173Z", "BY": "M19,103 25,106 25,109 29,115 26,116 27,120 25,120 24,123 21,123 12,120 8,122 7,118 9,117 8,112 13,111 15,106 19,103Z", "UA": "M27,120 32,119 35,126 46,130 45,136 34,143 34,145 27,143 27,141 25,142 22,147 20,147 21,142 23,142 21,137 17,134 11,137 6,136 5,134 9,126 8,122 12,120 24,123 25,120 27,120Z", "MD": "M15,135 17,134 21,137 23,142 21,142 19,146 19,141 15,135Z", "LT": "M15,106 13,111 10,112 6,111 6,109 3,107 2,104 5,103 11,103 15,106Z", "LV": "M17,98 19,103 15,106 11,103 2,104 4,98 6,97 8,100 12,96 17,98Z", "EE": "M18,90 17,98 10,97 8,91 18,90Z", "AZ": "M61,161 64,163 66,161 70,167 68,167 66,175 64,173 65,171 64,170 61,173 59,168 57,163 61,164 61,161Z", "GE": "M46,154 58,158 61,164 49,162 49,157 46,154Z"}, "width": 394};
+const CITY={x:93,y:101};      // Свердловск: 60,6° в.д., 56,8° с.ш. в той же проекции
+function bgmap(soviet,own='RU'){
+  const ps=Object.entries(MAP.paths).map(([k,d])=>{
+    const me=k===own;
+    if(soviet) return `<path d="${d}" fill="${me?'#6f7a66':'#3c4237'}" stroke="#7d8670" stroke-width=".6"/>`;
+    return me?`<path d="${d}" fill="#6f7a66" stroke="#9aa38c" stroke-width=".8"/>`:`<path d="${d}" fill="none" stroke="#4a5045" stroke-width=".5" stroke-dasharray="2 3"/>`;
+  }).join('');
+  return `<div class="bgmap" aria-hidden="true"><svg viewBox="0 0 ${MAP.width} 200">${ps}<circle cx="${CITY.x}" cy="${CITY.y}" r="3.5" fill="#c99a58"/><circle cx="${CITY.x}" cy="${CITY.y}" r="8" fill="none" stroke="#c99a58" stroke-width=".6"/></svg></div>`;
+}
+function room(v={}){
+  const r=(x,y,w,h,c)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`;
+  let s=r(0,0,240,140,'#8e8a72')+r(0,108,240,32,'#5a4a3a');
+  s+=r(152,16,62,52,'#a9bdb7')+r(182,16,2,52,'#8e8a72')+r(152,41,62,2,'#8e8a72')+r(148,12,7,60,'#6d5a48')+r(211,12,7,60,'#6d5a48');
+  if(v.rug!==false){s+=r(20,16,98,56,'#8a3a30');for(let i=0;i<5;i++)s+=r(28+i*18,24,8,40,'#c2a06a')}else s+=r(28,22,34,44,'#d8d2c0')+r(70,22,40,30,'#c9c2ae');
+  s+=r(18,78,104,30,'#4d5f52')+r(14,72,10,36,'#4d5f52')+r(116,72,10,36,'#4d5f52');
+  s+=r(150,80,52,28,'#3e352c')+r(156,84,32,20,'#b9c7bd')+r(160,108,8,8,'#3e352c')+r(184,108,8,8,'#3e352c');
+  s+=r(66,112,48,6,'#6e4b33')+r(70,118,4,14,'#6e4b33')+r(106,118,4,14,'#6e4b33');
+  (v.props||[]).forEach(p=>{
+    if(p==='robe')s+=r(224,58,3,50,'#3b3a33')+r(214,54,24,6,'#3b3a33')+r(216,60,20,30,'#4a5a6a');
+    if(p==='toys')s+=r(40,124,10,8,'#c2a06a')+r(54,126,8,6,'#7a8a6a');
+    if(p==='photo')s+=r(126,22,14,18,'#d8d2c0')+r(129,25,8,12,'#5a5a4a');
+    if(p==='ration')s+=r(222,82,12,16,'#e4dac4');
+    if(p==='vcr')s+=r(156,74,32,6,'#222');
+    if(p==='jars')s+=r(196,118,8,12,'#a7884a')+r(206,118,8,12,'#8a6a3a')+r(216,118,8,12,'#a7884a');
+    if(p==='pc')s+=r(84,94,26,18,'#cfc8b4')+r(87,97,20,12,'#5a7a72');
+    if(p==='empty')s+=r(226,70,12,36,'#c9c2ae')+r(228,72,8,14,'#efe9d8');
+  });
+  return `<svg class="room" viewBox="0 0 240 140" role="img" aria-label="${v.label||'Комната'}">${s}</svg>`;
+}
+const bar=(n,v,t='')=>`<div class="st">${n}${t}<div class="bar"><i class="${v<25?'low':''}" style="width:${v}%"></i></div></div>`;
+const hd=(d,w,extra='')=>`<div class="hd"><div><div class="date">${d}</div><div class="who">${w}</div></div><div style="display:flex;gap:4px">${extra}<span class="btn">≡</span></div></div>`;
+const FOCUS=['Работа','Учёба','Здоровье','Увлечение','Семья','Баланс'];
+const focusChips=on=>FOCUS.map(f=>`<span class="chip ${f===on?'on':''}">${f}</span>`).join('');
+const S=[];
+
+S.push(['1. Старт','Титр, суть одной строкой, счётчик рождений.',`
+<div class="title">${bgmap(true).replace('top:110px','top:150px')}<div class="dim mono" style="font-size:11px;letter-spacing:.2em">КИНОХРОНИКА ОДНОЙ ЖИЗНИ</div>
+<div class="big">Время<br>перемен</div><div class="dim mono">1986 — 1999</div>
+<div style="font-size:13px;max-width:17em">Тебе выпадет случайный человек из 280 миллионов. Республику, возраст и семью не выбирают.</div>
+<div class="mono dim" style="font-size:11px">Пока ты здесь, в СССР родилось<br><span style="color:var(--amber);font-size:20px">14</span> человек</div>
+<span class="cta">Оказаться в 1986-м</span><div class="dim" style="font-size:11px">Архив жизней · Без тяжёлых сцен</div></div>`]);
+
+S.push(['2. Личный листок','Кто выпал. Имя можно переписать.',`
+<div class="yr" style="margin-top:0">1 января 1986</div>
+<div class="frame">${room({props:['robe','photo'],label:'Хрущёвка'})}<div class="capt">Свердловск. Хрущёвка на Уралмаше, двушка.</div></div>
+<div style="margin-top:10px">${[['Имя','Сергей Волков ✎'],['Возраст','34 года, мужчина'],['Республика','РСФСР'],['Семья','жена Ольга, сын 8 лет'],['Работа','Уралмаш, токарь, старший'],['Образование','техникум'],['Стаж','15 лет'],['Имущество','квартира, дача'],['Сберкнижка','1 840 ₽']].map(([a,b])=>`<div class="field"><span>${a}</span><span>${b}</span></div>`).join('')}</div>
+<div class="sec">Задатки</div><span class="chip">Сила ▲</span><span class="chip">Воля ▼</span><span class="chip">остальное откроется</span>
+<div style="text-align:center;margin-top:14px"><span class="cta">Начать</span></div>`]);
+
+S.push(['3. Главный экран','Карта Союза в фоне. Окно жизни по слоям, шкалы, деньги одной строкой, лента, развилка, фокус.',`
+${bgmap(true)}${hd('март 1987','Сергей, 35 · Свердловск · токарь','<span class="btn">2×</span><span class="btn">❚❚</span>')}
+<div class="frame">${room({props:['robe','toys','photo'],label:'Хрущёвка, 1987'})}<div class="capt">Зимний вечер. Все дома, ужин вместе.</div></div>
+<div class="stats">${bar('Здоровье',72)+bar('Физподготовка',64)+bar('Знания',52)+bar('Близкие',68)+bar('Связи',41)+bar('Отношения',63)}</div>
+<div class="money"><div><span>Сбережения 1 905 ₽</span><span class="pos">+46/мес</span></div><div class="dim"><span>Долгов нет</span><span>Внимание закона 6</span></div></div>
+<div class="ln"><span class="m">фев</span><span>Продуктовый заказ к 23 февраля: гречка, шпроты, кофе.</span></div>
+<div class="card"><b>Знакомый открывает кооператив: шить «варёнки». Зовёт к себе.</b>
+ <div class="opt"><span>Уйти в кооператив</span><span>скорее выгодно, риск</span></div>
+ <div class="opt"><span>Остаться на заводе</span><span>стаж и должность</span></div></div>
+<div class="dim" style="font-size:11px;text-align:center">Фокус: Семья ✎</div>`]);
+
+S.push(['4. Длинное меню','Одним списком сверху; справа короткая сводка.',`
+${hd('март 1987','Сергей, 35 · Свердловск','<span class="btn">✕</span>')}
+<div class="menu">${[['Бюджет','+46/мес'],['Покупки','очередь на машину: 3 года'],['Жизнь и семья','жена, сын'],['Карьера','старший, 16 лет'],['Статистика','кривая дожития'],['Двор','4 соседа'],['Фокус года','Семья'],['Скорость и автопилот','2×'],['Без тяжёлых сцен','выкл.'],['Архив жизней','3'],['Выйти','']].map(([a,b])=>`<div class="row"><span>${a}</span><span class="dim mono" style="font-size:11px">${b}</span></div>`).join('')}</div>`]);
+
+S.push(['5. Карточка по поводу','Деньги кончаются → две быстрые кнопки прямо в ленте. Карта уже без Союза.',`
+${bgmap(false)}${hd('октябрь 1994','Сергей, 42 · Екатеринбург')}
+<div class="stats">${bar('Здоровье',58)+bar('Физподготовка',55)+bar('Знания',49)+bar('Близкие',52)+bar('Связи',44)+bar('Отношения',47)}</div>
+<div class="money"><div><span>Сбережения 123 у.е.</span><span class="neg">−9/мес</span></div><div><span class="dim">Займ: 40 у.е., шурин, без %</span><span class="dim">нагрузка 0%</span></div></div>
+<div class="ln"><span class="m">окт</span><span>«Чёрный вторник»: рубль за день упал на четверть.</span></div>
+<div class="ln"><span class="m">окт</span><span class="neg">Инфляция съела 18% твоих рублёвых сбережений: −1 у.е.</span></div>
+<div class="card warn"><b>Зарплату задерживают второй месяц. Денег хватит до 20-го.</b>
+ <div class="opt"><span>Экономить на питании</span><span>Здоровье ▼</span></div>
+ <div class="opt ghost"><span>Занять у родни</span><span>Близкие ▼</span></div></div>`]);
+
+S.push(['6. Бюджет','Доходы, траты со стрелками влияния, корзины рубли/доллары, займ одной строкой.',`
+${hd('октябрь 1994','Сергей, 42 · Екатеринбург')}
+<div class="sec">Доходы в месяц</div>
+${[['Зарплата (задержка 2 мес.)','0 у.е.'],['Ольга, медсестра','38 у.е.'],['Огород, шабашки','25 у.е.']].map(([a,b])=>`<div class="row"><span>${a}</span><span class="mono">${b}</span></div>`).join('')}
+<div class="sec">Траты</div>
+${[['Питание','экономно','Здоровье ▼'],['Дом','обычно',''],['Сын','обычно',''],['Друзья и досуг','экономно','Связи ▼'],['Лечение','обычно','']].map(([a,b,e])=>`<div class="row"><span>${a}${e?`<span class="eff">${e}</span>`:''}</span><span class="seg">${['экономно','обычно','щедро'].map(x=>`<span class="${x===b?'on':''}">${x}</span>`).join('')}</span></div>`).join('')}
+<div class="row"><span>Следить за питанием</span><span class="mono dim">выкл.</span></div>
+<div class="money" style="margin-top:8px"><div><span>Итог месяца</span><span class="neg">−9 у.е.</span></div></div>
+<div class="sec">Где лежат сбережения</div>
+<div class="row"><span>Доллары «под матрасом»<span class="eff">держат цену</span></span><span class="mono">120 у.е.</span></div>
+<div class="row"><span>Рубли на книжке<span class="eff">за год инфляция съела 72%</span></span><span class="mono">3 у.е.</span></div>
+<div class="row"><span>Акции «Уралмаша» (ваучер)</span><span class="mono">≈ 4 у.е.</span></div>
+<div class="row"><span>Займ ›</span><span class="mono dim">40 у.е., нагрузка 0%</span></div>`]);
+
+S.push(['7. Покупки','10 вещей. В СССР — очередь или блат, в 90-е — за деньги. Эффект «пока есть».',`
+${hd('май 1989','Сергей, 37 · Свердловск')}
+${[['Машина «Жигули»','очередь: 2 года','Связи ▲ Близкие ▲'],['Телевизор и видик','по блату · 1 600 ₽','Близкие ▲'],['Домашний телефон','очередь: 4 года','Связи ▲'],['Дача с участком','есть','Здоровье ▲ еда −15%'],['Своя квартира','есть','Отношения ▲'],['Компьютер','с 1993 года','Знания ▲']].map(([a,b,c])=>`<div class="row"><span>${a}<span class="eff">${c}</span></span><span class="mono dim" style="font-size:11px;text-align:right">${b}</span></div>`).join('')}
+<div class="card"><b>Видик по блату: знакомый товаровед просит 1 600 ₽ и «уважить».</b>
+ <div class="opt"><span>Купить</span><span>−1 600 ₽, Связи ▼</span></div>
+ <div class="opt ghost"><span>Не сейчас</span><span></span></div></div>`]);
+
+S.push(['8. Шторка «Как поправить»','Тап по шкале Здоровья: два-три действия, не уходя с ленты.',`
+${bgmap(false)}${hd('май 1995','Сергей, 43 · Екатеринбург')}
+<div class="stats">${bar('Здоровье',34,' ▾')+bar('Физподготовка',48)}</div>
+<div class="shade"></div>
+<div class="sheet"><div class="grab"></div>
+ <div style="font:400 20px var(--f-title)">Здоровье 34</div><div class="dim" style="font-size:12px">Тянут вниз: курение, экономия на еде, возраст.</div>
+ <div class="opt" style="margin-top:10px"><span>Следить за питанием</span><span>+15% к еде, ▲</span></div>
+ <div class="opt" style="margin-top:6px"><span>Бросить курить</span><span>шанс 30%</span></div>
+ <div class="opt ghost" style="margin-top:6px"><span>Фокус «Здоровье»</span><span>▲▲, доход −5%</span></div></div>`]);
+
+S.push(['9. Жизнь и семья','Партнёр, дети, родители, жильё, привычки, задатки, «что о тебе говорят». Взглядов нет до финала.',`
+${hd('май 1995','Сергей, 43 · Екатеринбург')}
+<div class="sec">Ольга, 41 · медсестра · заботливая</div>${bar('Отношения',58)}
+<div class="sec">Дети</div><div class="row"><span>Дима, 17</span><span class="dim">выпускник, хочет в институт</span></div>
+<div class="sec">Родители</div><div class="row"><span>мать, 68</span><span class="dim">в деревне, огород</span></div><div class="row"><span>отец</span><span class="dim">умер в 1993-м</span></div>
+<div class="sec">Имущество</div><span class="chip">квартира</span><span class="chip">дача</span><span class="chip">телевизор и видик</span>
+<div class="sec">Привычки</div><span class="chip">курит</span><span class="chip">пьёт по пятницам</span>
+<div class="sec">Что о тебе говорят</div><div style="font:15px/1.4 var(--f-title)">«Мастер от бога. Долги отдаёт. В 91-м ездил к Белому дому».</div>`]);
+
+S.push(['10. Карьера + шторка сравнения','Сфера, должность, опыт, стаж. Кнопка «Сравнить» на предложении открывает шторку.',`
+${hd('ноябрь 1993','Сергей, 41 · Екатеринбург')}
+${[['Сфера','Производство'],['Должность','старший мастер'],['Опыт в сфере','22 года'],['Трудовой стаж','22 года'],['Зарплата','≈ 52 у.е., задерживают']].map(([a,b])=>`<div class="row"><span>${a}</span><span>${b}</span></div>`).join('')}
+<div class="shade" style="top:150px"></div>
+<div class="sheet" style="margin-top:20px"><div class="grab"></div>
+ <div style="font:400 18px/1.3 var(--f-title)">Знакомый зовёт в фирму: развозить товар</div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin:8px 0">
+  <div><div class="dim">Сейчас</div><div class="mono">52 у.е.</div><div>стаж идёт</div><div>старший мастер</div><div class="dim">пенсия выше</div></div>
+  <div><div class="dim">Предлагают</div><div class="mono pos">120 у.е.</div><div class="neg">«в конверте»</div><div>опыт с нуля</div><div class="dim">риск: наезды</div></div></div>
+ <div class="opt"><span>Перейти</span><span>скорее выгодно</span></div>
+ <div class="opt ghost" style="margin-top:6px"><span>Остаться</span><span></span></div></div>`]);
+
+S.push(['11. Хроника года','Москва + заголовок твоей республики, цены, твой год, двор, куда деньги и фокус на следующий год.',`
+<div class="news"><div class="mono dim" style="font-size:10px;letter-spacing:.2em">КИНОХРОНИКА · ВЫПУСК 1992</div><div class="k">Итоги года</div></div>
+<div class="hl"><small>МОСКВА</small>Цены отпущены: инфляция за год — 2 500%</div>
+<div class="hl"><small>МОСКВА</small>Ваучер каждому: началась приватизация</div>
+<div class="sec">Цены и деньги</div>
+${[['Доллар у менял','415 ₽'],['Средняя зарплата','≈ 27 у.е.'],['Твои сбережения','1 840 ₽ → 8 у.е.']].map(([a,b])=>`<div class="row"><span>${a}</span><span class="mono">${b}</span></div>`).join('')}
+<div class="sec">Твой год</div><div style="font-size:13px">Инфляция съела 97% сбережений. Ваучер — в акции завода. Дима пошёл в 5-й класс.</div>
+<div class="sec">Во дворе</div><div style="font-size:13px">Серёга из 5-й открыл ларёк. Тётя Валя уехала к дочери в Израиль.</div>
+<div class="sec">Куда деньги в 1993-м</div><span class="chip on">Рубли</span><span class="chip">Доллары</span>
+<div class="sec">Фокус</div>${focusChips('Семья')}
+<div class="inp" style="margin-top:10px">Что загадаешь на 1993-й…</div>`]);
+
+S.push(['12. Пауза эпохи','Титр в переломный момент: вопрос и строка ответа. Время стоит.',`
+<div class="title"><div class="mono dim" style="font-size:11px;letter-spacing:.2em">19 АВГУСТА 1991</div>
+<div class="big" style="font-size:34px">По всем каналам —<br>«Лебединое озеро»</div>
+<div class="q">Что ты делаешь этим утром?</div><div class="inp">Пишу одну строку…</div>
+<div class="dim" style="font-size:11px">Строки соберутся в «письмо в 1986-й»</div><span class="cta">Дальше</span></div>`]);
+
+S.push(['13. Финал','Справка, взгляды на двух осях («кем ты был в 90-е»), эпилог, письмо.',`
+${bgmap(false)}<div class="title" style="min-height:0;padding:6px 0 10px"><div class="mono dim" style="font-size:11px;letter-spacing:.2em">31 ДЕКАБРЯ 1999</div><div class="big" style="font-size:30px">Сергей прожил<br>девяностые</div></div>
+<div class="frame">${room({rug:false,props:['pc','jars','photo'],label:'Та же квартира, 1999'})}<div class="capt">Та же квартира. Ковёр сняли, внук за компьютером.</div></div>
+${[['Сбережения','было 9 зарплат → стало 2'],['Сменил сферу','1 раз, охранник в банке'],['Ровесников живы','89%']].map(([a,b])=>`<div class="field"><span>${a}</span><span>${b}</span></div>`).join('')}
+<div class="sec">Кем ты был в 90-е</div>
+<svg viewBox="0 0 280 120" style="width:100%;height:auto" role="img" aria-label="Взгляды: умеренный реформатор, за единую страну">
+ <line x1="140" y1="8" x2="140" y2="112" stroke="#3b3a33"/><line x1="20" y1="60" x2="260" y2="60" stroke="#3b3a33"/>
+ <text x="22" y="56" font-size="9" fill="#a99f8a">старый порядок</text><text x="208" y="56" font-size="9" fill="#a99f8a">реформы</text>
+ <text x="144" y="16" font-size="9" fill="#a99f8a">Союз</text><text x="144" y="110" font-size="9" fill="#a99f8a">независимость</text>
+ <circle cx="172" cy="44" r="5" fill="#c99a58"/></svg>
+<div style="font:15px/1.4 var(--f-title)">Умеренный реформатор, жалеющий о большой стране.</div>
+<div class="sec">Письмо в 1986-й</div><div style="font:15px/1.4 var(--f-title)">«Купи доллары. И не бросай Ольгу одну в девяносто третьем».</div>`]);
+
+S.push(['14. Архив и карточка','Последние 10 жизней на устройстве и карточка для шеринга.',`
+${hd('Архив жизней','3 из 10','<span class="btn">✕</span>')}
+${[['Сергей Волков','РСФСР · 1952–… · пережил девяностые'],['Нигора Рахимова','Таджикская ССР · 1979–1992'],['Янис Озолс','Латвийская ССР · 1931–1997']].map(([a,b])=>`<div class="row"><span>${a}<span class="eff">${b}</span></span><span class="dim">›</span></div>`).join('')}
+<div class="sec">Карточка</div>
+<div class="sharec"><div class="mono dim" style="font-size:10px;letter-spacing:.2em">ВРЕМЯ ПЕРЕМЕН · 1986–1999</div>
+ <div style="font:400 24px/1.1 var(--f-title)">Сергей Волков пережил девяностые</div>
+ <div class="dim" style="font-size:12px">Свердловск → Екатеринбург · токарь → охранник</div>
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font:11px var(--f-mono);margin-top:4px"><div><b style="font-size:16px;color:var(--amber)">−78%</b><br>сбережений</div><div><b style="font-size:16px;color:var(--amber)">89%</b><br>ровесников живы</div><div><b style="font-size:16px;color:var(--amber)">1</b><br>смена жизни</div></div>
+ <div style="font:14px/1.4 var(--f-title)">«Купи доллары».</div></div>
+<div style="display:flex;gap:8px;justify-content:center;margin-top:12px"><span class="cta">Поделиться</span><span class="cta" style="background:transparent;color:var(--ink);border:1px solid var(--dim)">Ещё жизнь</span></div>`]);
+
+document.getElementById('grid').innerHTML=S.map(([t,d,h])=>`<section class="cell"><h2>${t}</h2><p>${d}</p><div class="ph">${h}</div></section>`).join('');
+</script>

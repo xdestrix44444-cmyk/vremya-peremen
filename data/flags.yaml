@@ -1,0 +1,108 @@
+# Реестр флагов. Кто ставит и кто читает — считает tools/build.py по событиям.
+# kind: origin — выпадает при рождении; flag — ставится событием; stage — ступень ветки; state — состояние, меняется туда-обратно.
+
+# --- происхождение ---
+minority:        {kind: origin, name: Русскоязычная семья или меньшинство в республике}
+jewish_roots:    {kind: origin, name: Еврейские корни, effect: открывает выезд в Израиль}
+german_roots:    {kind: origin, name: Немецкие корни, effect: открывает выезд в Германию}
+capital:         {kind: origin, name: Живёт в Москве или Ленинграде, effect: личные развилки 1991 и 1993}
+village:         {kind: origin, name: Село, effect: колхоз, огород, меньше предложений работы}
+parents_alive:   {kind: origin, name: Родители живы, effect: болезни и похороны родителей, помощь им}
+chernobyl_zone:  {kind: origin, name: Жил в зоне Чернобыля, effect: −Здоровье через годы}
+
+# --- детство ---
+fighter:         {kind: flag, name: Драчун, effect: чаще секция бокса, двор, бригада}
+quiet:           {kind: flag, name: Тихоня, effect: меньше уличных событий}
+district_gang:   {kind: flag, name: Районная группировка, effect: +Физ, путь в бригаду, риск учёта}
+arguer:          {kind: flag, name: Спорщик, effect: открывает митинги и политику}
+olympiad:        {kind: flag, name: Победитель олимпиады, effect: +шанс вуза и науки}
+hobby_sport:     {kind: state, name: Увлечение — спорт}
+hobby_music:     {kind: state, name: Увлечение — музыка}
+hobby_tech:      {kind: state, name: Увлечение — техника}
+hobby_books:     {kind: state, name: Увлечение — книги}
+hobby_garden:    {kind: state, name: Увлечение — сад и огород}
+hobby_fishing:   {kind: state, name: Увлечение — рыбалка и охота}
+talent_found:    {kind: flag, name: Талант открыт, effect: рост в своём увлечении, ветки сцены, спорта, ремесла}
+
+# --- армия и силовые ---
+evening_study:   {kind: state, name: Учится на вечернем или заочном, effect: через 3–5 лет диплом, engine: true}
+conscripted:     {kind: flag, name: Призван (служит или отслужил), effect: повестки больше не приходят}
+served:          {kind: flag, name: Отслужил, effect: +Связи в силовых, ЧОП, бригада, милиция}
+whiteticket:     {kind: flag, name: Белобилетник, effect: силовые ветки закрыты}
+draft_dodger:    {kind: flag, name: Скрывался от призыва, effect: +Внимание закона}
+afghan:          {kind: flag, name: Афганец, effect: ветеран; союз ветеранов, ЧОП, бригада, риск запоя}
+chechen:         {kind: flag, name: Прошёл Чечню, effect: ветеран; то же}
+veteran:         {kind: flag, name: Ветеран горячей точки, effect: льготы, союз ветеранов, риск запоя}
+liquidator:      {kind: flag, name: Ликвидатор ЧАЭС, effect: льготы, −Здоровье через годы}
+new_oath:        {kind: flag, name: Присягнул новому государству}
+
+# --- политика ---
+activist:        {kind: flag, name: Активист, effect: шанс выдвинуться в 1990-м}
+front:           {kind: flag, name: Народный фронт, effect: госработа после независимости}
+interfront:      {kind: flag, name: Интерфронт, effect: госработа закрыта после 1991}
+defender91:      {kind: flag, name: Защитник Белого дома, effect: предложения во власти ×2 в 1991–1993}
+gkchp:           {kind: flag, name: Поддержал ГКЧП, effect: увольнение или проверка в 1991–1992}
+opposition:      {kind: flag, name: Оппозиционер, effect: слежка, обыски, медленная карьера}
+party_member:    {kind: flag, name: Член КПСС, effect: карьера до 1991}
+komsomol_active: {kind: flag, name: Комсомольский актив, effect: НТТМ, номенклатура}
+deputy_local:    {kind: stage, name: Депутат местного совета}
+deputy_rep:      {kind: stage, name: Депутат республики}
+deputy_duma:     {kind: stage, name: Депутат Госдумы}
+official:        {kind: stage, name: Чиновник новой власти}
+
+# --- бизнес ---
+entrepreneur:    {kind: flag, name: Предприниматель, effect: чаще бизнес-предложения}
+nttm:            {kind: flag, name: Комсомольский бизнес, effect: путь в банк}
+own_roof:        {kind: state, name: Своя «крыша»}
+stubborn:        {kind: flag, name: Отказал крыше, effect: следующий наезд жёстче}
+shadow_trade:    {kind: flag, name: Торговал «левым», effect: +доход, +Внимание закона}
+cheated_partner: {kind: flag, name: Кинул партнёра, effect: в бизнесе меньше доверия}
+business:        {kind: state, name: Своё дело}
+
+# --- криминал ---
+brigade:         {kind: state, name: В бригаде}
+record:          {kind: flag, name: Судимость, effect: работа хуже, бригада ближе}
+informer:        {kind: flag, name: Сдал своих, effect: в бригаде смертельный риск}
+addicted:        {kind: state, name: Зависимость, effect: −Здоровье, риск смерти}
+
+# --- переезды ---
+refugee:         {kind: flag, name: Беженец, effect: −Связи, работа ниже квалификации}
+migrant:         {kind: flag, name: Переселенец}
+noncitizen:      {kind: state, name: Негражданин, effect: часть работ закрыта}
+helped_neighbors: {kind: flag, name: Укрыл соседей, effect: соседи возвращаются с помощью}
+
+# --- привычки и здоровье ---
+smoker:          {kind: state, name: Курит}
+drinker:         {kind: state, name: Пьёт}
+coded:           {kind: state, name: Закодирован}
+chronic:         {kind: state, name: Хроническая болезнь}
+heart_warning:   {kind: flag, name: Звоночек от сердца}
+injury:          {kind: flag, name: Тяжёлая травма}
+diet:            {kind: state, name: Следит за питанием}
+
+# --- отношения и семья ---
+partner:         {kind: state, name: Есть пара}
+married:         {kind: state, name: В браке}
+shared_budget:   {kind: state, name: Общий бюджет с партнёром}
+affair:          {kind: flag, name: Был роман на стороне}
+divorced:        {kind: flag, name: Разведён}
+widowed:         {kind: flag, name: Вдовец или вдова}
+has_kids:        {kind: state, name: Есть дети}
+alimony:         {kind: state, name: Платит алименты}
+partner_drinks:  {kind: state, name: Партнёр пьёт}
+
+# --- долги и деньги ---
+debt_bank:       {kind: state, name: Долг банку}
+debt_private:    {kind: state, name: Долг ростовщику}
+debt_bandits:    {kind: state, name: Долг бандитам}
+defaulter:       {kind: flag, name: Обманывал кредиторов, effect: крайние меры вероятнее}
+lent_unpaid:     {kind: flag, name: Не вернули долг}
+mmm_investor:    {kind: state, name: Вложился в пирамиду}
+shareholder:     {kind: state, name: Есть акции}
+stake_control:   {kind: state, name: Контрольный пакет предприятия}
+enterprise_owner: {kind: state, name: Владеет предприятием, effect: пассивный доход и риски}
+
+# --- профессии ---
+threatened:      {kind: flag, name: Угрожали за публикации}
+private_practice: {kind: state, name: Частная практика}
+official_record: {kind: state, name: Работает официально, effect: работа «в конверте» идёт в стаж, engine: true}

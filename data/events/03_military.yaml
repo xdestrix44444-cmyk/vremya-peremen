@@ -1,0 +1,427 @@
+title: 3. Армия и силовые (MIL)
+note: 'Ступени: Срочник → Контрактник → Курсант → Лейтенант → Капитан → Майор → Полковник. Отдельно: милиция, ОМОН.'
+events:
+- id: MIL-01
+  type: choice
+  repeat: true
+  when: {from: 1986, to: 1988, month: 10}
+  who:
+    age: [18, 27]
+    sex: m
+    not_flags: [served, whiteticket, conscripted, draft_dodger]
+    role: [young, adult]
+    not_job: [army, cadet, officer, police]
+  text: Повестка из военкомата. Студентов тоже забирают.
+  choices:
+  - text: Служить
+    effects: {close: -3}
+    job: army
+    sets: [conscripted]
+  - text: Откосить
+    check:
+      base: 20
+      ties: 0.6
+      grit: 5
+      year: {1992: 10, 1993: 10, 1994: 10, 1995: 10}
+    success:
+      text: Справка из диспансера стоила недёшево.
+      effects: {money_m: -2}
+      sets: [whiteticket]
+    fail:
+      text: Не вышло. Через неделю ты в части.
+      effects: {ties: -2}
+      job: army
+      sets: [conscripted]
+  - text: Скрываться
+    effects: {close: -4, law: 15}
+    sets: [draft_dodger]
+- id: MIL-01-89
+  type: choice
+  repeat: true
+  when: {from: 1989, to: 1999, month: 10}
+  who:
+    age: [18, 27]
+    sex: m
+    not_flags: [served, whiteticket, conscripted, draft_dodger]
+    role: [young, adult]
+    not_job: [army, cadet, officer, police, student]
+  text: 'В почтовом ящике повестка: явиться в военкомат через неделю, при себе паспорт и кружка.'
+  choices:
+  - text: Служить
+    effects: {close: -3}
+    job: army
+    sets: [conscripted]
+  - text: Откосить
+    check:
+      base: 20
+      ties: 0.6
+      grit: 5
+      year: {1992: 10, 1993: 10, 1994: 10, 1995: 10}
+    success:
+      text: Справка из диспансера стоила недёшево.
+      effects: {money_m: -2}
+      sets: [whiteticket]
+    fail:
+      text: Не вышло. Через неделю ты в части.
+      effects: {ties: -2}
+      job: army
+      sets: [conscripted]
+  - text: Скрываться
+    effects: {close: -4, law: 15}
+    sets: [draft_dodger]
+- id: MIL-02
+  type: scene
+  when: {from: 1986, to: 1999}
+  who:
+    job: [army]
+  text: Учебка. Подъём за 45 секунд, сапоги, портянки, строевая на плацу.
+  effects: {fit: 8, health: -1}
+- id: MIL-03
+  type: choice
+  repeat: true
+  when: {from: 1986, to: 1999}
+  who:
+    job: [army]
+  weight: 2
+  text: 'Ночью в казарме будят «деды»: «Ну что, дух, будешь жить по уставу или по-нашему?»'
+  choices:
+  - text: Терпеть
+    effects: {health: -3, close: -2}
+  - text: Огрызнуться
+    check: {base: 40, fit: 0.6, strength: 15}
+    success:
+      text: Отстали. Тебя зауважали.
+      effects: {ties: 2}
+    fail:
+      text: Неделю в санчасти.
+      effects: {health: -8}
+  - text: Жаловаться командиру
+    check: {base: 30, ties: 0.3}
+    success:
+      text: Дедов перевели в другую роту.
+      effects: {}
+    fail:
+      text: Стало только хуже.
+      effects: {health: -6, ties: -4}
+- id: MIL-04
+  type: choice
+  when: {from: 1986, to: 1988}
+  who:
+    job: [army]
+  chance: 0.02
+  text: Часть отправляют в Афганистан. Транспортник до Кабула.
+  choices:
+  - text: Служить
+    outcomes:
+    - w: 89
+      mods: {fit: 0.3}
+      text: Вернулся живым. Об Афгане не рассказываешь.
+      effects: {health: -5, ties: 3}
+      sets: [afghan, veteran]
+    - w: 8
+      text: Ранен, госпиталь в Ташкенте.
+      effects: {health: -20}
+      sets: [afghan, veteran, injury]
+    - {w: 3, text: Погиб в Афганистане., end: death}
+- id: MIL-05
+  type: choice
+  when: {from: 1994, to: 1999}
+  where: [RU]
+  who:
+    job: [army, officer, police]
+  chance: 0.08
+  text: 'Построение на плацу: часть отправляют на Кавказ. Вещмешки, автоматы, эшелон до Моздока.'
+  choices:
+  - text: Ехать
+    outcomes:
+    - w: 88
+      mods:
+        fit: 0.3
+        year: {1995: -5}
+      text: Вернулся. Снится каждую ночь.
+      effects: {health: -6, ties: 2}
+      sets: [chechen, veteran]
+    - w: 9
+      text: Ранен, госпиталь в Моздоке.
+      effects: {health: -20}
+      sets: [chechen, veteran, injury]
+    - {w: 3, text: Погиб в Чечне., end: death}
+- id: MIL-06
+  type: scene
+  when: {from: 1988, to: 1991}
+  who:
+    job: [army, police]
+  chance: 0.05
+  text: Внутренние войска отправляют в Баку. Вы стоите оцеплением между толпами.
+  effects: {health: -3, views_union: -10}
+  variants: [Внутренние войска отправляют в Баку. Вы стоите оцеплением между толпами.]
+- id: MIL-07
+  trigger: engine
+  type: scene
+  when: {from: 1986, to: 1999}
+  who:
+    job: [army]
+  text: Дембель. Альбом, аксельбанты, поезд домой.
+  effects: {close: 3, ties: 1}
+  sets: [served]
+  job: unemployed
+- id: MIL-08
+  type: choice
+  when: {from: 1991, to: 1991, month: 1}
+  where: [LV, LT]
+  who:
+    job: [police]
+  text: 'Командир собрал взвод: «Завтра решаем, кому служим — Москве или новой власти».'
+  choices:
+  - text: Москве
+    effects: {views_union: -20, ties: 1}
+    sets: [interfront]
+  - text: Новой власти
+    effects: {views_union: 20}
+    sets: [front]
+  - text: Уволиться
+    effects: {money_m: -2}
+- id: MIL-09
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    age: [17, 21]
+    not_flags: [whiteticket]
+  text: 'Военком предлагает поступать в военное училище: казарма, погоны и когда-нибудь — своя квартира.'
+  choices:
+  - text: Поступать
+    check:
+      base: 35
+      fit: 0.5
+      know: 0.3
+      strength: 10
+      year: {1993: -10, 1994: -10}
+    success:
+      text: Курсант. Казарма, учёба, погоны.
+      effects: {fit: 5}
+      job: cadet
+    fail:
+      text: Не прошёл. Осенью повестка.
+      effects: {}
+  - text: Нет
+    effects: {}
+- id: MIL-10
+  trigger: engine
+  type: scene
+  when: {from: 1986, to: 1999}
+  who:
+    job: [cadet]
+  text: Выпуск из училища. В приказе о распределении — твоя фамилия и далёкий гарнизон.
+  effects: {ties: 2}
+  job: officer
+- id: MIL-11
+  type: choice
+  when: {from: 1990, to: 1994}
+  who:
+    job: [officer]
+  text: Вывод войск из Германии, Прибалтики, Монголии. Новое место — палатки в поле.
+  choices:
+  - text: Продолжать службу
+    effects: {close: -5, health: -2}
+  - text: Уволиться
+    effects: {money_m: -2}
+    job: unemployed
+- id: MIL-12
+  type: choice
+  when: {from: 1992, to: 1992}
+  where: [UA, BY, KZ, UZ, AZ, GE, MD, KG, TJ, AM, TM]
+  who:
+    job: [officer]
+  text: Часть переходит под новую республику. Перед строем зачитывают текст присяги на чужом языке.
+  choices:
+  - text: Присягнуть
+    effects: {money_m: -1, views_union: 10}
+    sets: [new_oath]
+  - text: Уехать служить в Россию
+    outcomes:
+    - w: 100
+      text: 'Служба есть, жилья нет: общежитие и очередь.'
+      effects: {close: -5}
+      sets: [migrant]
+      move: RU
+  - text: Уволиться
+    effects: {money_m: -2}
+    job: unemployed
+- id: MIL-13
+  type: choice
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who:
+    job: [officer]
+  text: Зарплату не платят третий месяц, семья в общежитии.
+  choices:
+  - text: Терпеть
+    effects: {close: -3, money_m: -2}
+  - text: Подрабатывать в ЧОПе
+    effects: {money_m: 2, health: -2}
+  - text: Продать «лишнее» со склада
+    check: {base: 70, ties: 0.3}
+    success:
+      text: Солярка ушла налево. Семья сыта.
+      effects: {money_m: 4, law: 10}
+      sets: [shadow_trade]
+    fail:
+      text: Прокуратура. Уголовное дело.
+      effects: {law: 30, ties: -6}
+- id: MIL-14
+  type: choice
+  when: {from: 1991, to: 1999}
+  who:
+    job: [officer]
+  chance: 0.1
+  text: 'Пришла шифрограмма: командировка в горячую точку на полгода.'
+  choices:
+  - text: Ехать
+    outcomes:
+    - w: 88
+      text: Вернулся с орденом и седыми висками.
+      effects: {ties: 4, money_m: 3, health: -5}
+      sets: [veteran]
+    - w: 9
+      text: Ранен.
+      effects: {health: -20}
+      sets: [veteran, injury]
+    - {w: 3, text: Погиб., end: death}
+  - text: Отказаться
+    outcomes:
+    - w: 50
+      text: Карьеру притормозили.
+      effects: {ties: -5}
+    - {w: 30, text: Обошлось.}
+    - w: 20
+      text: Уволили.
+      effects: {money_m: -2}
+      job: unemployed
+- id: MIL-15
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    job: [police]
+  text: Коммерсант предлагает «присматривать» за его точкой за долю.
+  choices:
+  - text: Согласиться
+    effects: {money_m: 3, law: 10}
+  - text: Отказаться
+    effects: {}
+  - text: Доложить начальству
+    outcomes:
+    - w: 50
+      text: Начальство само в доле. Тебя перевели в дальний район.
+      effects: {ties: -6}
+    - w: 50
+      text: Похвалили.
+      effects: {ties: 1}
+    effects: {happy: 2}
+- id: MIL-16
+  type: choice
+  when: {from: 1993, to: 1999}
+  who:
+    job: [police]
+    stats: {fit: '>50'}
+  text: 'Три часа ночи. Задержание бригады в бане на окраине: бронежилет, автомат, команда «вперёд».'
+  choices:
+  - text: Участвовать
+    outcomes:
+    - w: 85
+      mods: {fit: 0.4}
+      text: Взяли всех. Премия.
+      effects: {ties: 3, money_m: 1}
+    - w: 13
+      text: Ранен при задержании.
+      effects: {health: -15}
+      sets: [injury]
+    - {w: 2, text: Погиб при задержании., end: death}
+  - text: Взять деньги и «потерять» дело
+    effects: {money_m: 8, law: 15}
+- id: MIL-17
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    job: [officer, police]
+    age: [35, 55]
+  text: Приказ об увольнении в запас. Двадцать лет службы позади — и что теперь?
+  choices:
+  - text: Охрана
+    effects: {ties: 1}
+    job: guard
+  - text: Бизнес
+    sets: [entrepreneur]
+    job: unemployed
+  - text: Бригада
+    effects: {money_m: 5, law: 10}
+    sets: [brigade]
+    job: brigade
+  - text: Политика
+    effects: {fame: 5}
+    sets: [activist]
+    job: unemployed
+- id: MIL-18
+  type: choice
+  repeat: true
+  when: {from: 1989, to: 1999}
+  who:
+    flags: [veteran]
+  text: Ночью снится война. Друзья из части кто спивается, кто идёт в бизнес.
+  choices:
+  - text: Союз ветеранов
+    effects: {ties: 3, close: 1}
+  - text: Пить
+    check: {base: 40, will: 15}
+    success:
+      text: Выпили, помянули. Наутро на работу.
+      effects: {close: 1}
+    fail:
+      text: Запой на неделю.
+      effects: {health: -5, close: -5}
+      sets: [drinker]
+  - text: Уйти с головой в работу
+    effects: {money_m: 0.5}
+- id: MIL-19
+  type: choice
+  repeat: true
+  when: {from: 1986, to: 1999}
+  who:
+    flags: [draft_dodger]
+    age: [18, 27]
+  text: 'В дверь звонит участковый вместе с военкомом: «Здравствуйте. Мы вас долго искали».'
+  choices:
+  - text: Явиться
+    effects: {law: -10}
+    clears: [draft_dodger]
+    job: army
+    sets: [conscripted]
+  - text: Снова скрываться
+    outcomes:
+    - w: 70
+      text: Переехал к знакомым.
+      effects: {close: -3, law: 5}
+    - w: 30
+      text: Уголовное дело за уклонение.
+      effects: {law: 20}
+      sets: [record]
+  - text: Откупиться
+    check: {base: 40, ties: 0.5}
+    success:
+      text: Дело «потерялось».
+      effects: {money_m: -3}
+      clears: [draft_dodger]
+      sets: [whiteticket]
+    fail:
+      text: Деньги взяли, повестка осталась.
+      effects: {money_m: -3}
+- id: MIL-20
+  type: choice
+  when: {from: 1993, to: 1999}
+  who:
+    flags: [new_oath]
+    job: [officer]
+  text: В новой армии республики не хватает офицеров. Тебе предлагают майорские погоны.
+  choices:
+  - text: Идти на повышение
+    effects: {ties: 4, money_m: 1, views_union: 5}
+  - {text: Подать рапорт об отставке, job: unemployed}

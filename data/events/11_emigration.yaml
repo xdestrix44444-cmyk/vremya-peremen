@@ -1,0 +1,160 @@
+title: 11. Эмиграция и переезды (EMI)
+note: Уехал за пределы бывшего СССР — игра заканчивается эпилогом. Переехал в Россию или другую республику — игра продолжается.
+events:
+- id: EMI-01
+  type: choice
+  when: {from: 1986, to: 1988}
+  who:
+    age: [18, 70]
+    flags: [jewish_roots]
+  text: Подать на выезд — значит потерять работу и ждать годами.
+  choices:
+  - text: Подать
+    outcomes:
+    - {w: 40, text: Разрешили., end: abroad}
+    - w: 60
+      text: Отказ. Ты «отказник», с работы уволили.
+      effects: {ties: -10, law: 10}
+      job: unemployed
+  - text: Нет
+    effects: {}
+- id: EMI-02
+  type: choice
+  when: {from: 1989, to: 1999}
+  who:
+    age: [16, 99]
+    flags: [jewish_roots]
+  text: Родня уже в Израиле. ОВИР, очередь в посольство.
+  choices:
+  - text: Уехать
+    outcomes:
+    - {w: 90, text: 'Проводы, три чемодана, аэропорт.', end: abroad}
+    - w: 10
+      text: Документы застряли на год.
+      effects: {close: -2}
+  - text: Остаться
+    effects: {}
+- id: EMI-03
+  type: choice
+  when: {from: 1989, to: 1999}
+  who:
+    age: [16, 99]
+    flags: [german_roots]
+  text: 'Нашлась бабушкина метрика: немецкая фамилия. Можно подавать на выезд в Германию.'
+  choices:
+  - text: Уехать
+    outcomes:
+    - {w: 80, text: Лагерь для переселенцев под Фридландом., end: abroad}
+    - w: 20
+      text: Не хватило документов. Ждать ещё.
+      effects: {close: -2}
+  - text: Остаться
+    effects: {}
+- id: EMI-04
+  type: choice
+  repeat: true
+  when: {from: 1995, to: 1999}
+  who:
+    age: [18, 50]
+  text: 'По телевизору рассказали о лотерее грин-карт: заполни анкету — и, может быть, Америка.'
+  choices:
+  - text: Подать
+    outcomes:
+    - {w: 2, rare: true, text: Выиграл!, end: abroad}
+    - {w: 98, text: Не повезло.}
+  - text: Нет
+    effects: {}
+- id: EMI-05
+  type: choice
+  when: {from: 1990, to: 1999}
+  where: [UA, BY, UZ, KZ, GE, AZ, LT, MD, LV, KG, TJ, AM, TM, EE]
+  who:
+    age: [18, 99]
+    flags: [minority]
+  text: Соседи-русские уезжают в Россию. Зовут с собой.
+  choices:
+  - text: Уехать
+    outcomes:
+    - w: 100
+      text: Квартира за бесценок, контейнер, поезд.
+      effects: {money_m: -4, close: -4}
+      sets: [migrant]
+      move: RU
+  - text: Остаться
+    effects: {close: 1}
+- id: EMI-06
+  type: scene
+  who:
+    flags: [migrant]
+  text: В новом городе без прописки на работу не берут. Устроился грузчиком на рынок.
+  effects: {ties: -5, close: -2}
+  variants: [В новом городе без прописки на работу не берут. Устроился грузчиком на рынок., Соседи по общежитию называют вас «понаехавшими».]
+- id: EMI-07
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    age: [16, 25]
+    stats: {know: '>70'}
+  text: В вузе объявили конкурс на учёбу за границей на год.
+  choices:
+  - text: Ехать
+    outcomes:
+    - w: 50
+      text: Вернулся с дипломом и языком.
+      effects: {know: 10, ties: 3}
+    - {w: 50, text: Остался там., end: abroad}
+  - text: Нет
+    effects: {}
+- id: EMI-08
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    age: [18, 35]
+    not_flags: [married]
+  text: Знакомые предлагают брак с иностранцем через агентство.
+  choices:
+  - text: Согласиться
+    outcomes:
+    - {w: 60, text: Свадьба и переезд., end: abroad}
+    - w: 40
+      text: Агентство оказалось аферой.
+      effects: {money_m: -2}
+  - text: Нет
+    effects: {}
+- id: EMI-09
+  type: choice
+  who:
+    flags: [migrant]
+  text: Прошёл год на новом месте. Всё чаще снится старый двор.
+  choices:
+  - text: Вернуться
+    effects: {close: 2, money_m: -2}
+    clears: [migrant]
+  - text: Остаться
+    effects: {}
+- id: EMI-10
+  type: scene
+  when: {from: 1989, to: 1999}
+  who:
+    age: [16, 99]
+  chance: 0.04
+  text: 'Родня разъезжается: одни в Германию, другие в Россию. На проводах никто не знает, увидятся ли.'
+  effects: {close: -4}
+- id: EMI-11
+  type: choice
+  when: {from: 1995, to: 1999}
+  where: [MD, UA]
+  who:
+    age: [20, 50]
+  text: 'Нелегально на заработки в Италию или Португалию: сиделкой, на стройку.'
+  choices:
+  - text: Ехать
+    outcomes:
+    - w: 70
+      text: Работаешь, шлёшь деньги домой.
+      effects: {money_m: 6, close: -8}
+    - w: 30
+      text: Депортировали.
+      effects: {money_m: -3}
+  - text: Нет
+    effects: {}

@@ -1,0 +1,137 @@
+title: 18. Отдых и покупки (LEI)
+note: 'Новый раздел. Траты из бюджета (CONCEPT §3.10): путешествия, покупки, досуг.'
+events:
+- id: LEI-01
+  type: choice
+  when: {from: 1986, to: 1991, month: 7}
+  who:
+    role: [young, adult]
+  text: Отпуск. Можно махнуть в Сочи «дикарём», а можно ждать профсоюзную путёвку в Болгарию.
+  choices:
+  - text: Сочи дикарём
+    effects: {money_m: -1, health: 3, close: 1, happy: 5}
+    memo: 'Отпуск в Сочи «дикарём»: палатка, море, сгорел в первый же день.'
+  - text: Болгария по путёвке
+    check: {base: 40, ties: 0.5, party_member: 15}
+    success:
+      text: Заграница! Первый раз.
+      effects: {money_m: -2, close: 2, ties: 1}
+    fail:
+      text: Путёвку отдали другому.
+      effects: {}
+    memo: Достал путёвку в Болгарию — первый раз за границей.
+  - text: На даче
+    effects: {fit: 2, close: 1, happy: 1}
+    memo: Всё лето на даче.
+  variants: ['Отпуск. Можно махнуть в Сочи «дикарём», а можно ждать профсоюзную путёвку в Болгарию.', 'Июль. Жена мечтает о море, а у тебя путёвка в санаторий от завода.']
+  chance: 0.5
+- id: LEI-02
+  type: choice
+  repeat: true
+  when: {from: 1992, to: 1999, month: 7}
+  who:
+    role: [young, adult]
+  text: Июль. Все вокруг летят в Турцию, а на даче поспевает клубника.
+  choices:
+  - text: Турция
+    effects: {money_m: -3, health: 4, close: 4, happy: 5}
+    memo: 'Слетали в Турцию: «всё включено» и кожаные куртки на рынке.'
+  - text: Египет
+    who:
+      years: [1995, 1999]
+    effects: {money_m: -4, health: 5, close: 4, happy: 7}
+    memo: Отпуск в Египте, пирамиды на фоне.
+  - text: Дача
+    effects: {fit: 2, close: 1, happy: 1}
+    memo: Отпуск провели на даче.
+  variants: ['Июль. Все вокруг летят в Турцию, а на даче поспевает клубника.']
+  chance: 0.5
+- id: LEI-03
+  type: choice
+  repeat: true
+  who:
+    age: [16, 99]
+  text: День рождения. Можно позвать всех — тогда придётся занимать стулья у соседей.
+  choices:
+  - text: Позвать всех
+    effects: {money_m: -1, ties: 2, close: 2, happy: 4}
+    memo: 'Шумный день рождения: стулья занимали у соседей.'
+  - text: Тихо дома
+    effects: {close: 1, happy: 1}
+  variants: [День рождения. Можно позвать всех — тогда придётся занимать стулья у соседей.]
+- id: LEI-04
+  type: choice
+  when: {from: 1986, to: 1991}
+  who:
+    role: [young, adult]
+  text: В универмаг «выбросили» югославские дублёнки. Товаровед — знакомый соседа.
+  choices:
+  - text: Достать по блату
+    check: {base: 45, ties: 0.6}
+    success:
+      text: Достал. Все завидуют.
+      effects: {money_m: -8, close: 1, ties: 1}
+    fail:
+      text: Обещали и не достали.
+      effects: {}
+  - text: Обойтись
+    effects: {}
+  variants: [В универмаг «выбросили» югославские дублёнки. Товаровед — знакомый соседа.]
+- id: LEI-05
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    role: [young, adult]
+  text: В магазине «Электроника» видеомагнитофон «Панасоник» за две зарплаты.
+  choices:
+  - text: Купить видик
+    effects: {money_m: -6, close: 1}
+    item: {add: tv_vcr}
+    memo: Купили видеомагнитофон.
+  - text: Купить компьютер
+    who:
+      years: [1993, 1999]
+    effects: {money_m: -12}
+    item: {add: computer}
+  - text: Подождать
+    effects: {}
+  variants: [В магазине «Электроника» видеомагнитофон «Панасоник» за две зарплаты.]
+- id: LEI-06
+  type: scene
+  repeat: true
+  who:
+    age: [16, 60]
+  text: 'Шашлыки за городом с друзьями: мясо мариновали ещё с вечера.'
+  variants: ['Шашлыки за городом с друзьями: мясо мариновали ещё с вечера.']
+  focus: [hobby, balance]
+  chance: 0.5
+  effects: {ties: 2, close: 1, happy: 4, money_m: -0.3}
+- id: LEI-07
+  type: choice
+  when: {from: 1993, to: 1999}
+  who:
+    age: [16, 35]
+  text: Вечер пятницы. В ДК дискотека, а на первом этаже гостиницы открыли казино.
+  choices:
+  - text: Пойти на дискотеку в ДК
+    effects: {money_m: -0.5, ties: 2, happy: 4}
+  - text: Сыграть в казино
+    outcomes:
+    - w: 30
+      text: Выиграл!
+      effects: {money_m: 2, happy: 6}
+    - w: 70
+      text: Проиграл всё, что было.
+      effects: {money_m: -3, happy: 3}
+  - text: Остаться дома
+    effects: {}
+- id: LEI-08
+  type: scene
+  repeat: true
+  who:
+    age: [10, 99]
+  text: В «Новом мире» печатают «Архипелаг». Журнал передают из рук в руки на три дня.
+  variants: [В «Новом мире» печатают «Архипелаг». Журнал передают из рук в руки на три дня., Зачитался детективом с лотка до трёх ночи.]
+  focus: hobby
+  chance: 0.6
+  effects: {know: 2, happy: 2}

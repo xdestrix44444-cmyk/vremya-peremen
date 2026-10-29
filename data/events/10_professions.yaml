@@ -1,0 +1,729 @@
+title: 10. Профессии (PRO)
+note: Наука, медицина, школа, сцена, медиа, село, номенклатура, завод и шахта, гастарбайтеры, учёба, пенсия.
+events:
+- id: STU-01
+  type: choice
+  repeat: true
+  who:
+    job: [student]
+  text: Сессия. В общаге все зубрят до утра, на столе остывший чай.
+  choices:
+  - text: Зубрить ночами
+    check: {base: 60, know: 0.5, mind: 15}
+    success:
+      text: Сдал без хвостов.
+      effects: {know: 5, health: -1}
+    fail:
+      text: Хвост по матанализу.
+      effects: {know: 2, close: -1}
+  - text: Договориться с преподавателем
+    check: {base: 50, charm: 10, ties: 0.3}
+    success:
+      text: Зачёт.
+      effects: {money_m: -0.5}
+    fail:
+      text: Выгнали с экзамена.
+      effects: {close: -2}
+  variants: ['Сессия. В общаге все зубрят до утра, на столе остывший чай.', Экзамен у самого строгого профессора на потоке.]
+- id: STU-02
+  type: scene
+  when: {from: 1986, to: 1991}
+  who:
+    job: [student]
+  text: 'Стройотряд: всё лето строите коровник под Целиноградом. Вечером гитара у костра, в конце — первые свои деньги.'
+  effects: {money_m: 2, ties: 2, fit: 3}
+- id: STU-03
+  trigger: engine
+  type: scene
+  who:
+    job: [student]
+    age: [20, 26]
+  text: 'Диплом. До 1991 года — распределение: три года отработать, куда пошлют. Потом ищешь работу сам.'
+  effects: {know: 3}
+  job: unemployed
+- id: SCI-01
+  type: scene
+  when: {from: 1986, to: 1989}
+  who:
+    job: [scientist, engineer]
+  text: В курилке НИИ спорят о статье в «Огоньке». Свой стол у окна, чай в гранёном стакане.
+  effects: {know: 3, ties: 1}
+  variants: ['В курилке НИИ спорят о статье в «Огоньке». Свой стол у окна, чай в гранёном стакане.']
+- id: SCI-02
+  type: choice
+  who:
+    job: [scientist]
+  text: Диссертация готова. Защита через месяц, оппоненты — профессора из Москвы.
+  choices:
+  - text: Защищаться
+    check: {base: 40, know: 0.6, mind: 15, ties: 0.2}
+    success:
+      text: Кандидат наук.
+      effects: {know: 5, ties: 1, fame: 2}
+    fail:
+      text: Отправили на доработку.
+      effects: {know: 2}
+    effects: {happy: -2, money_m: -1}
+  - text: Не до того
+    effects: {}
+- id: SCI-03
+  type: choice
+  when: {from: 1990, to: 1995}
+  who:
+    job: [scientist, engineer]
+  text: Зарплата в лаборатории как у уборщицы. Коллеги ушли торговать.
+  choices:
+  - text: Остаться в науке
+    effects: {know: 2, money_m: -1}
+  - text: Уйти в торговлю
+    effects: {money_m: 2}
+    job: shop
+  - text: Ехать челноком
+    job: shuttle
+    sets: [entrepreneur]
+- id: SCI-04
+  type: choice
+  when: {from: 1992, to: 1996}
+  who:
+    job: [scientist]
+    stats: {know: '>60'}
+  text: Фонд Сороса объявил гранты для учёных. Заявка на английском, сорок страниц.
+  choices:
+  - text: Подать заявку
+    check: {base: 30, know: 0.6, mind: 10}
+    success:
+      text: Грант на два года.
+      effects: {money_m: 6, know: 3}
+    fail:
+      text: Отказ.
+      effects: {}
+    effects: {happy: -1}
+  - text: Нет
+    effects: {}
+- id: SCI-05
+  type: choice
+  when: {from: 1990, to: 1999}
+  who:
+    job: [scientist, programmer]
+    stats: {know: '>70'}
+  text: 'Пришло письмо из Германии: тебя зовут в лабораторию на три года по контракту.'
+  choices:
+  - text: Ехать
+    outcomes:
+    - {w: 100, text: 'Чемодан, словарь, научная группа в чужой стране.', end: abroad}
+  - text: Остаться
+    effects: {ties: 1}
+- id: SCI-06
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    job: [scientist, engineer]
+  text: Директор сдаёт этажи НИИ под склады и офисы.
+  choices:
+  - text: Помогать директору
+    effects: {money_m: 2, law: 3}
+  - text: Протестовать
+    effects: {ties: -4, fame: 2}
+- id: MED-01
+  type: choice
+  when: {from: 1986, to: 1991}
+  who:
+    job: [doctor]
+    age: [22, 28]
+  text: 'Распределение: участковая больница в районе, сто километров от города.'
+  choices:
+  - text: Ехать
+    effects: {know: 4, close: -3}
+  - text: Найти замену через знакомых
+    check: {base: 50, ties: 0.5}
+    success:
+      text: Остался в городе.
+      effects: {ties: -2}
+    fail:
+      text: Едешь всё равно.
+      effects: {close: -3}
+- id: MED-02
+  type: choice
+  repeat: true
+  who:
+    job: [doctor]
+  text: Пациент оставил на столе коньяк и конверт.
+  choices:
+  - text: Брать
+    effects: {money_m: 1, law: 2}
+  - text: Отказываться
+    effects: {fame: 1}
+  variants: [Пациент оставил на столе коньяк и конверт., Благодарная бабушка сунула в карман халата десятку.]
+- id: MED-03
+  type: scene
+  when: {from: 1992, to: 1999}
+  who:
+    job: [doctor]
+  text: Лекарств нет. Больные покупают всё сами, даже бинты и шприцы.
+  effects: {close: -2}
+- id: MED-04
+  type: choice
+  when: {from: 1990, to: 1999}
+  who:
+    job: [doctor]
+  text: 'Можно открыть частный стоматологический кабинет: аренда, кресло из Германии, вывеска.'
+  choices:
+  - text: Открыть
+    effects: {money_m: -6}
+    sets: [private_practice, business]
+  - text: Нет
+    effects: {}
+- id: MED-05
+  type: scene
+  when: {from: 1993, to: 1995}
+  where: [RU, UA]
+  who:
+    job: [doctor]
+  text: Эпидемия дифтерии. Отделение переполнено, работаешь сутками.
+  effects: {health: -4, ties: 1}
+- id: MED-06
+  type: scene
+  when: {from: 1992, to: 1999}
+  where: [TJ, KG, UZ, TM]
+  who:
+    job: [doctor]
+  text: В районе вспышка туберкулёза, а вакцины не завезли.
+  effects: {health: -2}
+- id: EDU-01
+  type: scene
+  who:
+    job: [teacher]
+  text: 'Классное руководство: тридцать детей и родительское собрание в пятницу.'
+  effects: {close: 1}
+  variants: ['Классное руководство: тридцать детей и родительское собрание в пятницу.']
+- id: EDU-02
+  type: choice
+  when: {from: 1994, to: 1998}
+  who:
+    job: [teacher, doctor]
+  text: 'Зарплату не платят третий месяц. Учительская решает: бастовать.'
+  choices:
+  - text: Бастовать
+    outcomes:
+    - w: 60
+      text: Выплатили часть долгов.
+      effects: {money_m: 2, ties: 1}
+    - w: 40
+      text: Ничего не изменилось.
+      effects: {ties: 1}
+    effects: {law: 3, close: -1}
+  - text: Работать
+    effects: {ties: -2}
+- id: EDU-03
+  type: scene
+  when: {from: 1992, to: 1999}
+  who:
+    job: [teacher]
+  text: По вечерам — ученики. Репетиторство приносит больше, чем зарплата.
+  repeat: true
+  focus: work
+  chance: 0.6
+  effects: {money_m: 2, close: -2}
+  variants: ['По вечерам — ученики. Репетиторство приносит больше, чем зарплата.']
+- id: EDU-04
+  type: offer
+  when: {from: 1992, to: 1999}
+  who:
+    job: [teacher]
+    stats: {know: '>60'}
+  text: 'Директор коммерческого лицея зовёт к себе: платят в долларах.'
+  choices:
+  - text: Перейти
+    effects: {money_m: 3, ties: -3, happy: -1}
+  - text: Остаться
+    effects: {happy: 1, ties: 1}
+- id: ART-01
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    flags: [talent_found]
+    age: [16, 40]
+  text: 'Квартирник в коммуналке на Петроградской: двадцать человек на полу, свечи, гитара.'
+  choices:
+  - text: Играть
+    effects: {ties: 2, fame: 4}
+    job: artist
+  - text: Нет
+    effects: {}
+- id: ART-02
+  type: choice
+  when: {from: 1988, to: 1991}
+  who:
+    job: [artist]
+  text: Кооператив устраивает концерт на стадионе. Ваша группа в программе.
+  choices:
+  - text: Ехать на гастроли
+    effects: {money_m: 5, fame: 8, health: -2}
+  - text: Нет
+    effects: {}
+  variants: [Кооператив устраивает концерт на стадионе. Ваша группа в программе.]
+- id: ART-03
+  type: scene
+  when: {from: 1990, to: 1999}
+  who:
+    job: [artist]
+  text: Кассеты с твоими песнями продают пираты на каждом рынке.
+  effects: {fame: 6}
+- id: ART-04
+  type: scene
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who:
+    job: [artist]
+  text: 'Чёс по ресторанам: «фанера», свадьбы, корпоративы. Деньги в конверте.'
+  focus: work
+  chance: 0.6
+  effects: {money_m: 3, fame: -1}
+  variants: ['Чёс по ресторанам: «фанера», свадьбы, корпоративы. Деньги в конверте.']
+- id: ART-05
+  type: choice
+  when: {from: 1993, to: 1999}
+  who:
+    job: [artist]
+    stats: {fame: '>30'}
+  text: Продюсер «с пацанами» предлагает контракт.
+  choices:
+  - text: Подписать
+    outcomes:
+    - w: 60
+      text: Клип на телевидении, гастроли.
+      effects: {fame: 15, money_m: 4}
+    - w: 40
+      text: Кабальный контракт.
+      effects: {fame: 5, close: -4}
+  - text: Нет
+    effects: {}
+- id: ART-06
+  type: choice
+  repeat: true
+  who:
+    job: [artist]
+  text: После концерта в гримёрке пьют все. Тебе уже налили.
+  choices:
+  - text: Пить со всеми
+    check: {base: 60, will: 15}
+    success:
+      text: Утром как новенький.
+      effects: {ties: 1}
+    fail:
+      text: Неделя как в тумане.
+      effects: {health: -4}
+      sets: [drinker]
+  - text: Уехать домой
+    effects: {ties: -1}
+- id: MEDIA-01
+  type: choice
+  when: {from: 1987, to: 1991}
+  who:
+    job: [journalist]
+  text: Редактор положил на стол письмо читателя о том, как начальство раздаёт квартиры своим.
+  choices:
+  - text: Публиковать
+    outcomes:
+    - w: 70
+      text: Материал вышел, о тебе говорят.
+      effects: {fame: 8}
+    - w: 30
+      text: Сняли с полосы, тебя перевели в отдел писем.
+      effects: {ties: -4}
+  - text: Нет
+    effects: {}
+- id: MEDIA-02
+  type: choice
+  when: {from: 1990, to: 1992}
+  who:
+    job: [journalist]
+  text: 'Можно открыть свою газету: бумага по талонам, типография за взятку.'
+  choices:
+  - text: Открыть
+    outcomes:
+    - w: 50
+      text: Тираж растёт.
+      effects: {fame: 6, money_m: 3}
+      sets: [business]
+    - w: 50
+      text: Разорились на бумаге.
+      effects: {money_m: -4}
+  - text: Нет
+    effects: {}
+- id: MEDIA-03
+  type: offer
+  when: {from: 1993, to: 1999}
+  who:
+    job: [journalist]
+    stats: {fame: '>20'}
+  text: 'Позвонили с нового телеканала: им нужны люди в эфир.'
+  choices:
+  - text: Перейти
+    effects: {fame: 10, money_m: 3, close: -2, happy: -1}
+  - text: Остаться
+    effects: {}
+- id: MEDIA-04
+  type: choice
+  when: {from: 1994, to: 1999}
+  who:
+    job: [journalist]
+  text: Редакция отправляет на войну. Бронежилет выдают под расписку.
+  choices:
+  - text: Ехать
+    outcomes:
+    - w: 85
+      text: Репортажи с передовой.
+      effects: {fame: 10, health: -4}
+    - w: 12
+      text: Ранен.
+      effects: {health: -15}
+      sets: [injury]
+    - {w: 3, text: Погиб на войне., end: death}
+  - text: Отказаться
+    effects: {}
+- id: MEDIA-05
+  type: choice
+  repeat: true
+  when: {from: 1993, to: 1999}
+  who:
+    job: [journalist]
+  text: Пиарщик кандидата предлагает статью «под ключ». Конверт уже на столе.
+  choices:
+  - text: Взять
+    effects: {money_m: 2, fame: -2}
+  - text: Нет
+    effects: {}
+- id: MEDIA-06
+  type: choice
+  when: {from: 1993, to: 1999}
+  who:
+    job: [journalist]
+    stats: {fame: '>30'}
+  text: После расследования звонят с угрозами.
+  sets: [threatened]
+  choices:
+  - text: Продолжать
+    outcomes:
+    - w: 85
+      text: Материал вышел.
+      effects: {fame: 10}
+    - w: 13
+      text: Избили в подъезде.
+      effects: {health: -15}
+    - {w: 2, text: Убит., end: death}
+  - text: Отступить
+    effects: {fame: -4}
+  - text: Уехать
+    effects: {close: -5}
+- id: VIL-01
+  type: scene
+  when: {from: 1986, to: 1991, month: 9}
+  who:
+    job: [kolkhoz]
+  text: Уборочная. Городские студенты «на картошке».
+  effects: {fit: 2, money_m: 1}
+- id: VIL-02
+  type: choice
+  when: {from: 1990, to: 1999}
+  who:
+    job: [kolkhoz]
+  text: 'Председатель говорит: можно выйти из колхоза и взять землю под фермерство.'
+  choices:
+  - text: Взять
+    outcomes:
+    - w: 50
+      mods: {grit: 10}
+      text: Своё хозяйство кормит и приносит доход.
+      effects: {money_m: 3}
+      job: farmer
+    - w: 50
+      text: Нет техники, нет кредитов. Тяжело.
+      effects: {money_m: -3, health: -2}
+      job: farmer
+  - text: Нет
+    effects: {}
+- id: VIL-03
+  type: choice
+  when: {from: 1992, to: 1996}
+  who:
+    job: [kolkhoz]
+  text: 'Колхоз разваливается: с фермы увозят технику, кто первый успел.'
+  choices:
+  - text: Взять пай землёй
+    effects: {money_m: 1}
+  - text: Забрать трактор
+    effects: {money_m: 4, law: 5}
+  - text: Ничего не брать
+    effects: {ties: 2}
+- id: VIL-04
+  type: scene
+  who:
+    flags: [village]
+  text: 'Корова Зорька кормит всю семью: молоко, творог, сметана на продажу.'
+  effects: {money_m: 1, fit: 1}
+- id: VIL-05
+  type: choice
+  when: {from: 1990, to: 1999}
+  who:
+    flags: [village]
+    age: [17, 30]
+  text: Из деревни уезжает последняя молодёжь. Клуб закрыли.
+  choices:
+  - text: Уехать
+    effects: {close: -4, ties: -3}
+    clears: [village]
+    job: unemployed
+  - text: Остаться
+    effects: {close: 1}
+- id: NOM-01
+  type: scene
+  when: {from: 1986, to: 1990}
+  who:
+    job: [official]
+  text: Спецраспределитель, путёвка в Сочи, машина без очереди.
+  effects: {ties: 2, close: 1}
+- id: NOM-02
+  type: choice
+  when: {from: 1991, to: 1991, month: 11}
+  who:
+    job: [official]
+    flags: [party_member]
+  text: 'Райком опечатан. На двери — бумага с печатью: КПСС запрещена.'
+  choices:
+  - text: В администрацию
+    check: {base: 40, ties: 0.5, gkchp: -30}
+    success:
+      text: Снова в кабинете, только флаг другой.
+      effects: {ties: 1}
+    fail: {text: Новая власть не взяла., job: unemployed}
+  - text: В бизнес через связи
+    effects: {money_m: 5}
+    sets: [entrepreneur]
+    job: firm
+  - {text: На пенсию или в никуда, job: unemployed}
+- id: IND-01
+  type: scene
+  when: {from: 1986, to: 1990}
+  who:
+    job: [worker, miner]
+  text: Тебя повесили на доску почёта у проходной. Премия — тридцать рублей и грамота.
+  effects: {money_m: 1, ties: 1}
+  variants: [Тебя повесили на доску почёта у проходной. Премия — тридцать рублей и грамота.]
+- id: IND-02
+  type: scene
+  repeat: true
+  who:
+    job: [worker, miner, shift]
+  chance: 0.02
+  text: Сорвался трос, ящик упал рядом.
+  effects: {health: -10}
+  sets: [injury]
+  variants: ['Сорвался трос, ящик упал рядом.', 'На смене взорвался котёл. Ты успел отскочить, но не совсем.']
+- id: IND-03
+  type: scene
+  when: {from: 1989, to: 1995}
+  who:
+    job: [worker, engineer]
+  text: 'Конверсия: оборонный завод вместо ракет делает кастрюли.'
+- id: IND-04
+  type: choice
+  when: {from: 1992, to: 1996}
+  who:
+    job: [worker, engineer]
+  text: У завода новый хозяин. Он ходит по цехам в сопровождении охраны.
+  choices:
+  - text: Остаться
+    outcomes:
+    - {w: 60, text: 'Платят меньше, но платят.'}
+    - {w: 40, text: Сократили., job: unemployed}
+  - {text: Уйти, job: unemployed}
+- id: IND-05
+  type: choice
+  repeat: true
+  when: {from: 1993, to: 1998}
+  who:
+    job: [worker, miner, engineer, teacher, doctor, kolkhoz]
+  text: Зарплату не платят третий месяц. Иногда дают продукцией.
+  choices:
+  - text: Ждать
+    outcomes:
+    - w: 50
+      text: Через полгода выплатили часть.
+      effects: {money_m: -1}
+    - w: 50
+      text: Ничего не выплатили.
+      effects: {money_m: -3, close: -2}
+  - text: Взять продукцией и продавать на рынке
+    effects: {money_m: -1, ties: 1, happy: -2, fit: -1}
+  - {text: Уйти в торговлю, job: shop}
+  - text: Ехать на вахту
+    job: shift
+    who: {sex: m}
+  chance: 0.5
+- id: MIG-01
+  type: choice
+  when: {from: 1992, to: 1999}
+  where: [TJ, UZ, KG, AM, MD, AZ, GE]
+  who:
+    age: [18, 55]
+    role: [young, adult]
+  text: Земляки собирают бригаду на стройку в Подмосковье. Платят в долларах, жильё — вагончик.
+  choices:
+  - text: Ехать
+    effects: {close: -5}
+    job: migrant
+  - text: Остаться
+    effects: {}
+- id: MIG-02
+  type: choice
+  repeat: true
+  who:
+    job: [migrant]
+  text: Проверка документов на рынке. Регистрации нет.
+  choices:
+  - text: Платить милиции
+    effects: {money_m: -0.5}
+  - text: Прятаться
+    outcomes:
+    - {w: 70, text: Пронесло.}
+    - w: 30
+      text: Задержали на трое суток.
+      effects: {law: 5, money_m: -1}
+- id: MIG-03
+  type: scene
+  repeat: true
+  who:
+    job: [migrant]
+  text: Деньги домой через знакомых и проводников поездов.
+  effects: {close: 1, money_m: -1}
+- id: MIG-04
+  type: choice
+  who:
+    job: [migrant]
+  text: Конец сезона. Бригадир говорит, что денег нет, и уезжает на своей машине.
+  choices:
+  - text: Требовать
+    check: {base: 35, ties: 0.4, strength: 10}
+    success:
+      text: Отдал половину.
+      effects: {money_m: 2}
+    fail:
+      text: Избили и выгнали.
+      effects: {health: -8}
+  - text: Уйти
+    effects: {money_m: -2}
+- id: PEN-01
+  type: scene
+  when: {from: 1992, to: 1992}
+  who:
+    role: [pension]
+  text: Деньги «на похороны», что копились тридцать лет, хватит теперь на батон.
+  effects: {close: -3, views_reform: -15}
+- id: PEN-02
+  type: choice
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who:
+    role: [pension]
+  text: У метро стоят пенсионерки с сигаретами поштучно и стаканами семечек. Место рядом свободно.
+  choices:
+  - text: Торговать
+    effects: {money_m: 1, health: -2, ties: 1}
+  - text: Нет
+    effects: {}
+  variants: [У метро стоят пенсионерки с сигаретами поштучно и стаканами семечек. Место рядом свободно.]
+  chance: 0.2
+- id: PEN-03
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    role: [pension]
+  text: Митинг пенсионеров с красными флагами.
+  choices:
+  - text: Пойти
+    effects: {ties: 2, views_reform: -10, health: -1, happy: 2}
+  - text: Нет
+    effects: {}
+- id: PEN-04
+  type: scene
+  repeat: true
+  when: {from: 1994, to: 1998}
+  who:
+    role: [pension]
+  text: 'Пенсию опять задержали. В почтовом отделении табличка: «Денег нет».'
+  effects: {money_m: -1, close: -1}
+  variants: ['Пенсию опять задержали. В почтовом отделении табличка: «Денег нет».']
+  chance: 0.3
+- id: PEN-05
+  trigger: engine
+  type: scene
+  who:
+    role: [pension]
+  text: 'Проводы на пенсию в красном уголке: торт, речь начальника, часы с гравировкой.'
+  effects: {ties: -2}
+  job: pension
+- id: PEN-06
+  type: choice
+  repeat: true
+  who:
+    role: [pension]
+  text: Соседка зовёт в поликлинику «за компанию» и на лавочку у подъезда.
+  choices:
+  - text: Пойти
+    effects: {close: 1, health: 1}
+  - text: Остаться дома
+    effects: {close: -1, happy: 1}
+  chance: 0.2
+- id: PEN-07
+  type: choice
+  when: {from: 1992, to: 1999}
+  who:
+    role: [pension]
+  text: 'Знакомая зовёт вахтёром в общежитие: сутки через трое.'
+  choices:
+  - text: Работать
+    effects: {money_m: 1, health: -1, ties: 1}
+  - text: Отдыхать
+    effects: {health: 1}
+  variants: ['Знакомая зовёт вахтёром в общежитие: сутки через трое.']
+- id: PEN-08
+  type: scene
+  repeat: true
+  who:
+    role: [pension]
+    age: [70, 99]
+  text: Ровесники уходят один за другим. Записная книжка редеет.
+  effects: {close: -3}
+  chance: 0.2
+- id: MED-07
+  type: choice
+  repeat: true
+  when: {from: 1992, to: 1999}
+  who:
+    flags: [private_practice]
+  text: 'В частный кабинет пришла проверка: санэпидстанция, пожарные и налоговая — в один день.'
+  choices:
+  - text: Платить «за понимание»
+    effects: {money_m: -2, law: 3}
+  - text: Делать всё по закону
+    effects: {money_m: -3}
+- id: MEDIA-07
+  type: choice
+  repeat: true
+  who:
+    flags: [threatened]
+  text: Ночью опять звонили и молчали в трубку. У подъезда стоит та же машина.
+  choices:
+  - text: Нанять охрану
+    effects: {money_m: -3}
+  - text: Уехать на время
+    effects: {close: -4}
+    clears: [threatened]
+  - text: Не обращать внимания
+    outcomes:
+    - {w: 90, text: Пока обошлось.}
+    - w: 10
+      text: Нападение у дома.
+      effects: {health: -15}
+      clears: [threatened]

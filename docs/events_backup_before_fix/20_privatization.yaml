@@ -1,0 +1,149 @@
+title: "20. Приватизация (PRIV)"
+note: "Механика — CONCEPT §3.5a. Годы программ по республикам сверить. Активы ведёт движок: value — в средних месячных зарплатах, scale — множитель стоимости."
+
+voucher_choices: &voucher_choices
+  - text: Продать
+    effects: {money_m: 0.3}
+  - text: Отдать в инвестиционный фонд
+    outcomes:
+      - {w: 75, text: "Фонд исчез вместе с вывеской."}
+      - {w: 25, text: "Фонд выжил и иногда платит копейки.", asset: {kind: shares, sector: local, value: 0.3}, sets: [shareholder]}
+  - text: Обменять на акции своего предприятия
+    who: {role: [young, adult], job: [worker, miner, engineer, scientist, shift, kolkhoz]}
+    outcomes:
+      - {w: 70, text: "Акции есть. Дивидендов нет.", asset: {kind: shares, sector: local, value: 0.5}, sets: [shareholder]}
+      - {w: 30, mods: {region: {RU: 10, KZ: 10, AZ: 10}}, text: "Завод оказался лакомым: нефть или металл.", asset: {kind: shares, sector: metal, value: 1}, sets: [shareholder]}
+  - text: Выбрать компанию на аукционе
+    outcomes:
+      - {w: 35, text: "Нефть и газ: скучно, зато надёжно.", asset: {kind: shares, sector: oil, value: 0.6}, sets: [shareholder]}
+      - {w: 25, text: "Металлургия.", asset: {kind: shares, sector: metal, value: 0.6}, sets: [shareholder]}
+      - {w: 15, text: "Связь.", asset: {kind: shares, sector: telecom, value: 0.6}, sets: [shareholder]}
+      - {w: 25, text: "Местный завод. Через год он стоит.", asset: {kind: shares, sector: local, value: 0.2}, sets: [shareholder]}
+
+events:
+# --- раздача чеков: одна развилка, разные республики и годы ---
+- {id: PRIV-01-RU, type: choice, fixed: true, when: {from: 1992, to: 1992, month: 11}, where: [RU], who: {age: [18, 99]}, text: "Ваучер на руках. Что с ним делать?", choices: *voucher_choices}
+- {id: PRIV-01-LT, type: choice, fixed: true, when: {from: 1991, to: 1991, month: 10}, where: [LT], who: {age: [18, 99]}, text: "Выдали инвестиционные чеки на приватизацию.", choices: *voucher_choices}
+- {id: PRIV-01-KG, type: choice, fixed: true, when: {from: 1992, to: 1992, month: 9}, where: [KG], who: {age: [18, 99]}, text: "Выдали приватизационные купоны.", choices: *voucher_choices}
+- {id: PRIV-01-LV, type: choice, fixed: true, when: {from: 1993, to: 1993, month: 6}, where: [LV], who: {age: [18, 99]}, text: "Начислены приватизационные сертификаты: чем дольше прожил в Латвии, тем больше.", choices: *voucher_choices}
+- {id: PRIV-01-EE, type: choice, fixed: true, when: {from: 1993, to: 1993, month: 6}, where: [EE], who: {age: [18, 99]}, text: "Выданы приватизационные ваучеры.", choices: *voucher_choices}
+- {id: PRIV-01-MD, type: choice, fixed: true, when: {from: 1993, to: 1993, month: 9}, where: [MD], who: {age: [18, 99]}, text: "Выданы «патримониальные боны».", choices: *voucher_choices}
+- {id: PRIV-01-BY, type: choice, fixed: true, when: {from: 1994, to: 1994, month: 6}, where: [BY], who: {age: [18, 99]}, text: "Выданы приватизационные чеки «Имущество».", choices: *voucher_choices}
+- {id: PRIV-01-KZ, type: choice, fixed: true, when: {from: 1994, to: 1994, month: 4}, where: [KZ], who: {age: [18, 99]}, text: "Выданы купоны. Вложить их можно только через инвестиционные фонды.", choices: *voucher_choices}
+- {id: PRIV-01-AM, type: choice, fixed: true, when: {from: 1994, to: 1994, month: 10}, where: [AM], who: {age: [18, 99]}, text: "Выданы приватизационные ваучеры.", choices: *voucher_choices}
+- {id: PRIV-01-UA, type: choice, fixed: true, when: {from: 1995, to: 1995, month: 1}, where: [UA], who: {age: [18, 99]}, text: "Выданы приватизационные сертификаты.", choices: *voucher_choices}
+- {id: PRIV-01-GE, type: choice, fixed: true, when: {from: 1995, to: 1995, month: 6}, where: [GE], who: {age: [18, 99]}, text: "Выданы приватизационные ваучеры.", choices: *voucher_choices}
+- {id: PRIV-01-AZ, type: choice, fixed: true, when: {from: 1997, to: 1997, month: 6}, where: [AZ], who: {age: [18, 99]}, text: "Выданы приватизационные чеки.", choices: *voucher_choices}
+
+# --- скупка и рост капитала ---
+- id: PRIV-02
+  type: offer
+  when: {from: 1992, to: 1996}
+  where: [RU, UA, BY, KZ, LT, LV, EE, MD, KG, AM, GE]
+  who: {role: [young, adult], money: ">20"}
+  text: "Ваучеры продают у метро за бесценок. Можно скупать."
+  choices:
+    - text: Скупать и перепродавать фондам
+      outcomes:
+        - {w: 60, mods: {grit: 15}, text: "Разница в цене — твоя.", effects: {money_m: 6, ties: 2}}
+        - {w: 25, text: "Рынок просел, продал в ноль.", effects: {}}
+        - {w: 15, text: "Отобрали на улице.", effects: {money_m: -4, health: -4}}
+    - text: Собрать пакет и выйти на аукцион
+      check: {base: 35, ties: 0.5, grit: 15, entrepreneur: 10}
+      success: {text: "Крупный пакет завода твой.", effects: {money_m: -30, fame: 5, law: 5}, asset: {kind: stake, sector: local, value: 60}, sets: [shareholder, stake_control]}
+      fail: {text: "Директор завода перебил ставку.", effects: {money_m: -5}}
+    - {text: Не связываться, effects: {}}
+- id: PRIV-03
+  type: offer
+  when: {from: 1993, to: 1999}
+  who: {flags: [shareholder], not_flags: [stake_control]}
+  text: "Новые хозяева скупают акции у работников. Предлагают наличными."
+  choices:
+    - {text: Продать, effects: {money_m: 1}, asset: {kind: shares, scale: 0}, clears: [shareholder]}
+    - {text: Держать, effects: {}}
+- id: PRIV-04
+  type: scene
+  chance: 0.15
+  when: {from: 1993, to: 1999}
+  who: {flags: [shareholder], not_flags: [stake_control]}
+  text: "Допэмиссия: доля мелких акционеров размыта, твои акции стоят втрое меньше."
+  asset: {kind: shares, scale: 0.3}
+- id: PRIV-05
+  type: scene
+  repeat: true
+  when: {from: 1994, to: 1999}
+  who: {flags: [shareholder]}
+  text: "Собрание акционеров в Доме культуры. Дивиденды — на один поход в магазин."
+  effects: {money_m: 0.1}
+- id: PRIV-06
+  type: offer
+  when: {from: 1995, to: 1998}
+  where: [RU]
+  who: {flags: [shareholder]}
+  text: "Открылся рынок акций. За твои акции дают реальные деньги."
+  choices:
+    - {text: Продать по рынку, asset: {kind: shares, scale: 0}, clears: [shareholder], effects: {money_m: 3}}
+    - {text: Держать дальше, effects: {}}
+# --- денежная приватизация ---
+- id: PRIV-07
+  type: offer
+  when: {from: 1992, to: 1994}
+  who: {flags: [business]}
+  text: "Малая приватизация: можно выкупить помещение своего магазина или ларька на аукционе."
+  choices:
+    - text: Выкупить
+      check: {base: 50, ties: 0.5, grit: 10}
+      success: {text: "Помещение твоё. Аренду платить больше не нужно.", effects: {money_m: -10}, asset: {kind: property, sector: trade, value: 15}}
+      fail: {text: "Помещение ушло «своему» человеку.", effects: {money_m: -1}}
+    - {text: Арендовать дальше, effects: {}}
+- id: PRIV-08
+  type: offer
+  when: {from: 1994, to: 1997}
+  who: {role: [adult], any_flags: [business, official, nttm]}
+  text: "Денежный аукцион или инвестконкурс: продают долю завода."
+  choices:
+    - text: Участвовать
+      check: {base: 25, ties: 0.6, grit: 10, official: 15}
+      success: {text: "Завод твой. Пассивный доход, а с ним и чужие долги по зарплате.", effects: {money_m: -40, fame: 8, law: 8}, asset: {kind: enterprise, sector: local, value: 80}, sets: [enterprise_owner, stake_control]}
+      fail: {text: "Победителя назначили заранее.", effects: {money_m: -3}}
+    - {text: Не лезть, effects: {}}
+- id: PRIV-09
+  type: choice
+  when: {from: 1992, to: 1999}
+  who: {role: [adult], job: [official, engineer], exp: ">10"}
+  text: "Акционирование: директору и руководителям предлагают оформить контрольный пакет на себя."
+  choices:
+    - text: Оформить
+      outcomes:
+        - {w: 70, text: "Завод фактически твой.", effects: {law: 15, ties: -3}, asset: {kind: stake, sector: local, value: 40}, sets: [stake_control, enterprise_owner]}
+        - {w: 30, text: "Трудовой коллектив поднял скандал, дело в прокуратуре.", effects: {law: 30, fame: 5}}
+    - {text: Отказаться, effects: {ties: 2}}
+# --- жизнь собственника ---
+- id: PRIV-10
+  type: choice
+  repeat: true
+  when: {from: 1993, to: 1999}
+  who: {flags: [enterprise_owner]}
+  weight: 2
+  text: "Рабочие не получают зарплату полгода. Пикет у проходной."
+  choices:
+    - {text: Погасить долги из своих, effects: {money_m: -8, fame: 3, ties: 2}}
+    - {text: Тянуть, outcomes: [{w: 60, text: "Пошумели и разошлись.", effects: {fame: -2}}, {w: 40, text: "Забастовка, о тебе пишут газеты.", effects: {fame: -6, law: 10}}]}
+    - {text: Продать завод, effects: {money_m: 30}, asset: {kind: enterprise, scale: 0}, clears: [enterprise_owner, stake_control]}
+- id: PRIV-11
+  type: choice
+  chance: 0.15
+  when: {from: 1994, to: 1999}
+  who: {any_flags: [enterprise_owner, stake_control]}
+  text: "Рейдеры: поддельное собрание акционеров, охрана с автоматами у проходной."
+  choices:
+    - {text: Бороться через суд, check: {base: 40, ties: 0.5, know: 0.2}, success: {text: "Отбился.", effects: {money_m: -6}}, fail: {text: "Суд на их стороне. Предприятия больше нет.", effects: {money_m: -6}, asset: {kind: enterprise, scale: 0}, clears: [enterprise_owner, stake_control]}}
+    - {text: Позвать свою «крышу», check: {base: 50, own_roof: 20, ties: 0.4}, success: {text: "Рейдеры ушли.", effects: {money_m: -4, law: 10}}, fail: {text: "Стрельба у проходной.", effects: {health: -15, law: 15}}}
+    - {text: Договориться о продаже, effects: {money_m: 15}, asset: {kind: enterprise, scale: 0}, clears: [enterprise_owner, stake_control]}
+- id: PRIV-12
+  type: scene
+  repeat: true
+  when: {from: 1993, to: 1999}
+  who: {flags: [enterprise_owner]}
+  text: "Квартальный отчёт: предприятие приносит доход."
+  effects: {money_m: 4}

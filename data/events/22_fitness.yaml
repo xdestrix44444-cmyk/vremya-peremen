@@ -1,0 +1,69 @@
+title: 22. Спорт и физподготовка (FIT)
+note: Новый раздел. Способы качать Физподготовку в любом возрасте; фокус «Здоровье» повышает шансы.
+events:
+- id: FIT-01
+  type: choice
+  who:
+    age: [11, 17]
+    not_flags: [hobby_sport]
+  text: Тренер из ДЮСШ набирает ребят в секцию лёгкой атлетики.
+  choices:
+  - text: Записаться
+    effects: {fit: 6, happy: 1, close: -1}
+    sets: [hobby_sport]
+  - text: Нет
+    effects: {happy: 1}
+- id: FIT-02
+  type: scene
+  repeat: true
+  who:
+    age: [11, 17]
+    flags: [hobby_sport]
+  text: 'Тренировка три раза в неделю: после неё ноги гудят, а уроки — потом.'
+  focus: health
+  chance: 0.7
+  effects: {fit: 4, happy: 1, know: -1}
+  variants: ['Тренировка три раза в неделю: после неё ноги гудят, а уроки — потом.', Тренер поставил тебя в основной состав на район.]
+- id: FIT-03
+  type: scene
+  repeat: true
+  when: {from: 1987, to: 1999}
+  who:
+    age: [16, 35]
+  text: В подвальной «качалке» пахнет железом и потом. Рубашки стали тесными в плечах.
+  focus: health
+  chance: 0.6
+  effects: {fit: 5, ties: 1, money_m: -0.1}
+  variants: [В подвальной «качалке» пахнет железом и потом. Рубашки стали тесными в плечах., 'Жмёшь штангу на самодельной скамье, пока в подвале не выключат свет.']
+- id: FIT-04
+  type: scene
+  repeat: true
+  when: {from: 1986, to: 1999}
+  who:
+    age: [25, 65]
+  text: Всю зиму по выходным — на лыжах в лесопарке.
+  variants: [Всю зиму по выходным — на лыжах в лесопарке., 'Морозное утро, лыжня скрипит. Домой возвращаешься красный и счастливый.']
+  focus: health
+  chance: 0.6
+  effects: {fit: 3, health: 1, happy: 2}
+- id: FIT-05
+  type: scene
+  repeat: true
+  who:
+    age: [25, 65]
+  text: Бегаешь по утрам вдоль трамвайных путей. Соседи уже здороваются.
+  focus: health
+  chance: 0.6
+  effects: {fit: 4, health: 2}
+  variants: [Бегаешь по утрам вдоль трамвайных путей. Соседи уже здороваются., Третий месяц бегаешь до работы. Одышки больше нет.]
+- id: FIT-06
+  type: scene
+  repeat: true
+  who:
+    age: [18, 70]
+    job: [worker, miner, shift, kolkhoz, farmer, guard, officer, police]
+  text: 'Смена за двоих: разгрузили вагон до утра, бригадир доволен.'
+  variants: ['Смена за двоих: разгрузили вагон до утра, бригадир доволен.', 'Весь месяц таскали мешки — спина болит, зато премия.']
+  focus: work
+  chance: 0.5
+  effects: {fit: 2, health: -1, money_m: 0.3}

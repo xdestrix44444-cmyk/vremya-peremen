@@ -1,0 +1,277 @@
+title: 5. Криминал (CRM)
+note: 'Ступени: Шпана → Боец бригады → Бригадир → Авторитет → Легализация. Подача без романтизации.'
+events:
+- id: CRM-01
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    age: [13, 18]
+    not_flags: [quiet]
+  text: Компания во дворе зовёт ночью «пощупать» киоск.
+  choices:
+  - text: Пойти
+    outcomes:
+    - w: 60
+      text: Пронесло. Сигареты и жвачка на всех.
+      effects: {ties: 1, law: 5}
+    - w: 40
+      text: Поймали. Детская комната милиции.
+      effects: {law: 15, close: -5}
+  - text: Нет
+    effects: {ties: -1}
+- id: CRM-02
+  type: choice
+  when: {from: 1989, to: 1998}
+  who:
+    age: [17, 35]
+    sex: m
+    not_flags: [brigade, whiteticket]
+  text: В качалке знакомый зовёт в бригаду. Кожаные куртки, девятка, деньги пачками.
+  choices:
+  - text: Пойти
+    effects: {money_m: 5, ties: 4, law: 10}
+    sets: [brigade]
+    job: brigade
+  - text: Отказаться
+    outcomes:
+    - {w: 80, text: Он пожал плечами и уехал.}
+    - w: 20
+      mods: {district_gang: 20, fighter: 10}
+      text: Пару месяцев на тебя косились и давили.
+      effects: {close: -3}
+  third_person: true
+- id: CRM-03
+  type: choice
+  repeat: true
+  when: {from: 1990, to: 1998}
+  who:
+    flags: [brigade]
+  weight: 2
+  text: «Стрелка» на пустыре за городом. Две машины фарами друг к другу.
+  choices:
+  - text: Ехать
+    outcomes:
+    - w: 80
+      mods: {fit: 0.3, strength: 10}
+      text: Поговорили. Разъехались.
+      effects: {ties: 2}
+    - w: 15
+      text: Перестрелка. Ранен.
+      effects: {health: -20}
+      sets: [injury]
+    - w: 5
+      mods:
+        year: {1993: 3, 1994: 3}
+      text: Не вернулся со стрелки.
+      end: death
+  - text: Отсидеться
+    outcomes:
+    - w: 70
+      text: Свои косятся.
+      effects: {ties: -6}
+    - w: 30
+      text: Выгнали из бригады.
+      clears: [brigade]
+      job: unemployed
+- id: CRM-04
+  type: choice
+  repeat: true
+  when: {from: 1990, to: 1998}
+  who:
+    flags: [brigade]
+  text: 'Старший даёт список ларьков на районе: «Собери к пятнице».'
+  choices:
+  - text: Делать
+    effects: {money_m: 4, law: 8}
+  - text: Отказаться
+    effects: {ties: -8}
+- id: CRM-05
+  type: choice
+  when: {from: 1990, to: 1998}
+  who:
+    flags: [brigade]
+  text: Хоронят друга из бригады. Венки, «Мерседесы», бритые затылки.
+  choices:
+  - text: Остаться в бригаде
+    effects: {close: -4}
+  - text: Уйти
+    outcomes:
+    - w: 60
+      text: Отпустили. Начинаешь с нуля.
+      clears: [brigade]
+      job: unemployed
+    - w: 30
+      text: Отпустили за «отступные».
+      effects: {money_m: -6}
+      clears: [brigade]
+      job: unemployed
+    - w: 10
+      text: Не отпустили. Предупредили.
+      effects: {health: -8}
+- id: CRM-06
+  type: choice
+  when: {from: 1991, to: 1998}
+  who:
+    flags: [brigade]
+    stats: {ties: '>60', fit: '>60'}
+  text: Старший предлагает тебе «свою» точку и людей.
+  choices:
+  - text: Взять
+    effects: {money_m: 8, ties: 8, law: 10, fame: 3}
+  - text: Нет
+    effects: {}
+- id: CRM-07
+  type: choice
+  when: {from: 1992, to: 1998}
+  who:
+    flags: [brigade]
+    stats: {ties: '>70'}
+  text: Война за рынок с соседней группировкой.
+  choices:
+  - text: Воевать
+    outcomes:
+    - w: 60
+      mods: {ties: 0.3, grit: 10}
+      text: Рынок ваш.
+      effects: {money_m: 15, law: 15}
+    - w: 30
+      text: Потеряли людей и точки.
+      effects: {money_m: -8, close: -5}
+    - {w: 10, text: Тебя убили., end: death}
+  - text: Договориться
+    check: {base: 50, charm: 10, ties: 0.4}
+    success:
+      text: Поделили.
+      effects: {money_m: 3}
+    fail:
+      text: Не договорились. Война пришла сама.
+      effects: {health: -10}
+  - text: Уйти под других
+    effects: {ties: -10, money_m: -3}
+- id: CRM-08
+  type: choice
+  repeat: true
+  when: {from: 1990, to: 1999}
+  who:
+    stats: {law: '>60'}
+  text: 'Утром в дверь стучат: «Откройте, милиция». На кухне — ордер на арест.'
+  choices:
+  - text: Взятка
+    check: {base: 45, ties: 0.5}
+    success:
+      text: Отпустили «за недостатком улик».
+      effects: {money_m: -8, law: -10}
+    fail:
+      text: Взятку взяли, дело не закрыли.
+      effects: {money_m: -8}
+  - text: Хороший адвокат
+    check: {base: 35, know: 0.2}
+    success:
+      text: Условный срок.
+      effects: {money_m: -6, law: -15}
+      sets: [record]
+    fail:
+      text: Срок.
+      effects: {money_m: -6, close: -10}
+      sets: [record]
+      job: unemployed
+  - text: Сесть
+    effects: {close: -10, health: -8, law: -30}
+    sets: [record]
+    job: unemployed
+- id: CRM-09
+  type: choice
+  when: {from: 1990, to: 1999}
+  who:
+    flags: [record]
+  text: Зона. По вечерам перечитываешь письма матери.
+  choices:
+  - text: Держаться
+    effects: {ties: 3, health: -4}
+  - text: Работать на промзоне
+    effects: {fit: 3, health: -3}
+  - text: Сотрудничать с администрацией
+    outcomes:
+    - w: 70
+      text: Вышел по УДО.
+      effects: {ties: -10}
+      sets: [informer]
+    - w: 30
+      text: Узнали свои.
+      effects: {health: -20}
+      sets: [informer]
+  variants: [Зона. По вечерам перечитываешь письма матери., 'Передача из дома: сало, чай и тёплые носки.']
+- id: CRM-10
+  type: choice
+  when: {from: 1994, to: 1999}
+  who:
+    flags: [brigade]
+    stats: {ties: '>70'}
+  text: Деньги есть, но с ними страшно. Можно купить завод, ресторан — или депутатский мандат.
+  choices:
+  - text: Бизнес
+    effects: {money_m: -10, law: -10}
+    sets: [business, entrepreneur]
+    clears: [brigade]
+    job: firm
+  - text: Политика
+    effects: {money_m: -15, fame: 10, law: -10}
+    sets: [activist]
+    clears: [brigade]
+  - text: Остаться как есть
+    effects: {}
+- id: CRM-11
+  type: choice
+  when: {from: 1993, to: 1999}
+  who:
+    age: [15, 35]
+    flags: [brigade]
+  text: Знакомый предлагает «попробовать порошок».
+  choices:
+  - text: Отказаться
+    effects: {ties: -1}
+  - text: Согласиться
+    check: {base: 40, will: 20}
+    success:
+      text: Попробовал и понял, что больше не будешь.
+      effects: {health: -3}
+    fail:
+      text: Через месяц без этого уже не можешь.
+      effects: {health: -10, close: -8}
+      sets: [addicted]
+- id: CRM-12
+  type: choice
+  repeat: true
+  when: {from: 1990, to: 1999}
+  who:
+    flags: [brigade]
+  text: Тебя подозревают, что ты «сливаешь» информацию.
+  choices:
+  - text: Доказать верность
+    effects: {law: 10, ties: 2}
+  - text: Бежать в другой город
+    effects: {close: -8, ties: -15}
+    clears: [brigade]
+    job: unemployed
+  weight: 0.3
+- id: CRM-13
+  type: choice
+  repeat: true
+  when: {from: 1993, to: 1999}
+  who:
+    flags: [informer]
+  text: У подъезда стоит машина с московскими номерами. Из неё выходят бывшие свои.
+  choices:
+  - text: Откупиться
+    check: {base: 30, ties: 0.3}
+    success:
+      text: Отдал всё, что было.
+      effects: {money_m: -15}
+    fail: {text: Деньги взяли. Слово не сдержали., end: death}
+  - text: Бежать
+    outcomes:
+    - w: 70
+      text: Сменил город и фамилию.
+      effects: {close: -10, ties: -15}
+    - {w: 30, text: Не успел., end: death}
+  third_person: true

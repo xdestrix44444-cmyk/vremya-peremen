@@ -1,0 +1,166 @@
+title: 16. Привычки (HAB)
+note: Новый раздел. Алкоголь и курение — CONCEPT §3.8. Наркотики — только как риск, без подробностей.
+events:
+- id: HAB-01
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    sex: m
+    age: [18, 70]
+    not_flags: [drinker]
+  repeat: true
+  text: Пятница. Мужики в гараже разливают «по чуть-чуть» за чей-то день рождения.
+  choices:
+  - text: Выпить
+    check:
+      base: 85
+      will: 10
+      year: {1992: -10, 1993: -10, 1994: -10, 1998: -10}
+      happy: 0.3
+    success:
+      text: Посидели и разошлись.
+      effects: {ties: 1}
+    fail:
+      text: Это становится привычкой.
+      effects: {ties: 1, health: -2}
+      sets: [drinker]
+    effects: {happy: 3, ties: 1}
+  - text: Не пить
+    effects: {ties: -1, happy: -1}
+    memo: Отказался пить в гараже — мужики обиделись.
+  variants: [Пятница. Мужики в гараже разливают «по чуть-чуть» за чей-то день рождения.]
+  chance: 0.35
+- id: HAB-02
+  type: choice
+  repeat: true
+  who:
+    flags: [drinker]
+  weight: 2
+  text: Запой. Пятый день не выходишь на работу.
+  effects: {health: -4, close: -4, money_m: -1}
+  choices:
+  - text: Бросить самому
+    check: {base: 20, will: 20, close: 0.3, coded: 10, happy: 0.3}
+    success:
+      text: Держишься.
+      effects: {health: 2}
+      clears: [drinker]
+    fail:
+      text: Сорвался через неделю.
+      effects: {close: -3}
+  - text: Закодироваться
+    check: {base: 60, will: 10}
+    success:
+      text: Не пьёшь. Хотя тянет.
+      effects: {money_m: -1}
+      clears: [drinker]
+      sets: [coded]
+    fail:
+      text: Код не помог.
+      effects: {money_m: -1}
+  - text: Да ладно
+    outcomes:
+    - w: 80
+      text: Всё как было.
+      effects: {health: -2}
+    - {w: 15, text: Уволили за прогулы., job: unemployed}
+    - {w: 5, text: Отравление суррогатом., end: death}
+  variants: [Запой. Пятый день не выходишь на работу., 'Очнулся на чужой кухне и не помнишь, как сюда попал.']
+- id: HAB-03
+  type: choice
+  repeat: true
+  who:
+    flags: [coded]
+  text: Праздник. Все пьют, тебе наливают «чуть-чуть».
+  choices:
+  - text: Отказаться
+    effects: {ties: -1}
+  - text: Выпить
+    outcomes:
+    - w: 30
+      mods: {will: 10}
+      text: Остановился на одной.
+      effects: {}
+    - w: 70
+      text: Срыв.
+      sets: [drinker]
+      clears: [coded]
+      effects: {health: -4}
+- id: HAB-04
+  type: choice
+  repeat: true
+  who:
+    flags: [smoker]
+  text: Решаешь бросить курить. Последняя пачка лежит на столе.
+  choices:
+  - text: Бросить
+    check: {base: 25, will: 20, diet: 5}
+    success:
+      text: Не куришь уже полгода.
+      effects: {health: 4}
+      clears: [smoker]
+    fail:
+      text: Сорвался.
+      effects: {}
+  - text: Не сейчас
+    effects: {}
+- id: HAB-05
+  type: scene
+  repeat: true
+  who:
+    flags: [smoker]
+    age: [35, 99]
+  text: Утром кашляешь так, что просыпается вся квартира.
+  effects: {health: -2, fit: -1}
+  variants: ['Утром кашляешь так, что просыпается вся квартира.']
+  chance: 0.2
+- id: HAB-06
+  type: choice
+  when: {from: 1986, to: 1999}
+  who:
+    age: [17, 25]
+    job: [army, student, worker]
+    not_flags: [smoker]
+  text: В казарме, общаге или курилке цеха курят все. Тебе протягивают пачку.
+  choices:
+  - text: Закурить
+    check: {base: 40, will: 15}
+    success:
+      text: Попробовал и бросил.
+      effects: {ties: 1}
+    fail:
+      text: Куришь.
+      effects: {ties: 1}
+      sets: [smoker]
+  - text: Нет
+    effects: {}
+- id: HAB-07
+  type: choice
+  repeat: true
+  who:
+    flags: [addicted]
+  text: Зависимость. Деньги уходят, близкие отворачиваются.
+  effects: {health: -8, close: -6, money_m: -3}
+  choices:
+  - text: Лечиться
+    check: {base: 20, will: 20, close: 0.4}
+    success:
+      text: Реабилитация. Чистый уже год.
+      effects: {health: 4}
+      clears: [addicted]
+    fail:
+      text: Срыв после клиники.
+      effects: {money_m: -2}
+  - text: Продолжать
+    outcomes:
+    - w: 85
+      text: Ещё один потерянный месяц.
+      effects: {health: -5}
+    - {w: 15, text: Передозировка., end: death}
+- id: HAB-08
+  type: scene
+  repeat: true
+  who:
+    flags: [drinker, married]
+  text: Дома спрятали все бутылки и с тобой не разговаривают.
+  effects: {rel: -8, close: -3}

@@ -1,0 +1,735 @@
+<title>Время перемен</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=PT+Serif:wght@400;700&family=Neucha&display=swap&subset=cyrillic">
+<style>
+/* Тетрадь в клетку: одна колонка, лента событий как записи ручкой; итог года — газетная полоса */
+:root{
+  --paper:#f2f3ee; --sheet:#fbfbf8; --grid:rgba(60,100,170,.11); --ink:#1d2433; --muted:#646b78;
+  --pen:#2546a3; --red:#b5302a; --line:#cfd3d6; --chip:#e7e9e4;
+  --f-head:"PT Serif",Georgia,"Times New Roman",serif;
+  --f-body:"PT Sans","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"PT Mono",ui-monospace,Menlo,monospace;
+  --f-hand:"Neucha","Comic Sans MS",cursive;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#151920; --sheet:#1c2129; --grid:rgba(140,170,230,.07); --ink:#e3e5e9; --muted:#9aa1ad;
+  --pen:#8eaaff; --red:#ff7f72; --line:#333a45; --chip:#262c36; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#151920; --sheet:#1c2129; --grid:rgba(140,170,230,.07); --ink:#e3e5e9; --muted:#9aa1ad;
+  --pen:#8eaaff; --red:#ff7f72; --line:#333a45; --chip:#262c36; color-scheme:dark}
+
+body{background:var(--paper);color:var(--ink);font:16px/1.5 var(--f-body);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:680px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
+h1,h2,h3{font-family:var(--f-head);text-wrap:balance;margin:0}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--pen);outline-offset:2px}
+.btn{background:var(--pen);color:var(--sheet);border:0;border-radius:4px;padding:12px 20px;font-weight:700}
+.btn.ghost{background:transparent;color:var(--pen);border:1.5px solid var(--pen)}
+.label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* старт */
+#start h1{font-size:clamp(40px,9vw,64px);line-height:1;margin-top:24px}
+#start .years{font-family:var(--f-mono);color:var(--red);font-size:18px;margin-top:8px}
+#start p.lead{font-size:18px;max-width:34em;margin:20px 0}
+.opts{display:grid;gap:16px;margin:24px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chips label{display:inline-flex;align-items:center;gap:6px;background:var(--chip);border:1.5px solid transparent;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:15px}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label:has(input:checked){border-color:var(--pen);color:var(--pen);background:var(--sheet)}
+.chips label:has(input:focus-visible){outline:2px solid var(--pen);outline-offset:2px}
+.fine{color:var(--muted);font-size:13px;max-width:36em}
+
+/* анкета */
+.doc{background:var(--sheet);border:1px solid var(--line);padding:24px;margin-top:16px;box-shadow:0 1px 0 var(--line)}
+.doc h2{font-size:22px;text-align:center;letter-spacing:.06em;text-transform:uppercase}
+.doc .sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:16px}
+.field{display:grid;grid-template-columns:9em 1fr;gap:4px 12px;padding:6px 0;border-bottom:1px dotted var(--line)}
+.field b{font-weight:400;color:var(--muted);font-size:14px}
+.field span{font-family:var(--f-hand);font-size:21px;color:var(--pen);line-height:1.2;min-width:0}
+@media (max-width:440px){.field{grid-template-columns:1fr}}
+
+/* игра */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1.5px solid var(--ink);padding-block:10px;margin-bottom:12px}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.date{font-family:var(--f-mono);font-size:22px}
+.who{font-size:14px;color:var(--muted)}
+.speed{display:flex;gap:4px}
+.speed button{background:var(--chip);border:1.5px solid transparent;border-radius:4px;padding:4px 10px;font-size:13px;color:var(--ink)}
+.speed button[aria-pressed="true"]{border-color:var(--pen);color:var(--pen);background:var(--sheet)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+@media (max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat .label{font-size:11px}
+.bar{height:6px;background:var(--chip);border-radius:3px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--pen);transition:width .4s}
+.bar i.low{background:var(--red)}
+.money{font-family:var(--f-mono);font-size:15px;margin-top:2px}
+.feed{display:flex;flex-direction:column;gap:2px}
+.yr{font-family:var(--f-head);font-weight:700;font-size:28px;margin:18px 0 4px;color:var(--ink)}
+.ln{display:grid;grid-template-columns:5.2em 1fr;gap:10px;padding:5px 0}
+.ln .m{font-family:var(--f-mono);font-size:13px;color:var(--muted);padding-top:2px}
+.ln .t{min-width:0}
+.ln.big .t{font-weight:700}
+.ln.res .t{color:var(--pen);font-style:italic}
+.ln.dead .t{color:var(--red);font-weight:700}
+.choice{background:var(--sheet);border:1.5px solid var(--pen);border-radius:6px;padding:14px;margin:6px 0 10px;display:grid;gap:8px}
+.choice .q{font-weight:700}
+.choice button{text-align:left;background:var(--chip);border:1px solid var(--line);border-radius:4px;padding:10px 12px;color:var(--ink)}
+.choice button:hover{border-color:var(--pen)}
+.dvor{margin-top:28px;border-top:1.5px solid var(--ink);padding-top:10px}
+.dvor ul{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+.dvor li{display:grid;grid-template-columns:1fr auto;gap:8px;font-size:15px}
+.dvor li .st{color:var(--muted);text-align:right}
+.dvor li.gone .st{color:var(--red)}
+
+/* итог года: газета */
+.modal{position:fixed;inset:0;z-index:20;background:rgba(10,14,22,.55);overflow-y:auto;padding:max(16px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.paper{max-width:620px;margin:0 auto;background:var(--sheet);color:var(--ink);padding:20px;border:1px solid var(--line)}
+.mast{text-align:center;border-bottom:3px double var(--ink);padding-bottom:8px}
+.mast h2{font-size:clamp(28px,7vw,40px);letter-spacing:.02em}
+.mast .meta{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-top:4px;gap:8px;flex-wrap:wrap}
+.heads{display:grid;gap:10px;padding:14px 0;border-bottom:1px solid var(--ink)}
+.heads h3{font-size:21px;line-height:1.2}
+.heads .from{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-family:var(--f-body)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+@media (max-width:520px){.cols{grid-template-columns:1fr}}
+.cols h4{margin:0 0 6px;font-family:var(--f-head);font-size:16px}
+.cols ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:4px}
+.prices{display:grid;gap:4px;font-size:14px}
+.prices div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dotted var(--line)}
+.next{padding-top:14px;display:grid;gap:14px}
+.wish{width:100%;box-sizing:border-box;background:transparent;border:0;border-bottom:1.5px solid var(--line);font:22px var(--f-hand);color:var(--pen);padding:4px 0}
+
+/* справка */
+.end .big{font-family:var(--f-head);font-size:28px;margin:6px 0 2px}
+.end .cause{color:var(--red);font-weight:700}
+.end ul{padding-left:18px;display:grid;gap:4px}
+.wishes p{font-family:var(--f-hand);font-size:20px;color:var(--pen);margin:2px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+  <section id="start">
+    <div class="label">Симулятор одной жизни</div>
+    <h1>Время перемен</h1>
+    <div class="years">1986 → 1999</div>
+    <p class="lead">Перестройка только началась. Тебе выпадет случайный человек в одной из семи союзных республик: возраст, город, семья, работа. Дальше четырнадцать лет, за которые страна исчезнет, а деньги несколько раз превратятся в бумагу.</p>
+    <div class="opts">
+      <div>
+        <div class="label">Кем оказаться</div>
+        <div class="chips">
+          <label><input type="radio" name="agemode" id="am-rand" value="rand" checked> Случайный возраст</label>
+          <label><input type="radio" name="agemode" id="am-born" value="born"> Родиться в 1986-м</label>
+        </div>
+      </div>
+      <div>
+        <div class="label">Республики</div>
+        <div class="chips">
+          <label><input type="radio" name="repmode" id="rm-pop" value="pop" checked> По реальному населению</label>
+          <label><input type="radio" name="repmode" id="rm-eq" value="eq"> Все поровну</label>
+        </div>
+      </div>
+    </div>
+    <button class="btn" id="go">Оказаться в 1986-м</button>
+    <p class="fine" style="margin-top:20px">Россия, Украина, Беларусь, Казахстан, Таджикистан, Армения, Латвия. Вероятности опираются на перепись 1989 года, цены и смертность тех лет, но модель упрощённая. Это прототип.</p>
+  </section>
+
+  <section id="intro" hidden></section>
+
+  <section id="game" hidden>
+    <div class="top">
+      <div class="toprow">
+        <div>
+          <div class="date" id="date">январь 1986</div>
+          <div class="who" id="who"></div>
+        </div>
+        <div class="speed" role="group" aria-label="Скорость">
+          <button data-s="0" aria-pressed="false">Пауза</button>
+          <button data-s="1" aria-pressed="true">1×</button>
+          <button data-s="2" aria-pressed="false">2×</button>
+          <button data-s="4" aria-pressed="false">4×</button>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="label">Здоровье</div><div class="bar"><i id="b-h"></i></div></div>
+        <div class="stat"><div class="label">Близкие</div><div class="bar"><i id="b-f"></i></div></div>
+        <div class="stat"><div class="label">Связи</div><div class="bar"><i id="b-c"></i></div></div>
+        <div class="stat"><div class="label" id="money-l">Сбережения</div><div class="money" id="money"></div></div>
+      </div>
+    </div>
+    <div class="feed" id="feed" aria-live="polite"></div>
+    <div class="dvor">
+      <div class="label">Твой двор</div>
+      <ul id="dvor"></ul>
+    </div>
+  </section>
+
+  <section id="end" class="end" hidden></section>
+</div>
+
+<div class="modal" id="modal" hidden></div>
+
+<script>
+/* ---------- данные ---------- */
+const MON=['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+// хлеб и зарплата в рублях (до деноминации 1998), доллар на чёрном/свободном рынке. Средние за год, округлённо.
+const Y={
+ 1986:{bread:.2,wage:195,usd:4},1987:{bread:.2,wage:203,usd:4.5},1988:{bread:.2,wage:220,usd:6},
+ 1989:{bread:.22,wage:240,usd:10},1990:{bread:.25,wage:270,usd:20},1991:{bread:.6,wage:550,usd:100},
+ 1992:{bread:15,wage:6000,usd:220},1993:{bread:150,wage:58000,usd:1000},1994:{bread:700,wage:220000,usd:2200},
+ 1995:{bread:2000,wage:472000,usd:4550},1996:{bread:3000,wage:790000,usd:5100},1997:{bread:3500,wage:950000,usd:5800},
+ 1998:{bread:4500,wage:1050000,usd:10000},1999:{bread:8000,wage:1520000,usd:24600}
+};
+const REPS={
+ RU:{o:'РСФСР',n:'Россия',pop:147.4,min:0,urb:.74,inf:.018,
+   cities:[['Москва'],['Ленинград','Санкт-Петербург',1991],['Свердловск','Екатеринбург',1991],['Куйбышев','Самара',1991],['Новосибирск'],['Тольятти'],['Иваново'],['Норильск']],
+   vil:['посёлок под Тверью','село в Алтайском крае','деревня под Вологдой']},
+ UA:{o:'Украинская ССР',n:'Украина',pop:51.7,min:.22,urb:.67,inf:.013,
+   cities:[['Киев'],['Харьков'],['Донецк'],['Днепропетровск'],['Львов'],['Одесса']],vil:['село на Полтавщине','село под Житомиром']},
+ BY:{o:'Белорусская ССР',n:'Беларусь',pop:10.2,min:.13,urb:.66,inf:.012,
+   cities:[['Минск'],['Гомель'],['Витебск'],['Брест']],vil:['деревня на Гомельщине','деревня под Витебском']},
+ KZ:{o:'Казахская ССР',n:'Казахстан',pop:16.5,min:.38,urb:.57,inf:.026,
+   cities:[['Алма-Ата','Алматы',1993],['Караганда'],['Целиноград','Акмола',1992],['Усть-Каменогорск']],vil:['совхоз под Целиноградом','аул под Чимкентом']},
+ TJ:{o:'Таджикская ССР',n:'Таджикистан',pop:5.1,min:.08,urb:.32,inf:.043,
+   cities:[['Душанбе'],['Ленинабад','Худжанд',1991],['Курган-Тюбе']],vil:['кишлак в Вахшской долине','кишлак под Ленинабадом']},
+ AM:{o:'Армянская ССР',n:'Армения',pop:3.3,min:.02,urb:.68,inf:.019,
+   cities:[['Ереван'],['Ленинакан','Гюмри',1990],['Кировакан','Ванадзор',1993]],vil:['село под Спитаком','село в Араратской долине']},
+ LV:{o:'Латвийская ССР',n:'Латвия',pop:2.67,min:.34,urb:.71,inf:.011,
+   cities:[['Рига'],['Даугавпилс'],['Лиепая']],vil:['хутор в Латгалии','посёлок под Елгавой']}
+};
+const NM={
+ slav:{m:['Андрей','Сергей','Дмитрий','Алексей','Игорь','Олег','Владимир','Николай','Евгений','Михаил'],f:['Наталья','Елена','Ольга','Татьяна','Ирина','Светлана','Марина','Людмила','Анна','Юлия'],s:['Иванов','Смирнов','Кузнецов','Попов','Соколов','Лебедев','Козлов','Новиков','Морозов','Волков'],
+   dm:['Коля','Серёга','Вовка','Саня','Жека','Толик'],df:['Валя','Нина','Люба','Галя','Лена','Таня']},
+ UA:{m:['Олег','Тарас','Сергей','Николай','Василий','Богдан','Андрей','Юрий'],f:['Оксана','Галина','Наталья','Ольга','Ирина','Леся','Татьяна'],s:['Шевченко','Бондаренко','Коваленко','Ткаченко','Кравченко','Мельник','Бойко','Ковальчук']},
+ BY:{m:['Алесь','Андрей','Сергей','Виктор','Николай'],f:['Алеся','Наталья','Ольга','Елена','Ирина'],s:['Ковалёв','Жуков','Новик','Мельников','Кузьмич','Лукашевич']},
+ KZ:{m:['Ержан','Нурлан','Серик','Асхат','Бауыржан','Кайрат'],f:['Айгуль','Гульнара','Динара','Сауле','Жанар'],s:['Ахметов','Сейтказиев','Жумабаев','Абенов','Касымов']},
+ TJ:{m:['Фаррух','Рустам','Шавкат','Бахтиёр','Далер','Джамшед'],f:['Зарина','Малика','Нигора','Гулнора','Мадина'],s:['Рахимов','Назаров','Сафаров','Каримов','Шарипов']},
+ AM:{m:['Арам','Ашот','Карен','Тигран','Армен','Гагик'],f:['Ануш','Гаяне','Лилит','Карине','Нарине'],s:['Акопян','Петросян','Саркисян','Григорян','Овсепян','Мкртчян']},
+ LV:{m:['Янис','Андрис','Валдис','Юрис','Мартиньш'],f:['Илзе','Инесе','Байба','Лиене','Даце'],s:[['Берзиньш','Берзиня'],['Калниньш','Калниня'],['Озолс','Озола'],['Лиепиньш','Лиепиня']]}
+};
+const JOBL={kid:'детство',school:'школа',student:'учёба',army:'армия',zavod:'завод',shahta:'шахта',nii:'НИИ',budget:'школа или больница',kolhoz:'колхоз',
+ torg:'торговля',chelnok:'челночит',biz:'свой ларёк',brat:'бригада',vahta:'вахта',bez:'без работы',pension:'пенсия'};
+const NEWS={
+ GEN:{1986:['Авария на Чернобыльской АЭС','XXVII съезд КПСС: курс на ускорение'],1987:['Пленум ЦК: перестройка и гласность','Немецкий самолёт сел у Красной площади'],
+  1988:['Закон о кооперации: можно открывать своё дело','Войска начинают выходить из Афганистана'],1989:['Съезд народных депутатов в прямом эфире','Последний советский солдат покинул Афганистан'],
+  1990:['Республики одна за другой объявляют суверенитет','Пустые прилавки, талоны на сахар и мыло'],1991:['Августовский путч провалился','Беловежские соглашения: СССР прекращает существование'],
+  1992:['Цены отпущены, инфляция за год 2500%','Ваучер каждому: началась приватизация'],1993:['Танки стреляют по Белому дому','Принята новая Конституция'],
+  1994:['Крах МММ: вкладчики у офиса на Варшавке','Войска вошли в Чечню'],1995:['Бои за Грозный','Захват больницы в Будённовске'],
+  1996:['Ельцин переизбран','Хасавюрт: война в Чечне остановлена'],1997:['Деноминация: с нового года три нуля уходят','Москва отметила 850-летие'],
+  1998:['17 августа: дефолт','Доллар за месяц подорожал втрое'],1999:['Взрывы жилых домов, новая война на Кавказе','31 декабря: Ельцин уходит в отставку']},
+ UA:{1986:['Киев: детей вывозят из города на лето'],1987:['Припять закрыта навсегда'],1988:['Первые неформальные митинги во Львове'],1989:['Создан Народный рух Украины'],1990:['Студенческая голодовка на граните'],
+  1991:['1 декабря: больше 90% за независимость'],1992:['Купоно-карбованец вместо рубля'],1993:['Инфляция за год больше 10 000%'],1994:['Президентом избран Кучма'],1995:['Цены растут, зарплаты стоят'],
+  1996:['Гривна и новая Конституция'],1997:['Черноморский флот поделён'],1998:['Гривна упала вслед за рублём'],1999:['Кучма переизбран']},
+ BY:{1986:['Гомельщина: начато отселение деревень'],1988:['Куропаты: найдены расстрельные рвы'],1989:['Первые митинги Народного фронта'],1990:['Декларация о суверенитете'],1991:['Независимость Беларуси'],
+  1992:['Рубль-«зайчик» вместо советского'],1993:['Талоны и инфляция'],1994:['Первый президент: Лукашенко'],1995:['Референдум: новый флаг, русский язык государственный'],1996:['Новая редакция Конституции'],
+  1997:['Договор о союзе с Россией'],1998:['Белорусский рубль обвалился'],1999:['Подписан договор о Союзном государстве']},
+ KZ:{1986:['Желтоксан: студенты на площади в Алма-Ате'],1987:['После декабря: проверки и исключения из партии'],1989:['Движение «Невада — Семипалатинск»'],1990:['Декларация о суверенитете'],
+  1991:['Закрыт Семипалатинский полигон, 16 декабря независимость'],1992:['Русские и немецкие семьи уезжают'],1993:['Тенге вместо рубля'],1994:['Байконур сдан в аренду России'],
+  1995:['Новая Конституция'],1996:['Заводы продают иностранным компаниям'],1997:['Столица переезжает в Акмолу'],1998:['Акмола становится Астаной'],1999:['Тенге отпущен в свободное плавание']},
+ TJ:{1986:['Хлопок: план выполнен'],1990:['Февральские беспорядки в Душанбе'],1991:['Независимость Таджикистана'],1992:['Гражданская война'],1993:['Беженцы уходят за Пяндж'],
+  1994:['Рахмонов избран президентом'],1995:['Таджикский рубль'],1996:['Перемирие то и дело срывается'],1997:['В Москве подписан мир'],1998:['Мир хрупкий'],1999:['Референдум о конституции']},
+ AM:{1987:['Экологические митинги в Ереване'],1988:['Карабах. 7 декабря землетрясение в Спитаке'],1989:['Зона бедствия живёт в вагончиках'],1990:['Декларация о независимости'],1991:['Референдум: независимость Армении'],
+  1992:['Блокада: нет газа и света'],1993:['Драм вместо рубля'],1994:['Перемирие в Карабахе'],1995:['Свет дают по два часа в сутки'],1996:['Выборы и протесты'],1997:['Кочарян стал премьером'],1998:['Кочарян избран президентом'],1999:['27 октября: стрельба в парламенте']},
+ LV:{1986:['Протесты против ГЭС на Даугаве'],1987:['Митинг у памятника Свободы'],1988:['Создан Народный фронт Латвии'],1989:['Балтийский путь: живая цепь в 600 км'],1990:['4 мая: декларация о восстановлении независимости'],
+  1991:['Баррикады в Риге, независимость признана'],1992:['Латвийский рубль'],1993:['Лат вместо рубля'],1994:['Ушли последние российские войска'],1995:['Крах банка «Балтия»'],
+  1997:['Рынки полны, денег нет'],1998:['Референдум о законе о гражданстве'],1999:['Президентом избрана Вике-Фрейберга']}
+};
+
+/* ---------- утилиты ---------- */
+const $=s=>document.querySelector(s);
+const R=Math.random, rnd=(a,b)=>a+R()*(b-a), ri=(a,b)=>Math.floor(rnd(a,b+1));
+const pick=a=>a[Math.floor(R()*a.length)];
+const wpick=a=>{let t=a.reduce((s,x)=>s+x[1],0),r=R()*t;for(const x of a){if((r-=x[1])<0)return x[0]}return a[a.length-1][0]};
+const clamp=v=>Math.max(0,Math.min(100,v));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>Math.round(n).toLocaleString('ru-RU');
+let P=null, G=null; // персонаж и состояние игры
+const g=(m,f)=>P.sex==='m'?m:f;
+const repName=(r,y)=>(y>=1992||(y===1991&&G&&G.month===12))?REPS[r].n:REPS[r].o;
+const cityName=(p,y)=>p.city? (p.city[1]&&y>=p.city[2]?p.city[1]:p.city[0]) : p.vil;
+const pensAge=p=>p.sex==='m'?60:55;
+function role(p){if(p.age<7)return'K';if(p.age<17)return'S';if(p.age<25&&p.job!=='pension')return'Y';if(p.age<pensAge(p))return'W';return'P'}
+
+function qDeath(age,sex,year,rep,health,drink){
+  let q=age<1?REPS[rep].inf:age<5?.0012:age<15?.0004:age<25?.0016:age<35?.0028:age<45?.0048:age<55?.011:age<65?.024:age<75?.05:age<85?.1:.2;
+  if(sex==='f')q*=age<15?.8:age<65?.35:.65;
+  let cm=1;
+  if(age>=20&&age<65&&rep!=='TJ'&&rep!=='AM'){
+    cm={1986:.9,1987:.88,1988:.9,1989:.95,1990:.98,1991:1,1992:1.12,1993:1.3,1994:1.4,1995:1.32,1996:1.2,1997:1.12,1998:1.12,1999:1.22}[year]||1;
+    if(rep==='BY'||rep==='LV')cm=1+(cm-1)*.7;
+  }
+  if(rep==='TJ'&&(year===1992||year===1993)&&age>=16&&age<50&&sex==='m')cm=2.2;
+  q*=cm*(1.7-health/100*1.2); if(drink)q*=1.6;
+  return Math.min(q,.6);
+}
+function causeOf(p){
+  const a=p.age;
+  if(a<1)return'инфекция в первый год жизни';
+  if(a<15)return pick(['несчастный случай','тяжёлая болезнь','утонул'+g('','а')+' летом']);
+  if(a<50)return p.sex==='m'?wpick([['ДТП',3],['нападение на улице',2],['отравление алкоголем',P.flags.drink?4:1],['несчастный случай на работе',2],['сердце',2]])
+                              :wpick([['ДТП',2],['тяжёлая болезнь',3],['рак',2],['сердце',1]]);
+  return wpick([['инфаркт',4],['инсульт',3],['рак',3],['пневмония',1]]);
+}
+
+/* ---------- деньги ---------- */
+const nomTotal=(p,y=G.year)=>p.money.book+p.money.usd*Y[y].usd+p.money.mmm;
+const loaves=(p,y=G.year)=>nomTotal(p,y)/Y[y].bread;
+function addNominal(p,x){
+  if(x>=0){if(p.keep==='usd')p.money.usd+=x/Y[G.year].usd;else if(p.keep==='mmm')p.money.mmm+=x;else p.money.book+=x;return}
+  const t=nomTotal(p); if(t<=0){p.f=clamp(p.f-2);return}
+  const k=Math.max(0,1+x/t); p.money.book*=k;p.money.usd*=k;p.money.mmm*=k;
+}
+const addMonths=(p,m)=>addNominal(p,m*Y[G.year].wage*(p.job==='pension'?.6:1));
+function setKeep(p,k){const t=nomTotal(p);p.money={book:0,usd:0,mmm:0};p.keep=k;addNominal(p,t)}
+function jobMult(j,y){
+  const late=y>=1992;
+  const t={kid:1,school:1,student:.25,army:0,zavod:late?.8:1,shahta:late?1.2:1.6,nii:late?.5:.9,budget:late?.6:.85,kolhoz:late?.4:.75,
+    torg:late?1.4:1.1,chelnok:1.8,biz:3,brat:3.5,vahta:1.8,bez:.3,pension:late?.35:.55};
+  return t[j]??1;
+}
+function assignJob(p){
+  if(p.vil)return wpick(G.year<1992?[['kolhoz',7],['budget',2],['torg',1]]:[['kolhoz',3],['bez',2],['torg',1]]);
+  const sh=['RU','UA','KZ'].includes(p.rep)?1:0;
+  return wpick(G.year<1992?[['zavod',38],['budget',22],['nii',12],['torg',8],['shahta',8*sh]]
+                          :[['zavod',3],['budget',2],['torg',3],['bez',2],['chelnok',1]]);
+}
+
+/* ---------- события ---------- */
+// ro: роли K/S/Y/W/P; r: республики; y:[от,до]; m: месяц для фиксированных; e: эффекты {h,f,c,m(мес. зарплат),edu,d(риск смерти)}
+const ADULT=['Y','W','P'], WORK=['Y','W'];
+const EV=[
+ // --- фиксированные исторические ---
+ {id:'chern',fx:1,y:[1986,1986],m:4,r:['UA','BY'],ro:ADULT,t:()=>'26 апреля. Авария на Чернобыльской АЭС. Первомайская демонстрация идёт как обычно, по радио о радиации почти молчат.',
+  ch:[{t:'Увезти семью к родне подальше',r:'Лето у родни. Тесно, зато спокойнее.',e:{m:-1,f:2}},{t:'Остаться дома',r:'Ничего заметного не случилось. По крайней мере, пока.',e:{h:-4}}]},
+ {id:'chernK',fx:1,y:[1986,1986],m:5,r:['UA','BY'],ro:['K','S'],t:()=>'Чернобыль. Взрослые спорят, можно ли гулять под дождём. Летом детей отправляют подальше: в лагеря и к родне.',e:{h:-2}},
+ {id:'zhelt',fx:1,y:[1986,1986],m:12,r:['KZ'],ro:['Y','W'],c:p=>p.city&&p.city[0]==='Алма-Ата',t:()=>'Декабрь. Студенты вышли на площадь против нового первого секретаря. Ночью площадь разгоняют.',
+  ch:[{t:'Пойти посмотреть',r:'Видел~ всё своими глазами. Потом долго об этом молчал~.',e:{c:4,h:-3}},{t:'Сидеть дома',r:'Узнаёшь обо всём по слухам.',e:{}}]},
+ {id:'spitak',fx:1,y:[1988,1988],m:12,r:['AM'],t:p=>{const hit=(p.city&&p.city[0]==='Ленинакан')||(p.vil&&p.vil.includes('Спитак'));
+   return hit?'7 декабря, 11:41. Землетрясение. Дом сложился за секунды. Тебя достают из-под плит соседи.':'7 декабря. Землетрясение в Спитаке и Ленинакане. Вся республика едет разбирать завалы.'},
+  e:{h:-6,f:-6},dyn:p=>{const hit=(p.city&&p.city[0]==='Ленинакан')||(p.vil&&p.vil.includes('Спитак'));return hit?{d:.08,f:-14,m:-10,h:-8}:{}}},
+ {id:'balt',fx:1,y:[1989,1989],m:8,r:['LV'],ro:ADULT,t:p=>p.minority?'23 августа. Балтийский путь: живая цепь от Таллина до Вильнюса. Ты не уверен'+g('','а')+', что эта страна будет и твоей.':'23 августа. Балтийский путь: живая цепь от Таллина до Вильнюса.',
+  ch:[{t:'Встать в цепь',r:'Два миллиона человек держатся за руки.',e:{c:5,f:2}},{t:'Остаться дома',r:'Смотришь по телевизору.',e:{}}]},
+ {id:'pavlov',fx:1,y:[1991,1991],m:1,ro:ADULT,t:()=>'Павловская реформа. Три дня на обмен 50- и 100-рублёвых купюр, больше тысячи только со справкой.',
+  ch:[{t:'Стоять в очереди в сберкассе',r:'Шесть часов в очереди. Обменял~ всё.',e:{h:-2}},{t:'Махнуть рукой',r:'Часть заначки сгорела.',e:{m:-1}}]},
+ {id:'riga',fx:1,y:[1991,1991],m:1,r:['LV'],ro:['Y','W'],t:()=>'Январь. В Риге баррикады: самосвалы, бетонные блоки, костры у Домского собора.',
+  ch:[{t:'Везти дрова на баррикады',r:'Неделя у костров. Здесь все друг друга знают.',e:{c:6,h:-2}},{t:'Сидеть дома',r:'По ночам слышна стрельба у МВД.',e:{}}]},
+ {id:'putsch',fx:1,y:[1991,1991],m:8,ro:ADULT,t:p=>p.rep==='RU'&&p.city&&['Москва','Ленинград'].includes(p.city[0])?'19 августа. По всем каналам «Лебединое озеро». В центре города танки.':'19 августа. По всем каналам «Лебединое озеро». Через три дня всё кончилось.',
+  dyn:p=>({}),chIf:p=>p.rep==='RU'&&p.city&&['Москва','Ленинград'].includes(p.city[0]),
+  ch:[{t:'Идти на площадь',r:'Три ночи на площади. Кажется, вы победили.',e:{c:6,h:-2,d:.002}},{t:'Ждать дома',r:'Смотришь новости и ждёшь.',e:{}}]},
+ {id:'ussr',fx:1,y:[1991,1991],m:12,t:p=>'26 декабря. Советского Союза больше нет. Ты живёшь в стране «'+REPS[p.rep].n+'».',big:1},
+ {id:'prices',fx:1,y:[1992,1992],m:1,t:p=>p.age<17?'Цены отпустили. Мама плачет над сберкнижкой.':'Цены отпустили. Хлеб подорожал в десятки раз, сбережения тают на глазах.',e:{f:-2},big:1},
+ {id:'tjwar',fx:1,y:[1992,1992],m:5,r:['TJ'],t:p=>p.minority?'Май. В Душанбе стреляют. Русские семьи продают квартиры за бесценок и уезжают.':'Май. Гражданская война. Стреляют уже не только в Душанбе.',
+  ch:[{t:'Бежать к родне в Россию',r:'Поезд, узлы, вокзалы. Начинать с нуля.',e:{f:-4,m:-4},go:'RU'},{t:'Остаться',r:'Прячетесь, пережидаете, ищете еду.',e:{h:-6,f:-4,d:.03}}]},
+ {id:'amdark',fx:1,y:[1992,1992],m:11,r:['AM'],t:()=>'Блокада. Света нет по двадцать часов в сутки, газа нет совсем. В парках рубят деревья на дрова.',
+  ch:[{t:'Уехать на заработки в Россию',r:'Едешь к знакомым в Россию. Семье будешь слать деньги.',e:{f:-6,m:2},go:'RU',ro:['Y','W']},{t:'Пережить зиму здесь',r:'Вся семья спит в одной комнате у буржуйки.',e:{h:-5,f:4}}]},
+ {id:'lvcit',fx:1,y:[1992,1992],m:3,r:['LV'],ro:ADULT,c:p=>p.minority,t:()=>'Закон о гражданстве: ты негражданин Латвии. Голосовать нельзя, на часть работ не возьмут.',
+  ch:[{t:'Учить латышский и ждать натурализации',r:'Курсы по вечерам. Долго, но реально.',e:{c:3}},{t:'Уехать в Россию',r:'Пакуешь вещи в контейнер.',e:{f:-3,m:-2},go:'RU'}]},
+ {id:'voucher',fx:1,y:[1992,1992],m:10,r:['RU'],ro:ADULT,t:()=>'Выдали ваучер, 10 000 рублей номиналом. Обещают, что это две «Волги».',
+  ch:[{t:'Отнести в чековый инвестфонд',r:'Фонд исчез вместе с вывеской.',e:{}},{t:'Обменять на акции своего завода',r:'Акции есть. Дивидендов нет.',e:{m:.3}},{t:'Продать у метро',r:'Хватило на две бутылки и колбасу.',e:{m:.2}},{t:'Вложить в «Газпром»',r:'Скучно, зато не пропало.',e:{m:1.5}}]},
+ {id:'mmmsell',fx:1,y:[1994,1994],m:3,r:['RU'],c:p=>p.money.mmm>0,t:()=>'Билеты МММ выросли в разы. По телевизору Лёня Голубков покупает жене сапоги.',
+  ch:[{t:'Продать сейчас',r:'Выстоял~ очередь и забрал~ деньги.',fn:p=>{p.money.book+=p.money.mmm*3;p.money.mmm=0;if(p.keep==='mmm')p.keep='book'}},{t:'Ещё подержать',r:'Ещё немного, и хватит на квартиру.',fn:p=>{p.money.mmm*=2}}]},
+ {id:'mmmcrash',fx:1,y:[1994,1994],m:7,r:['RU'],t:p=>p.money.mmm>0?'Июль. МММ рухнула. Толпа у офиса на Варшавке. Твои деньги превратились в бумажки с портретом Мавроди.':'Июль. МММ рухнула. У соседа пропали все сбережения.',
+  fn:p=>{if(p.money.mmm>0){p.money.mmm*=.03;p.f=clamp(p.f-6);if(p.keep==='mmm')p.keep='book'}}},
+ {id:'lvbank',fx:1,y:[1995,1995],m:5,r:['LV'],c:p=>p.money.book>0,t:()=>'Рухнул банк «Балтия», крупнейший в стране. Вклады заморожены.',fn:p=>{p.money.book*=.3;p.f=clamp(p.f-4)}},
+ {id:'default',fx:1,y:[1998,1998],m:8,r:['RU','UA','BY','KZ'],t:p=>p.money.usd>0?'17 августа. Дефолт. Доллар втрое за месяц. Твоя заначка в долларах вдруг стала спасением.':'17 августа. Дефолт. Цены на ценниках меняют каждый день, импорт исчезает с полок.',big:1,e:{f:-2}},
+
+ // --- детство ---
+ {id:'k1',ro:['K'],w:2,t:()=>'Ветрянка. Весь в зелёнке, неделя дома.',e:{h:-1,f:2}},
+ {id:'k2',ro:['K'],y:[1989,1992],t:()=>'Первое воспоминание: очередь за молоком с мамой, номер написан ручкой на ладони.',e:{f:2}},
+ {id:'k3',ro:['K','S'],w:1,t:()=>'Родители развелись.',e:{f:-10}},
+ {id:'k4',ro:['K','S'],w:2,t:()=>'Лето у бабушки в деревне: речка, огород, парное молоко.',e:{h:3,f:3}},
+ {id:'k5',ro:['K'],y:[1986,1991],t:()=>'На день рождения подарили машинку из «Детского мира».',e:{f:2}},
+ {id:'k6',ro:['K','S'],y:[1992,1999],t:()=>'На день рождения подарили китайского робота с рынка. Он сломался к вечеру.',e:{f:2}},
+ // --- школа ---
+ {id:'s1',ro:['S'],y:[1986,1990],c:p=>p.age>=9&&p.age<=11,t:()=>'Тебя приняли в пионеры. Галстук гладишь каждое утро.',e:{c:2}},
+ {id:'s2',ro:['S'],y:[1986,1991],t:()=>'Смена в пионерлагере: линейки, зарница, первый поцелуй у костра.',e:{h:3,c:3}},
+ {id:'s3',ro:['S'],y:[1990,1996],t:()=>'Весь класс меняется вкладышами от жвачки. У тебя редкий.',e:{c:3}},
+ {id:'s4',ro:['S'],y:[1993,1999],t:()=>'У одноклассника появилась приставка. Все бегают к нему после уроков.',
+  ch:[{t:'Выпросить у родителей свою',r:'Родители отдали почти месячную зарплату.',e:{m:-1,f:-1,c:4}},{t:'Ходить к другу',r:'Очередь на джойстик, зато вместе.',e:{c:2}}]},
+ {id:'s5',ro:['S'],w:2,c:p=>p.age>=10,t:()=>'Старшаки ждут тебя за гаражами.',
+  ch:[{t:'Дать сдачи',r:'Синяк под глазом, зато больше не трогают.',e:{h:-3,c:4}},{t:'Убежать',r:'Убежал~. В классе смеются.',e:{c:-3}}]},
+ {id:'s6',ro:['S','Y'],y:[1987,1995],t:()=>'Видеосалон: «Терминатор» с гнусавым переводом за рубль.',e:{c:2}},
+ {id:'s7',ro:['S'],y:[1992,1997],t:()=>'Зимой в школе не топят, сидите на уроках в куртках.',e:{h:-2}},
+ {id:'s8',ro:['S'],w:2,t:()=>'Двойка в четверти. Дома разговор.',e:{edu:-1,f:-2}},
+ {id:'s9',ro:['S'],y:[1990,1999],c:p=>p.age>=12,t:()=>'Ребята в подъезде предлагают попробовать «клей».',
+  ch:[{t:'Отказаться',r:'Ушёл~ домой.',e:{c:-1}},{t:'Попробовать',r:'Тошнило всю ночь. Больше не хочется.',e:{h:-5,c:2}}]},
+ {id:'s10',ro:['S','Y'],c:p=>p.age>=14,t:()=>'Первая любовь. Записки, дискотека, медляк.',e:{f:4}},
+ // --- молодость и работа ---
+ {id:'y1',ro:['Y','W'],w:2,c:p=>!p.flags.married&&p.age>=19&&p.age<=35,t:()=>'Свадьба: родня с двух сторон, салат «Мимоза», драка на второй день.',e:{f:12},fn:p=>{p.flags.married=1}},
+ {id:'y2',ro:['Y','W'],w:2,rep:1,c:p=>p.flags.married&&p.age<(p.sex==='f'?40:46)&&(p.flags.kids||0)<3,t:()=>'Родился ребёнок.',e:{f:10,m:-1},fn:p=>{p.flags.kids=(p.flags.kids||0)+1}},
+ {id:'y3',ro:['Y','W'],c:p=>p.flags.married,t:()=>'Развод. Делите квартиру и сервант.',e:{f:-12},fn:p=>{p.flags.married=0}},
+ {id:'y4',ro:['Y','W'],y:[1991,1997],sex:'m',risk:1,t:()=>'Одноклассник зовёт в бригаду: собирать с ларьков за «крышу».',
+  ch:[{t:'Пойти',r:'Кожаная куртка, девятка, деньги пачками.',e:{m:10,c:8},fn:p=>{p.job='brat';p.flags.brat=1}},{t:'Отказаться',r:'Он пожал плечами и уехал.',e:{c:-2}}]},
+ {id:'y5',ro:['Y','W'],y:[1992,1999],risk:1,c:p=>!(p.city&&['Москва'].includes(p.city[0])),t:()=>'Знакомые зовут на заработки в столицу.',
+  ch:[{t:'Ехать',r:'Общага, стройка, деньги домой.',e:{m:4,f:-4,h:-2}},{t:'Остаться',r:'Остаёшься со своими.',e:{f:2}}]},
+ {id:'w1',ro:['W'],y:[1986,1990],job:['zavod','budget','nii','shahta'],t:()=>'Подошла очередь на квартиру от предприятия. Двушка в панельке!',e:{f:8}},
+ {id:'w2',ro:['Y','W'],y:[1987,1991],risk:1,t:()=>'Знакомый открывает кооператив: шить «варёнки». Зовёт к себе.',
+  ch:[{t:'Уйти в кооператив',r:'Платят втрое, но на работе косятся.',e:{m:4,c:3},fn:p=>{p.job='torg'}},{t:'Остаться',r:'Стабильность дороже.',e:{}}]},
+ {id:'w3',ro:ADULT,y:[1989,1991],t:()=>'Сахар, мыло и водка по талонам. Очереди с утра.',e:{h:-1,f:-1}},
+ {id:'w4',ro:ADULT,y:[1986,1988],t:()=>'Антиалкогольная кампания: за водкой очередь на квартал, сахар пропал из магазинов.',
+  ch:[{t:'Гнать самогон',r:'Гонишь на кухне, окна завешены.',e:{m:1,h:-2}},{t:'Не пить вообще',r:'Свадьбы теперь безалкогольные. Скучно, но полезно.',e:{h:3}}]},
+ {id:'w5',ro:ADULT,y:[1986,1990],t:()=>'По блату достал~ югославские сапоги. Полгорода завидует.',e:{c:2,m:-1}},
+ {id:'w6',ro:['W'],y:[1989,1989],job:['shahta'],t:()=>'Шахтёры бастуют. Выходить с касками на площадь?',
+  ch:[{t:'Выйти',r:'Стучите касками по асфальту. Москва что-то обещает.',e:{c:5}},{t:'Работать',r:'Смена есть смена.',e:{}}]},
+ {id:'w7',ro:['Y','W'],y:[1993,1998],rep:1,job:['zavod','budget','nii','shahta','kolhoz'],w:3,t:()=>'Зарплату не платят третий месяц.',e:{m:-2,f:-3}},
+ {id:'w8',ro:['Y','W'],y:[1993,1998],job:['zavod'],t:()=>'Зарплату выдали продукцией: сорок кастрюль.',
+  ch:[{t:'Продавать на рынке',r:'Стоишь с кастрюлями на рынке.',e:{m:1,c:1}},{t:'Раздать родне',r:'У всей родни новые кастрюли.',e:{f:3}}]},
+ {id:'w9',ro:['Y','W'],y:[1992,1997],job:['zavod','nii','shahta'],w:2,t:()=>'Предприятие встало. Всех отправили в бессрочный отпуск.',e:{f:-3},fn:p=>{p.job='bez'}},
+ {id:'w10',ro:['W'],y:[1990,1996],job:['nii'],t:()=>'Лаборатория пустеет: коллеги уезжают по контрактам за границу.',
+  ch:[{t:'Уехать по контракту в Германию',r:'Чемодан, словарь, научный кружок в Гамбурге.',e:{},abroad:'Германию'},{t:'Уйти в торговлю',r:'Кандидат наук торгует компьютерами.',e:{m:2},fn:p=>{p.job='torg'}},{t:'Остаться в НИИ',r:'Наука за копейки.',e:{c:2}}]},
+ {id:'w11',ro:['Y','W'],y:[1992,1997],risk:1,c:p=>['bez','zavod','budget','nii','kolhoz'].includes(p.job),t:()=>'Знакомые ездят челноками в Турцию и Польшу. Зовут с собой.',
+  ch:[{t:'Ехать челноком',r:'Клетчатые сумки по 40 кило.',e:{h:-2},fn:p=>{p.job='chelnok';if(R()<.25){addMonths(p,-3);line('На таможне отобрали половину товара.','res')}else addMonths(p,5)}},{t:'Не связываться',r:'Сидишь при своём.',e:{}}]},
+ {id:'w12',ro:['Y','W'],y:[1992,1996],risk:1,c:p=>!p.flags.biz,t:()=>'Можно взять ларёк у остановки: пиво, сигареты, «Сникерсы».',
+  ch:[{t:'Открыть ларёк',r:'Ты теперь коммерсант.',e:{m:-3},fn:p=>{p.job='biz';p.flags.biz=1}},{t:'Нет',r:'Не твоё.',e:{}}]},
+ {id:'w13',ro:['Y','W'],y:[1992,1998],rep:1,c:p=>p.job==='biz',t:()=>'Приехали «пацаны». Двадцать процентов за крышу.',
+  ch:[{t:'Платить',r:'Платишь. Зато не трогают.',e:{m:-2}},{t:'Отказать',r:'',fn:p=>{if(R()<.4){addMonths(p,-8);p.h=clamp(p.h-6);line('Ночью ларёк сгорел.','res');p.job='bez'}else{p.c=clamp(p.c+5);line('Отстали. Видимо, у тебя тоже есть знакомые.','res')}}}]},
+ {id:'w14',ro:ADULT,y:[1991,1998],t:()=>'Дача кормит всю зиму: картошка, соленья, банки в погребе.',e:{f:3,m:1}},
+ {id:'w15',ro:['Y','W'],y:[1993,1999],sex:'m',t:()=>'Зовут на вахту на Север: месяц через месяц.',
+  ch:[{t:'Ехать',r:'Месяц в балке, месяц дома.',e:{m:6,f:-5,h:-3},fn:p=>{p.job='vahta'}},{t:'Нет',r:'Остаёшься дома.',e:{}}]},
+ {id:'w16',ro:['Y','W'],w:2,t:()=>'Повышение на работе.',e:{m:2,c:2}},
+ {id:'w17',ro:['Y','W'],sex:'m',c:p=>!p.flags.drink&&p.age>=20,t:()=>'Пятница, гараж, мужики. Пьёшь всё чаще.',
+  ch:[{t:'Завязать',r:'Тяжело, но держишься.',e:{h:2,c:-1}},{t:'Да ладно',r:'Это же все так.',e:{h:-4},fn:p=>{p.flags.drink=1}}]},
+ {id:'w18',ro:ADULT,y:[1992,1998],t:()=>'Обокрали квартиру: видик, шуба, заначка в серванте.',e:{m:-3,f:-2}},
+ {id:'w19',ro:ADULT,y:[1988,1995],t:()=>'Купили первый видеомагнитофон. Соседи приходят смотреть.',e:{f:3,c:2,m:-2}},
+ {id:'w20',ro:ADULT,y:[1993,1995],r:['UA','BY','KZ','LV'],risk:1,t:()=>'Новый «трастовый» банк обещает 30% в месяц.',
+  ch:[{t:'Вложить',r:'Через полгода офис закрыт. Денег нет.',fn:p=>{addNominal(p,-nomTotal(p)*.5);p.f=clamp(p.f-3)}},{t:'Не верить',r:'Сосед вложил. Сосед плачет.',e:{}}]},
+ {id:'w21',ro:ADULT,y:[1989,1995],w:.6,t:()=>'Родственники зовут к себе: в Израиль или Германию.',
+  ch:[{t:'Уехать',r:'Прощание на вокзале, всё имущество в трёх чемоданах.',abroad:p=>pick(['Израиль','Германию'])},{t:'Остаться',r:'Здесь твоя жизнь.',e:{}}]},
+ {id:'w22',ro:ADULT,y:[1992,1999],t:()=>'Попал~ в больницу. Лекарства и бинты покупать самим.',e:{m:-2,h:-3}},
+ {id:'w23',ro:ADULT,y:[1992,1996],r:['KZ','TJ','AM'],c:p=>p.minority||p.rep==='AM',t:()=>'Соседи по подъезду уезжают в Россию. Зовут с собой.',
+  ch:[{t:'Уехать в Россию',r:'Продаёшь квартиру за бесценок.',e:{m:-3,f:-3},go:'RU'},{t:'Остаться',r:'Здесь могилы родителей.',e:{f:2}}]},
+ {id:'w24',ro:['Y','W'],r:['AM'],y:[1991,1994],sex:'m',t:()=>'Друзья уходят добровольцами в Карабах.',
+  ch:[{t:'Пойти с ними',r:'Окопы, горы, зима.',e:{h:-8,c:6,d:.05}},{t:'Остаться',r:'Остаёшься с семьёй.',e:{f:2}}]},
+ {id:'w25',ro:ADULT,r:['TJ'],y:[1992,1996],w:2,t:()=>'Мука по талонам, хлеб с утра не достать.',e:{h:-3}},
+ {id:'w26',ro:ADULT,r:['UA'],y:[1993,1993],t:()=>'Зарплата два миллиона купонов. Ты миллионер, денег хватает на неделю.',e:{f:-1}},
+ // --- пенсия ---
+ {id:'p1',ro:['P'],y:[1994,1998],rep:1,w:2,t:()=>'Пенсию опять задерживают.',e:{m:-1,f:-2}},
+ {id:'p2',ro:['P'],y:[1992,1998],t:()=>'Торгуешь у метро сигаретами поштучно и семечками.',e:{m:1,h:-2,c:2}},
+ {id:'p3',ro:['P'],rep:1,w:2,t:()=>'Внуки на всё лето.',e:{f:5}},
+ {id:'p4',ro:['P'],y:[1992,1992],t:()=>'Деньги «на похороны», копившиеся тридцать лет, хватит теперь на батон.',e:{f:-3}},
+];
+
+/* ---------- создание персонажа ---------- */
+function makePerson(agemode,repmode){
+  const reps=Object.keys(REPS);
+  const rep=repmode==='eq'?pick(reps):wpick(reps.map(r=>[r,REPS[r].pop]));
+  const R0=REPS[rep];
+  const minority=R()<R0.min;
+  let age;
+  if(agemode==='born')age=0;
+  else{const band=wpick([[0,9.5],[5,8.5],[10,8],[15,7.5],[20,7.5],[25,8.5],[30,8.5],[35,7],[40,4.5],[45,6],[50,6],[55,6],[60,4.5],[65,3],[70,2.5],[75,1.5]]);age=band+ri(0,4)}
+  const sex=age>60?(R()<.62?'f':'m'):(R()<.5?'m':'f');
+  const urban=R()<R0.urb;
+  const set=(minority||rep==='RU')?'slav':rep;
+  const N=NM[set];
+  const first=pick(N[sex]);
+  let sur=pick(N.s);
+  if(set==='LV')sur=sex==='m'?sur[0]:sur[1];
+  else if(sex==='f'){if(/(ов|ев|ёв|ин|ын)$/.test(sur))sur+='а'}
+  const p={first,name:sur+' '+first,sex,rep,origRep:rep,minority,city:urban?pick(R0.cities):null,vil:urban?null:pick(R0.vil),
+    birthYear:1986-age-(age===0?0:0),birthMonth:ri(1,12),age,
+    h:clamp(85-age*.4+rnd(-8,6)),f:clamp(rnd(45,75)),c:clamp(rnd(30,60)),edu:ri(3,6),
+    money:{book:0,usd:0,mmm:0},keep:'book',focus:'family',flags:{},notes:[],dead:null,left:null};
+  if(agemode==='born'){p.birthMonth=1;p.age=0;p.birthYear=1986}
+  if(age<7)p.job='kid';else if(age<17)p.job='school';else if(age<22&&R()<.35){p.job='student';p.flags.vuz=1;p.flags.grad=1;p.vuzEnd=1986+(22-age)}
+  else if(age>=(sex==='m'?60:55))p.job='pension';
+  else p.job=null;
+  if(age>=17)p.flags.grad=1;
+  if(sex==='m'&&age>=20)p.flags.served=1;
+  if(age>=24&&R()<.75){p.flags.married=1;p.flags.kids=age>=27?ri(1,2):ri(0,1)}
+  return p;
+}
+function makeNeighbors(p){
+  const set=(p.rep==='RU'||p.minority||['UA','BY'].includes(p.rep))?'slav':p.rep;
+  const used=new Set();
+  return Array.from({length:4},()=>{
+    let apt;do apt=ri(2,60);while(used.has(apt));used.add(apt);
+    const sex=R()<.5?'m':'f', age=ri(4,76);
+    const N=NM[set];
+    const nm=set==='slav'?pick(sex==='m'?N.dm:N.df):pick(N[sex]);
+    const pre=age>=60?(sex==='m'?'дед ':'баба '):age>=32?(sex==='m'?'дядя ':'тётя '):'';
+    return {label:pre+nm+' из '+apt+'-й',sex,age,st:'ok',note:'живёт как жил'+(sex==='m'?'':'а'),drink:0};
+  });
+}
+
+/* ---------- интерфейс ---------- */
+function show(id){for(const s of ['start','intro','game','end'])$('#'+s).hidden=s!==id;window.scrollTo(0,0)}
+function line(t,cls=''){
+  const d=document.createElement('div');d.className='ln '+cls;
+  d.innerHTML='<span class="m">'+MON[G.month-1].slice(0,3)+'</span><span class="t">'+t+'</span>';
+  $('#feed').appendChild(d);G.yearLog.push(t);stick();
+}
+function stick(){const nearBottom=window.innerHeight+window.scrollY>=document.body.scrollHeight-260;if(nearBottom||G.wait)window.scrollTo({top:document.body.scrollHeight})}
+function fixG(s){return s.replace(/~/g,P.sex==='m'?'':'а')} // «Видел~» → видел / видела
+function render(){
+  $('#date').textContent=MON[G.month-1]+' '+G.year;
+  $('#who').textContent=P.name+', '+ageStr(P.age)+' · '+cityName(P,G.year)+', '+repName(P.rep,G.year)+' · '+JOBL[P.job||'zavod'];
+  for(const k of ['h','f','c']){const el=$('#b-'+k);el.style.width=P[k]+'%';el.classList.toggle('low',P[k]<25)}
+  $('#money-l').textContent=P.age<17?'Деньги семьи':'Сбережения';
+  $('#money').textContent='≈ '+fmt(loaves(P))+' бух.';
+  $('#money').title='В буханках хлеба по ценам '+G.year+' года';
+  $('#dvor').innerHTML=G.nb.map(n=>'<li class="'+(n.st==='dead'||n.st==='left'?'gone':'')+'"><span>'+esc(n.label)+'</span><span class="st">'+esc(n.note)+'</span></li>').join('');
+}
+function ageStr(a){const m=a%10,h=a%100;const w=(m===1&&h!==11)?'год':(m>=2&&m<=4&&(h<12||h>14))?'года':'лет';return a+' '+w}
+
+/* ---------- старт ---------- */
+$('#go').onclick=()=>{
+  const am=document.querySelector('input[name=agemode]:checked').value, rm=document.querySelector('input[name=repmode]:checked').value;
+  P=makePerson(am,rm);
+  G={year:1986,month:1,speed:1,wait:false,q:[],plan:{},yearLog:[],nb:makeNeighbors(P),timer:null,startLoaves:0};
+  if(!P.job)P.job=assignJob(P);
+  const months=P.job==='pension'?rnd(10,30):P.age<17?rnd(4,12):rnd(2,14);
+  P.money.book=Y[1986].wage*months;
+  G.startLoaves=loaves(P,1986);
+  const fam=P.age<17?(R()<.2?'мама одна':'мама и папа'):(P.flags.married?(P.sex==='m'?'женат':'замужем')+(P.flags.kids?', детей: '+P.flags.kids:''):'не '+(P.sex==='m'?'женат':'замужем'));
+  $('#intro').innerHTML='<div class="label">Тебе выпало</div><div class="doc"><h2>Личный листок</h2><div class="sub">по состоянию на 1 января 1986 года</div>'+
+    [['Фамилия, имя',P.name],['Пол',P.sex==='m'?'мужской':'женский'],['Год рождения',P.birthYear+(P.age===0?' (вот-вот)':'')],['Место',cityName(P,1986)],['Республика',REPS[P.rep].o+(P.minority?' (русскоязычная семья)':'')],
+     ['Занятие',P.age===0?'ещё не родил'+g('ся','ась'):JOBL[P.job]],['Семья',fam],['Сбережения',fmt(P.money.book)+' руб. на книжке ≈ '+fmt(G.startLoaves)+' буханок']]
+     .map(([a,b])=>'<div class="field"><b>'+a+'</b><span>'+esc(b)+'</span></div>').join('')+
+    '</div><div class="row"><button class="btn" id="begin">Начать 1986 год</button><button class="btn ghost" id="reroll">Другая жизнь</button></div>';
+  show('intro');
+  $('#begin').onclick=startGame;$('#reroll').onclick=()=>$('#go').click();
+};
+function startGame(){
+  show('game');$('#feed').innerHTML='';
+  document.querySelectorAll('.speed button').forEach(b=>b.onclick=()=>setSpeed(+b.dataset.s));
+  startYear();
+}
+function setSpeed(s){G.speed=s;document.querySelectorAll('.speed button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.s===s)));if(s>0&&!G.wait)tick()}
+
+/* ---------- ход времени ---------- */
+function eligible(e,p){
+  if(e.y&&(G.year<e.y[0]||G.year>e.y[1]))return false;
+  if(e.r&&!e.r.includes(p.rep))return false;
+  if(e.ro&&!e.ro.includes(role(p)))return false;
+  if(e.sex&&e.sex!==p.sex)return false;
+  if(e.job&&!e.job.includes(p.job))return false;
+  if(e.c&&!e.c(p))return false;
+  if(!e.rep&&G.done&&G.done.has(e.id))return false;
+  return true;
+}
+function startYear(){
+  G.done=G.done||new Set();G.yearLog=[];G.month=0;G.plan={};
+  const d=document.createElement('div');d.className='yr';d.textContent=G.year;$('#feed').appendChild(d);
+  // случайные события года
+  const pool=EV.filter(e=>!e.fx&&eligible(e,P));
+  const n=role(P)==='K'?1:ri(2,3);
+  for(let i=0;i<n&&pool.length;i++){
+    const ws=pool.map(e=>[e,(e.w||1)*(e.risk&&P.focus==='hustle'?2.5:1)]);
+    const e=wpick(ws);pool.splice(pool.indexOf(e),1);
+    let m;do m=ri(1,12);while(G.plan[m]);G.plan[m]=e;
+  }
+  G.deathM=ri(1,12);
+  tick();
+}
+function tick(){
+  clearTimeout(G.timer);
+  if(G.wait||G.speed===0||P.dead||P.left)return;
+  G.timer=setTimeout(step,1300/G.speed);
+}
+function step(){
+  if(G.wait||G.speed===0)return;
+  G.month++;
+  if(G.month>12){G.month=12;yearEnd();return}
+  monthEvents();render();runQueue();
+}
+function monthEvents(){
+  const m=G.month;
+  if(m===P.birthMonth&&!(G.year===1986&&P.age===0&&!P.bornShown)){P.age++}
+  if(G.year===1986&&P.age===0&&m===P.birthMonth&&!P.bornShown){P.bornShown=1;G.q.push({id:'born',t:()=>'Ты родил'+g('ся','ась')+'. '+(P.city?'Роддом №'+ri(1,12)+', '+cityName(P,1986):'Районная больница')+'. Вес '+(rnd(2.8,4).toFixed(1))+' кг.',big:1})}
+  for(const e of EV)if(e.fx&&e.m===m&&eligible(e,P))G.q.push(e);
+  // учёба, армия, пенсия
+  if(m===6&&P.age===17&&!P.flags.grad)G.q.push(GRAD);
+  if(m===6&&P.vuzEnd===G.year&&P.job==='student'){G.q.push({id:'vuzend',t:()=>G.year<1992?'Диплом. Распределение: три года отработать, куда пошлют.':'Диплом. Распределения больше нет, работу ищи сам'+g('','а')+'.',fn:p=>{p.job=assignJob(p);p.flags.vuz=0}})}
+  if(m===10&&P.sex==='m'&&P.age>=18&&P.age<=26&&!P.flags.served&&P.job!=='army'&&!(P.job==='student'&&G.year>=1989))G.q.push(ARMY);
+  if(m===11&&P.job==='army'&&G.year>=P.armyEnd)G.q.push({id:'dembel',t:()=>'Дембель. Домой.',e:{f:4},fn:p=>{p.job=assignJob(p);p.flags.served=1}});
+  if(P.job==='army'&&m===4){
+    if(G.year<=1988&&R()<.15)G.q.push({id:'afg',t:()=>'Твою часть перебрасывают в Афганистан.',e:{h:-8,c:4,d:.025}});
+    else if(P.rep==='RU'&&G.year>=1994&&G.year<=1996&&R()<.3)G.q.push({id:'chech',t:()=>'Часть отправляют в Чечню.',e:{h:-10,c:3,d:.04}});
+    else if(R()<.4)G.q.push({id:'ded',t:()=>'Дедовщина. Терпишь, потом сам'+g('','а')+' становишься «дедом».',e:{h:-3,c:2}});
+  }
+  if(P.age===pensAge(P)&&P.job!=='pension'&&P.job!=='kid'&&m===P.birthMonth)G.q.push({id:'pens',t:()=>'Проводили на пенсию. Подарили часы.',e:{c:-2},fn:p=>{p.job='pension'}});
+  if(P.age===7&&P.job==='kid'&&m===9)G.q.push({id:'first',t:()=>'1 сентября. Первый класс, гладиолусы, ранец.',e:{c:2},fn:p=>{p.job='school'}});
+  if(G.plan[m])G.q.push(G.plan[m]);
+  if(m===G.deathM)G.q.push({id:'_death'});
+}
+const GRAD={id:'grad',rep:1,t:()=>'Выпускной. Что дальше?',
+  ch:[{t:'Поступать в институт',fn:p=>{const ok=R()<.3+p.edu*.06+(p.c>60?.1:0);if(ok){p.job='student';p.flags.vuz=1;p.vuzEnd=G.year+5;line('Поступил'+g('','а')+'! Общага, сессии, стройотряды.','res')}else{p.job='student';p.vuzEnd=G.year+2;line('Не прошёл'+g('','ла')+' по конкурсу. Пошёл'+g('','ла')+' в техникум.','res')}}},
+      {t:'В техникум или ПТУ',r:'Профессия в руках.',fn:p=>{p.job='student';p.vuzEnd=G.year+2}},
+      {t:'Сразу работать',r:'Взрослая жизнь, первая получка.',fn:p=>{p.job=assignJob(p)}}],
+  fn:p=>{p.flags.grad=1}};
+const ARMY={id:'army',rep:1,t:()=>'Повестка из военкомата.',
+  ch:[{t:'Служить',r:'Проводы, гармонь, автобус до сборного пункта.',fn:p=>{p.prevJob=p.job;p.job='army';p.armyEnd=G.year+2}},
+      {t:'Откосить через знакомых',fn:p=>{if(p.c>=50||R()<.25){addMonths(p,-2);p.flags.served=1;line('Справка из диспансера стоила недёшево.','res')}else{p.prevJob=p.job;p.job='army';p.armyEnd=G.year+2;line('Не вышло. Через неделю ты уже в части.','res')}}}]};
+
+function runQueue(){
+  while(G.q.length){
+    const e=G.q.shift();
+    if(P.dead||P.left)break;
+    if(e.id==='_death'){deathCheck();if(P.dead)break;continue}
+    if(e.fx===undefined&&e.id&&EV.includes(e)&&!eligible(e,P))continue;
+    G.done.add(e.id);
+    const text=fixG(e.t(P));
+    const chs=e.ch&&(!e.chIf||e.chIf(P))?e.ch.filter(c=>!c.ro||c.ro.includes(role(P))):null;
+    if(chs&&chs.length&&role(P)!=='K'){ask(e,text,chs);return}
+    line(text,e.big?'big':'');
+    apply(e.e);if(e.dyn)apply(e.dyn(P));if(e.fn)e.fn(P);
+    if(P.dead||P.left)break;
+  }
+  render();
+  if(P.dead||P.left){setTimeout(finish,1600);return}
+  tick();
+}
+function ask(e,text,chs){
+  G.wait=true;clearTimeout(G.timer);
+  const box=document.createElement('div');box.className='choice';
+  box.innerHTML='<div class="q">'+MON[G.month-1]+'. '+text+'</div>';
+  chs.forEach(c=>{const b=document.createElement('button');b.textContent=c.t;b.onclick=()=>{
+    box.remove();line(text,e.big?'big':'');line('→ '+c.t,'res');
+    if(c.r)line(fixG(c.r),'res');
+    apply(c.e);if(e.dyn)apply(e.dyn(P));if(c.fn)c.fn(P);if(e.fn)e.fn(P);
+    if(c.go)moveTo(c.go);
+    if(c.abroad){P.left=typeof c.abroad==='function'?c.abroad(P):c.abroad;line('Ты уезжаешь в '+P.left+'. Дальше другая история.','big')}
+    G.wait=false;render();runQueue();
+  };box.appendChild(b)});
+  $('#feed').appendChild(box);render();stick();box.querySelector('button').focus({preventScroll:true});
+}
+function apply(e){
+  if(!e)return;
+  if(e.h)P.h=clamp(P.h+e.h);if(e.f)P.f=clamp(P.f+e.f);if(e.c)P.c=clamp(P.c+e.c);if(e.edu)P.edu+=e.edu;
+  if(e.m)addMonths(P,e.m);
+  if(e.d&&R()<e.d){P.dead={year:G.year,month:G.month,age:P.age,cause:'погиб'+g('','ла')};line('Ты погиб'+g('','ла')+'.','dead')}
+}
+function moveTo(r){
+  const from=REPS[P.rep].n;P.rep=r;P.minority=false;P.migrant=from;P.city=pick(REPS[r].cities.slice(0,6));P.vil=null;
+  if(['Y','W'].includes(role(P)))P.job=wpick([['torg',3],['zavod',2],['bez',2]]);
+  line('Переезд. Теперь ты в городе '+cityName(P,G.year)+'. Для местных ты «беженец из '+(from==='Таджикистан'?'Таджикистана':from==='Казахстан'?'Казахстана':from==='Армения'?'Армении':from==='Латвия'?'Латвии':from)+'».','big');
+}
+function deathCheck(){
+  const q=qDeath(P.age,P.sex,G.year,P.rep,P.h,P.flags.drink)*(P.job==='brat'?3:1);
+  if(R()<q){const c=P.job==='brat'&&R()<.6?'убит'+g('','а')+' в разборке':causeOf(P);P.dead={year:G.year,month:G.month,age:P.age,cause:c};line('Ты умер'+g('','ла')+'. Причина: '+c+'.','dead')}
+}
+
+/* ---------- конец года ---------- */
+function yearEnd(){
+  clearTimeout(G.timer);
+  // доход и сбережения за год
+  let mult=jobMult(P.job,G.year);if(P.rep==='TJ')mult*=.55;if(P.rep==='AM'&&G.year>=1992&&G.year<=1995)mult*=.5;
+  let rate=.1+(P.focus==='work'?.06:0)-(P.focus==='family'?.03:0)+(P.focus==='hustle'?rnd(-.04,.1):0);
+  addNominal(P,Y[G.year].wage*12*mult*Math.max(0,rate));
+  if(G.year===1993&&P.money.mmm>0)P.money.mmm*=5;
+  // фокус года и возраст
+  const fo={work:{c:1,h:-1,edu:1},family:{f:6},health:{h:5},hustle:{c:5}}[P.focus]||{};
+  apply(fo);
+  P.h=clamp(P.h-(P.age>40?1:0)-(P.age>55?1:0)-(P.age>65?2:0)-(P.flags.drink?4:0)+rnd(-2,2));
+  P.f=clamp(P.f+rnd(-3,2));P.c=clamp(P.c+rnd(-2,2));
+  const nbLines=updateNeighbors();
+  render();
+  openPaper(nbLines);
+}
+function updateNeighbors(){
+  const out=[];
+  for(const n of G.nb){
+    if(n.st==='dead'||n.st==='left')continue;
+    n.age++;
+    const a=n.age,y=G.year,f=n.sex==='f',ga=f?'а':'';
+    let ev=null;
+    if(R()<qDeath(a,n.sex,y,P.rep,55,n.drink)*1.2){n.st='dead';n.note='умер'+(f?'ла':'')+' в '+y;ev=n.label+' умер'+(f?'ла':'')+'.'}
+    else{
+      const opts=[];
+      if(y>=1989&&y<=1995&&a>18)opts.push([()=>{n.st='left';n.note='уехал'+ga+' в Израиль';},.025]);
+      if(y>=1990&&y<=1998&&a>18)opts.push([()=>{n.st='left';n.note='уехал'+ga+' в Германию';},P.rep==='KZ'?.05:.015]);
+      if(P.rep!=='RU'&&y>=1992&&y<=1998)opts.push([()=>{n.st='left';n.note='уехал'+ga+' в Россию';},P.rep==='TJ'&&y<=1993?.15:P.rep==='AM'&&y<=1995?.08:P.rep==='KZ'?.05:.02]);
+      if(y>=1992&&y<=1997&&a>=20&&a<55)opts.push([()=>{n.note='открыл'+ga+' ларёк'},.05]);
+      if(y>=1994&&a>=22&&a<55)opts.push([()=>{n.note='купил'+ga+' иномарку'},.03]);
+      if(y>=1992&&!f&&a>=17&&a<35)opts.push([()=>{n.note='сидит'},.03]);
+      if(y>=1990&&!f&&a>=25&&!n.drink)opts.push([()=>{n.drink=1;n.note='запил'},.04]);
+      if(a>=19&&a<=35)opts.push([()=>{n.note=f?'вышла замуж':'женился'},.08]);
+      if(a===7)opts.push([()=>{n.note='пошл'+(f?'а':'ёл')+' в школу'},1]);
+      for(const [fn,pr] of opts)if(R()<pr){fn();ev=n.label+': '+n.note+'.';break}
+    }
+    if(ev)out.push(ev);
+  }
+  return out;
+}
+function openPaper(nbLines){
+  const y=G.year, rn=REPS[P.rep];
+  const gen=NEWS.GEN[y], loc=(NEWS[P.rep]||{})[y];
+  let heads=[];
+  if(P.rep==='RU'||y<1992)heads=[[gen[0],y<1992?'Из Москвы':''],[gen[1],'']];
+  else heads=[[gen[0],'Из Москвы']];
+  if(loc)heads.splice(y<1992||P.rep==='RU'?1:0,0,[loc[0],rn.n]);
+  const d=Y[y], denom=y>=1998;
+  const price=v=>denom?(v/1000).toLocaleString('ru-RU',{maximumFractionDigits:2})+' руб.':v<1?Math.round(v*100)+' коп.':fmt(v)+' руб.';
+  const notes=P.age<7?'<p class="fine">За тебя всё решают родители.</p>':
+    '<div><div class="label">На что ставишь в '+(y+1)+'-м</div><div class="chips" id="focus">'+
+    [['work',P.age<17||P.job==='student'?'Учёба':'Работа'],['family','Семья'],['health',P.age<17?'Спорт':'Здоровье'],['hustle',P.age<17?'Друзья и двор':'Крутиться']]
+      .map(([k,l])=>'<label><input type="radio" name="focus" id="fo-'+k+'" value="'+k+'"'+(P.focus===k?' checked':'')+'> '+l+'</label>').join('')+'</div></div>'+
+    (P.age>=17?'<div><div class="label">Где держать сбережения</div><div class="chips">'+
+      [['book',y+1<1992?'Сберкнижка':'Рубли в банке'],...(y+1>=1989?[['usd','Доллары под матрасом']]:[]),...(P.rep==='RU'&&(y+1===1993||y+1===1994)?[['mmm','Билеты МММ']]:[])]
+      .map(([k,l])=>'<label><input type="radio" name="keep" id="kp-'+k+'" value="'+k+'"'+(P.keep===k?' checked':'')+'> '+l+'</label>').join('')+'</div></div>':'');
+  const last=y===1999;
+  $('#modal').innerHTML='<div class="paper" role="dialog" aria-label="Итоги года">'+
+    '<div class="mast"><div class="label">'+esc(cityName(P,y))+'</div><h2>Новости года</h2><div class="meta"><span>31 декабря '+y+'</span><span>№ 52</span><span>Цена '+(y<1991?'3 коп.':'договорная')+'</span></div></div>'+
+    '<div class="heads">'+heads.map(([h,f])=>'<div>'+(f?'<div class="from">'+esc(f)+'</div>':'')+'<h3>'+esc(h)+'</h3></div>').join('')+'</div>'+
+    '<div class="cols"><div><h4>Твой год</h4><ul>'+(G.yearLog.length?G.yearLog.filter(t=>!t.startsWith('→')).slice(-6).map(t=>'<li>'+t+'</li>').join(''):'<li>Обычный год. Ничего особенного.</li>')+'</ul></div>'+
+    '<div><h4>Цены на рынке</h4><div class="prices mono"><div><span>Буханка хлеба</span><span>'+price(d.bread)+'</span></div><div><span>Доллар у менял</span><span>'+price(d.usd)+'</span></div><div><span>Средняя зарплата</span><span>'+price(d.wage)+'</span></div><div><span>Твои сбережения</span><span>'+fmt(loaves(P))+' бух.</span></div></div>'+
+    (y>=1992&&P.rep!=='RU'?'<p class="fine">В пересчёте на российские рубли.</p>':'')+
+    (nbLines.length?'<h4 style="margin-top:12px">Во дворе</h4><ul>'+nbLines.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>':'')+'</div></div>'+
+    '<div class="next">'+(last?'':notes)+
+    '<div><div class="label">'+(last?'Что скажешь себе в 1986-м?':'Что загадаешь на '+(y+1)+'-й?')+'</div><input class="wish" id="wish" maxlength="120" placeholder="можно не писать"></div>'+
+    '<div><button class="btn" id="ny">'+(last?'Встретить 2000-й':'Встретить '+(y+1)+'-й')+'</button></div></div></div>';
+  $('#modal').hidden=false;$('#modal').scrollTop=0;
+  $('#ny').onclick=()=>{
+    const w=$('#wish').value.trim();if(w)P.notes.push([y,w]);
+    const fo=document.querySelector('input[name=focus]:checked');if(fo)P.focus=fo.value;
+    const kp=document.querySelector('input[name=keep]:checked');if(kp&&kp.value!==P.keep)setKeep(P,kp.value);
+    $('#modal').hidden=true;
+    if(last){finish();return}
+    G.year++;render();startYear();
+  };
+}
+
+/* ---------- финал ---------- */
+function finish(){
+  clearTimeout(G.timer);
+  const p=P, alive=!p.dead&&!p.left;
+  let head, sub;
+  if(p.dead){head=p.first+', '+p.birthYear+' — '+p.dead.year;sub='<div class="cause">'+cap(p.dead.cause)+', '+MON[p.dead.month-1]+' '+p.dead.year+', '+ageStr(p.dead.age)+'.</div>'}
+  else if(p.left){head=p.first+', уехал'+g('','а')+' в '+p.left;sub='<div>'+MON[G.month-1]+' '+G.year+', '+ageStr(p.age)+'. Дальше другая страна и другая жизнь.</div>'}
+  else{head=p.first+' пережил'+g('','а')+' девяностые';sub='<div>31 декабря 1999 года тебе '+ageStr(p.age)+'.</div>'}
+  const endY=Math.min(G.year,1999);
+  const w0=G.startLoaves,w1=loaves(p,endY);
+  // вероятное будущее
+  let fut='';
+  if(alive){
+    let a=p.age,dy=null;
+    for(let y=2000;y<=2025;y++){a++;if(R()<qDeath(a,p.sex,1999,p.rep,p.h,p.flags.drink)*(y<2006?1:.8)){dy=y;break}}
+    const fate=p.job==='biz'?'Ларёк превратился в магазин, магазин пережил все кризисы.':p.job==='brat'?'Из бригады мало кто дожил до нулевых. Тебе повезло.':
+      p.money.usd>0&&w1>w0?'Доллары под матрасом стали первым взносом за квартиру.':p.age<20?'Вырос'+g('','ла')+', уехал'+g('','а')+' в город побольше, звонишь родителям по воскресеньям.':
+      p.age>55?'Пенсия, дача, внуки по выходным.':pick(['Работаешь там же, где в 1999-м.','Ипотека, дача, дети выросли.','Переучил'+g('ся','ась')+' и начал'+g('','а')+' всё заново в тридцать с лишним.']);
+    fut='<h3 style="margin-top:20px">Что было бы дальше</h3><p>'+(dy?'Ты не доживаешь до 2025-го: умираешь в '+dy+'-м.':'В 2025-м тебе '+ageStr(p.age+26)+'.')+' '+fate+'</p><p class="fine">Прикидка по той же статистике, без подробностей.</p>';
+  }
+  const nb=G.nb.map(n=>'<li>'+esc(n.label)+': '+esc(n.note)+'</li>').join('');
+  const wishes=p.notes.length?'<h3 style="margin-top:20px">Что ты загадывал'+g('','а')+'</h3><div class="wishes">'+p.notes.map(([y,t])=>'<p>'+(y+1)+': '+esc(t)+'</p>').join('')+'</div>':'';
+  const share=[head+'.',p.dead?cap(p.dead.cause)+', '+p.dead.year+'.':'',(p.migrant?'Родил'+g('ся','ась')+' в '+REPS[p.origRep].o+', уехал'+g('','а')+' в Россию. ':'')+cityName(p,endY)+'.',
+    'Сбережения: '+fmt(w0)+' → '+fmt(w1)+' буханок хлеба.','«Время перемен», 1986–1999'].filter(Boolean).join('\n');
+  $('#end').innerHTML='<div class="label">Справка о прожитых годах</div><div class="doc">'+
+    '<div class="big">'+esc(head)+'</div>'+sub+
+    '<div style="margin-top:14px">'+[['Родил'+g('ся','ась'),p.birthYear+', '+(p.migrant?REPS[p.origRep].o:REPS[p.rep].o)],['Последний адрес',cityName(p,endY)+', '+repName(p.rep,endY)],['Последнее занятие',JOBL[p.job]||'—'],
+      ['Сбережения','было '+fmt(w0)+' → стало '+fmt(w1)+' буханок'],['Здоровье · близкие · связи',Math.round(p.h)+' · '+Math.round(p.f)+' · '+Math.round(p.c)]]
+      .map(([a,b])=>'<div class="field"><b>'+a+'</b><span>'+esc(b)+'</span></div>').join('')+'</div>'+
+    fut+wishes+'<h3 style="margin-top:20px">Твой двор</h3><ul>'+nb+'</ul></div>'+
+    '<div class="row"><button class="btn" id="again">Прожить другую жизнь</button><button class="btn ghost" id="copy">Скопировать итог</button></div><p class="fine" id="copied" hidden>Скопировано.</p>';
+  show('end');
+  $('#again').onclick=()=>{show('start')};
+  $('#copy').onclick=()=>{navigator.clipboard.writeText(share).then(()=>{$('#copied').hidden=false}).catch(()=>{$('#copied').textContent=share;$('#copied').hidden=false})};
+}
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+</script>
