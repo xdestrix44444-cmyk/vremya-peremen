@@ -29,7 +29,7 @@ events:
 - {id: PRIV-01-EE, type: choice, fixed: true, when: {from: 1993, to: 1993, month: 6}, where: [EE], who: {age: [18, 99]}, text: "Выданы приватизационные ваучеры.", choices: *voucher_choices}
 - {id: PRIV-01-MD, type: choice, fixed: true, when: {from: 1993, to: 1993, month: 9}, where: [MD], who: {age: [18, 99]}, text: "Выданы «патримониальные боны».", choices: *voucher_choices}
 - {id: PRIV-01-BY, type: choice, fixed: true, when: {from: 1994, to: 1994, month: 6}, where: [BY], who: {age: [18, 99]}, text: "Выданы приватизационные чеки «Имущество».", choices: *voucher_choices}
-- {id: PRIV-01-KZ, type: choice, fixed: true, when: {from: 1994, to: 1994, month: 4}, where: [KZ], who: {age: [18, 99]}, text: "Выданы купоны. Вложить их можно только через инвестиционные фонды.", choices: *voucher_choices}
+- {id: PRIV-01-KZ, type: choice, fixed: true, when: {from: 1994, to: 1994, month: 4}, where: [KZ], who: {age: [18, 99]}, text: "Выданы приватизационные купоны. Вкладывать их зовут в инвестиционные фонды, но купоны можно и продать.", choices: *voucher_choices}
 - {id: PRIV-01-AM, type: choice, fixed: true, when: {from: 1994, to: 1994, month: 10}, where: [AM], who: {age: [18, 99]}, text: "Выданы приватизационные ваучеры.", choices: *voucher_choices}
 - {id: PRIV-01-UA, type: choice, fixed: true, when: {from: 1995, to: 1995, month: 1}, where: [UA], who: {age: [18, 99]}, text: "Выданы приватизационные сертификаты.", choices: *voucher_choices}
 - {id: PRIV-01-GE, type: choice, fixed: true, when: {from: 1995, to: 1995, month: 6}, where: [GE], who: {age: [18, 99]}, text: "Выданы приватизационные ваучеры.", choices: *voucher_choices}

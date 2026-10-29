@@ -608,7 +608,7 @@ events:
   - text: Требовать
     check: {base: 35, ties: 0.4, strength: 10}
     success:
-      text: Отдал половину.
+      text: Бригадир отдал половину.
       effects: {money_m: 2}
     fail:
       text: Избили и выгнали.
