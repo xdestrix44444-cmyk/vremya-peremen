@@ -175,6 +175,7 @@ events:
   when: {from: 1991, to: 1993}
   who:
     age: [21, 65]
+    any_flags: [activist, official, front, defender91, deputy_local, party_member, komsomol_active]
   text: Предложение должности в новой мэрии или администрации.
   choices:
   - text: Принять

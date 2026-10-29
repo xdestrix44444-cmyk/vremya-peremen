@@ -313,8 +313,10 @@ events:
     outcomes:
     - w: 60
       mods: {grit: 10}
-      text: Контрольный пакет у тебя.
-      effects: {money_m: 20, law: 5, fame: 5}
+      text: Контрольный пакет у тебя. Теперь завод приносит долю прибыли.
+      effects: {money_m: -5, law: 5, fame: 5}
+      asset: {kind: stake, sector: local, value: 25}
+      sets: [shareholder, stake_control]
     - w: 40
       text: Директор завода оказался сильнее.
       effects: {money_m: -5}
@@ -325,6 +327,7 @@ events:
   when: {from: 1990, to: 1998}
   who:
     age: [22, 55]
+    any_flags: [nttm, business, entrepreneur, official]
   text: 'Знакомый из министерства шепчет: лицензию на банк можно получить за месяц — если знать, кому платить.'
   choices:
   - text: Открыть
@@ -498,7 +501,7 @@ events:
   text: Партнёр предлагает «увести» общие деньги у третьего компаньона.
   choices:
   - text: Согласиться
-    effects: {money_m: 8}
+    effects: {money_m: 8, law: 5}
     sets: [cheated_partner]
   - text: Отказаться
     effects: {ties: 1}

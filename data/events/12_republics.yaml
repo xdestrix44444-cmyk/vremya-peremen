@@ -23,12 +23,14 @@ events:
   who:
     age: [18, 99]
     flags: [capital]
-  text: 'Ленинград голосует: вернуть городу имя Санкт-Петербург?'
+  text: 12 июня 1991-го. В Москве в один день выбирают мэра и первого президента России.
   choices:
-  - text: За
+  - text: Голосовать за демократов
     effects: {views_reform: 5}
-  - text: Против
+  - text: Голосовать за «крепких хозяйственников»
     effects: {views_reform: -5}
+  - text: Не идти
+    effects: {}
 - id: REP-RU-03
   type: choice
   when: {from: 1992, to: 1999}
@@ -123,10 +125,10 @@ events:
   where: [UA]
   who:
     role: [adult, pension]
-  text: Крым. Санатории пустуют, отдыхающие ищут комнату у частников.
+  text: 'Родня в Крыму зовёт на лето: санатории пустуют, отдыхающие ищут комнаты у частников. Нужны руки.'
   choices:
-  - text: Сдавать комнату
-    effects: {money_m: 2, close: -1}
+  - text: Поехать сдавать комнаты
+    effects: {money_m: 2, close: 1, happy: 1, health: -1}
   - text: Нет
     effects: {}
 - id: REP-BY-01
@@ -202,6 +204,7 @@ events:
   where: [UZ, TM, TJ]
   who:
     age: [12, 25]
+    job: [school, student]
   text: Школьников и студентов отправляют на сбор хлопка.
   effects: {health: -2, know: -1}
 - id: REP-UZ-03
@@ -418,7 +421,7 @@ events:
   who:
     job: [officer, pension]
     flags: [minority]
-  text: 'Отставники собираются у Дома офицеров: оставаться в Латвии или уезжать в Россию?'
+  text: 'Отставники собираются у Дома офицеров: оставаться здесь или уезжать в Россию?'
   choices:
   - text: Уехать
     outcomes:

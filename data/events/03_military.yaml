@@ -235,7 +235,7 @@ events:
   text: Часть переходит под новую республику. Перед строем зачитывают текст присяги на чужом языке.
   choices:
   - text: Присягнуть
-    effects: {money_m: -1, views_union: 10}
+    effects: {views_union: 10}
     sets: [new_oath]
   - text: Уехать служить в Россию
     outcomes:
@@ -316,7 +316,7 @@ events:
     - w: 50
       text: Похвалили.
       effects: {ties: 1}
-    effects: {happy: 2}
+    effects: {}
 - id: MIL-16
   type: choice
   when: {from: 1993, to: 1999}
@@ -380,7 +380,7 @@ events:
       effects: {health: -5, close: -5}
       sets: [drinker]
   - text: Уйти с головой в работу
-    effects: {money_m: 0.5}
+    effects: {money_m: 0.5, close: -1}
 - id: MIL-19
   type: choice
   repeat: true
