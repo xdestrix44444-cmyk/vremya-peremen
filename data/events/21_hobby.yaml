@@ -115,19 +115,6 @@ events:
   chance: 0.7
   effects: {ties: 3, know: 1, happy: 1}
   variants: [Соседка принесла чинить магнитофон. Вечер с паяльником — и он снова играет., Починил соседу телевизор. Теперь весь подъезд знает твой номер квартиры.]
-- id: HOB-08
-  type: choice
-  who:
-    flags: [hobby_tech]
-    age: [14, 40]
-  when: {from: 1990, to: 1999}
-  text: Можно собрать компьютер из деталей с радиорынка.
-  choices:
-  - text: Собрать
-    effects: {money_m: -3, know: 5, happy: 4}
-    item: {add: computer}
-  - text: Подождать
-    effects: {}
 - id: HOB-09
   type: scene
   repeat: true

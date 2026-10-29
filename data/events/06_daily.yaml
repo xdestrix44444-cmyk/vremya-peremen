@@ -34,22 +34,6 @@ events:
   effects: {close: 1}
   texts_by_age: {school: 'Родителям на работе дали праздничный заказ: шпроты и банка кофе.'}
   variants: [На работе раздают праздничные заказы. Тебе достались шпроты и банка индийского кофе., 'Профком принёс заказ к Новому году: палка сервелата, обёрнутая в газету «Труд».']
-- id: DAY-04
-  type: offer
-  when: {from: 1986, to: 1991}
-  who:
-    role: [adult]
-    stats: {ties: '>30'}
-  weight: 0.5
-  text: Подошла очередь на «Жигули» по записи с работы.
-  choices:
-  - text: Купить
-    effects: {money_m: -30, close: 3, ties: 1}
-    item: {add: car}
-  - text: Уступить очередь за деньги
-    effects: {money_m: 5, law: 3}
-  - text: Отказаться
-    effects: {}
 - id: DAY-05
   type: scene
   repeat: true
@@ -146,71 +130,16 @@ events:
   weight: 0.6
   text: Свет и отопление отключают по графику. Готовят на буржуйке, спят в куртках.
   effects: {health: -2}
-- id: DAY-15
-  type: choice
-  when: {from: 1992, to: 1999}
-  who:
-    role: [adult, pension]
-  text: У соседей сверху вскрыли квартиру. Все в подъезде заговорили о железных дверях.
-  choices:
-  - text: Поставить дверь
-    effects: {money_m: -1, happy: 1}
-    memo: Поставили железную дверь.
-  - text: Обойтись
-    effects: {}
-    outcomes:
-    - {w: 75, text: Пронесло.}
-    - w: 25
-      text: Обокрали и вас.
-      effects: {money_m: -3, happy: -5}
-  variants: [У соседей сверху вскрыли квартиру. Все в подъезде заговорили о железных дверях.]
 - id: DAY-16
   type: scene
   when: {from: 1988, to: 1999}
   text: Девять вечера. Вся семья молча смотрит «Санта-Барбару», телефон отключён из розетки.
   effects: {close: 1}
   variants: ['Девять вечера. Вся семья молча смотрит «Санта-Барбару», телефон отключён из розетки.', Бабушка плачет над «Рабыней Изаурой» и просит не мешать.]
-- id: DAY-17
-  type: choice
-  when: {from: 1993, to: 1999}
-  who:
-    role: [adult]
-  text: 'Сосед сделал евроремонт: белый потолок, пластиковое окно. Ходили смотреть всем подъездом.'
-  choices:
-  - text: Сделать
-    effects: {money_m: -15, close: 1, happy: 5}
-    memo: Сделали евроремонт.
-  - text: Нет
-    effects: {}
-  variants: ['Сосед сделал евроремонт: белый потолок, пластиковое окно. Ходили смотреть всем подъездом.']
 - id: DAY-18
   type: scene
   when: {from: 1993, to: 1995}
   text: По телевизору Лёня Голубков покупает жене сапоги на доходы от пирамиды.
-- id: DAY-19
-  type: choice
-  when: {from: 1994, to: 1999}
-  who:
-    role: [adult]
-  text: У соседа под окнами стоит синий «Опель» из Германии. Он моет его каждое воскресенье.
-  choices:
-  - text: Купить себе
-    effects: {money_m: -25, ties: 2, close: 1, happy: 4}
-    item: {add: car}
-  - text: Нет
-    effects: {}
-  variants: [У соседа под окнами стоит синий «Опель» из Германии. Он моет его каждое воскресенье.]
-- id: DAY-20
-  type: choice
-  when: {from: 1995, to: 1999}
-  who:
-    flags: [business]
-  text: Пейджер, потом мобильный размером с кирпич.
-  choices:
-  - text: Купить
-    effects: {money_m: -8, ties: 2}
-  - text: Нет
-    effects: {}
 - id: DAY-21
   type: scene
   repeat: true

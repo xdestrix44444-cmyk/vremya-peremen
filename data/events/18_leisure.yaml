@@ -58,45 +58,6 @@ events:
   - text: Тихо дома
     effects: {close: 1, happy: 1}
   variants: [День рождения. Можно позвать всех — тогда придётся занимать стулья у соседей.]
-- id: LEI-04
-  type: choice
-  when: {from: 1986, to: 1991}
-  who:
-    role: [young, adult]
-  text: В универмаг «выбросили» югославские дублёнки. Товаровед — знакомый соседа.
-  choices:
-  - text: Достать по блату
-    check: {base: 45, ties: 0.6}
-    success:
-      text: Достал. Тёплая, на зависть всему подъезду.
-      effects: {money_m: -2.5, happy: 4, close: 1}
-    fail:
-      text: Обещали и не достали. Неловко вышло.
-      effects: {ties: -1}
-  - text: Обойтись
-    effects: {}
-  variants: [В универмаг «выбросили» югославские дублёнки. Товаровед — знакомый соседа.]
-- id: LEI-05
-  type: choice
-  when: {from: 1992, to: 1999}
-  who:
-    role: [young, adult]
-  text: В магазине «Электроника» видеомагнитофон «Панасоник» за две зарплаты.
-  choices:
-  - text: Купить видик
-    effects: {money_m: -2, close: 1, happy: 3}
-    item: {add: tv_vcr}
-    memo: Купили видеомагнитофон.
-  - text: Купить компьютер
-    who:
-      years: [1993, 1999]
-    effects: {money_m: -8, know: 3, happy: 2}
-    item: {add: computer}
-  - text: Подождать
-    effects: {}
-  variants:
-  - {t: В магазине «Электроника» видеомагнитофон «Панасоник» за две зарплаты., to: 1992}
-  - {t: 'В магазине электроники — видеомагнитофон «Панасоник» за две зарплаты. Рядом компьютер с цветным монитором, но он стоит как подержанная машина.', from: 1993}
 - id: LEI-06
   type: scene
   repeat: true
