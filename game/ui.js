@@ -155,13 +155,14 @@ let tab = 'feed', resumeSpeed = 1;
 function renderGame() {
   shownYear = 0; tab = 'feed';
   app.innerHTML = `<div class="bgmap" aria-hidden="true" id="map"></div>
-    <div class="top"><div class="hd"><div style="flex:1;min-width:0"><div class="date" id="date"></div><div class="who" id="who"></div>
-      <div class="bar" style="margin-top:6px" aria-label="Прогресс года"><i id="yearbar" style="width:0%"></i></div></div>
-      <div class="ctl">${[[0, '❚❚'], [1, '1×'], [2, '2×'], [4, '4×'], [8, '8×'], ['skip', '» к решению']].map(([v, t]) => `<button class="btn" data-sp="${v}">${t}</button>`).join('')}<button class="btn" id="settings" aria-label="Настройки">⚙</button></div></div>
+    <div class="top"><div class="hd"><div class="date" id="date"></div><button class="btn" id="settings" aria-label="Настройки">⚙</button></div>
+      <div class="who" id="who"></div>
+      <div class="bar" style="margin-top:6px" aria-label="Прогресс года"><i id="yearbar" style="width:0%"></i></div>
+      <div class="ctl">${[[0, '❚❚'], [1, '1×'], [2, '2×'], [4, '4×'], [8, '8×'], ['skip', '» решение']].map(([v, t]) => `<button class="btn" data-sp="${v}">${t}</button>`).join('')}</div>
+      <button class="money" id="money"></button>
       <nav class="tabs" role="tablist">${TABS.map(([k, t]) => `<button class="tab" role="tab" data-tab="${k}">${t}</button>`).join('')}</nav></div>
     <div class="frame" id="frame"></div>
     <div class="stats" id="stats"></div>
-    <button class="money" id="money"></button>
     <button class="focus" id="focus"></button>
     <div id="choice"></div><div id="panel" hidden></div><div class="feed" id="feed"></div>`;
   document.querySelectorAll('[data-sp]').forEach(b => b.onclick = () => setSpeed(b.dataset.sp === 'skip' ? 'skip' : +b.dataset.sp));
