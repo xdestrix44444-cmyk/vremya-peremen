@@ -4,6 +4,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Время перемен</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+// Telegram держит старую страницу в кэше: сверяем сборку с version.json и перезагружаемся на свежую (__BUILD__ подставляет pages.yml)
+(function () {
+  var B = '__BUILD__'; if (B.indexOf('__') === 0) return;
+  fetch('version.json?t=' + Date.now(), {cache: 'no-store'}).then(function (r) { return r.json(); }).then(function (j) {
+    if (!j.v || j.v === B) return;
+    var u = new URL(location.href); if (u.searchParams.get('v') === j.v) return;
+    u.searchParams.set('v', j.v); location.replace(u.toString());
+  }).catch(function () {});
+})();
+</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,5 +120,5 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-
 
 <div class="wrap" id="app"></div>
 <div id="layer"></div>
-<script src="engine.js"></script>
-<script src="ui.js"></script>
+<script src="engine.js?v=__BUILD__"></script>
+<script src="ui.js?v=__BUILD__"></script>

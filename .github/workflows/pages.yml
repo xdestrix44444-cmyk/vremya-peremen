@@ -19,6 +19,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Номер сборки для сброса кэша Telegram
+        run: |
+          V=${GITHUB_SHA::8}
+          sed -i "s/__BUILD__/$V/g" game/index.html game/ui.js
+          echo "{\"v\":\"$V\"}" > game/version.json
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

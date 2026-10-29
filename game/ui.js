@@ -28,7 +28,7 @@ if (tg) {
   new MutationObserver(syncBack).observe(layer, {childList: true});
 }
 
-fetch('data.json').then(r => r.json()).then(d => { D = d; E = createEngine(D); renderStart(); })
+fetch('data.json?v=__BUILD__').then(r => r.json()).then(d => { D = d; E = createEngine(D); renderStart(); })
   .catch(() => { app.innerHTML = '<div class="title"><div class="q">Не удалось загрузить данные игры. Обновите страницу.</div></div>'; });
 
 // ---------- карта и комната ----------
