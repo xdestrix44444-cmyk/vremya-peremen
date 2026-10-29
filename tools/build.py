@@ -31,7 +31,7 @@ FLAGS = set(flags)
 
 errors, warnings = [], []
 flag_set, flag_read = defaultdict(set), defaultdict(set)
-CHOICE_KEYS = {'memo', 'text', 'effects', 'sets', 'clears', 'job', 'edu', 'move', 'end', 'check', 'success', 'fail', 'outcomes', 'who', 'ref', 'item', 'asset', 'promote'}
+CHOICE_KEYS = {'memo', 'text', 'effects', 'sets', 'clears', 'job', 'edu', 'move', 'end', 'check', 'success', 'fail', 'outcomes', 'who', 'ref', 'item', 'asset', 'promote', 'pay_debt'}
 COND_RE = re.compile(r'^(>=|<=|>|<|=)\s*-?\d+$')
 
 

@@ -161,10 +161,10 @@ function renderGame() {
       <div class="ctl">${[[0, '❚❚'], [1, '1×'], [2, '2×'], [4, '4×'], [8, '8×'], ['skip', '» решение']].map(([v, t]) => `<button class="btn" data-sp="${v}">${t}</button>`).join('')}</div>
       <button class="money" id="money"></button>
       <nav class="tabs" role="tablist">${TABS.map(([k, t]) => `<button class="tab" role="tab" data-tab="${k}">${t}</button>`).join('')}</nav></div>
-    <div class="frame" id="frame"></div>
     <div class="stats" id="stats"></div>
     <button class="focus" id="focus"></button>
-    <div id="choice"></div><div id="panel" hidden></div><div class="feed" id="feed"></div>`;
+    <div id="choice"></div><div id="panel" hidden></div><div class="feed" id="feed"></div>
+    <div class="frame" id="frame" style="margin-top:24px"></div>`;
   document.querySelectorAll('[data-sp]').forEach(b => b.onclick = () => setSpeed(b.dataset.sp === 'skip' ? 'skip' : +b.dataset.sp));
   document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => openTab(b.dataset.tab));
   $('#settings').onclick = settingsSheet;

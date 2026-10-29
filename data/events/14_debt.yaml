@@ -144,9 +144,10 @@ events:
     flags: [debt_bank, defaulter]
   text: Пришли приставы описывать имущество. На шкаф уже клеят бирку.
   choices:
-  - text: Отдать
+  - text: Отдать имущество и закрыть долг
     effects: {money_m: -6, close: -3}
     clears: [debt_bank]
+    pay_debt: true
   - text: Спрятать заранее
     check: {base: 40, grit: 15}
     success:
@@ -192,9 +193,10 @@ events:
   chance: 0.6
   text: 'Тебя «поставили на счётчик»: 1–5% в день.'
   choices:
-  - text: Платить
+  - text: Отдать всё с процентами
     effects: {money_m: -5}
     clears: [debt_bandits]
+    pay_debt: true
   - text: Договориться
     check: {base: 30, ties: 0.5, charm: 10, defaulter: -20}
     success:
@@ -266,9 +268,10 @@ events:
     flags: [debt_bank]
   text: Платёж по долларовому кредиту вырос втрое.
   choices:
-  - text: Продать имущество
+  - text: Продать имущество и закрыть кредит
     effects: {money_m: -8}
     clears: [debt_bank]
+    pay_debt: true
   - text: Просить отсрочку
     check: {base: 35, ties: 0.4}
     success:
@@ -342,9 +345,10 @@ events:
   chance: 0.5
   text: 'Ростовщик позвонил сам: «Проценты капают, ты помнишь?»'
   choices:
-  - text: Платить
+  - text: Вернуть долг с процентами
     effects: {money_m: -5}
     clears: [debt_private]
+    pay_debt: true
   - text: Тянуть
     outcomes:
     - w: 60
